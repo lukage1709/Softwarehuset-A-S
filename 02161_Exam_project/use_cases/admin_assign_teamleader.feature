@@ -1,5 +1,5 @@
 Feature: Assign teamleader
-	Desciption: Admin assigning teamleader to a project
+	Desciption: Admin assigning teamleaders to a project
 	Actors: Administrator
 	#Make realistic id
 	
