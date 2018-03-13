@@ -13,8 +13,7 @@ Given the employee "Abcd" is logged into the system
 And the activity "Test" is assigned to a project
 And there are no work hours registered 
 When the employee views registered work hours
-Then the employee does not view registrered work hours
-Then I get the error message "Can't view work hours on activity, no work hours registered for user on activity"
+Then I get the error message "No work hours registered for user on activity"
 
 Scenario: Employee views registered work hours in not registered activity
 Given the employee "Abcd" is logged into the system 
