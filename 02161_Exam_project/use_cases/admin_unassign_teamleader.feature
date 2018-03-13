@@ -1,5 +1,5 @@
-Feature: Register user
-	Description: The administrator registers a user of the library
+Feature: Unassign teamleader
+	Description: The administrator unassigns a teamleader from a project
 	Actors: Administrator
 
 Scenario: Unassign teamleader
@@ -13,5 +13,5 @@ Scenario: Unassign teamleader when not the administrator
 	Given that the administrator is not logged in
 	And there is a project with id "030901"
 	And the project has a teamleader with id "Cjep"
-	When the administrator unassigns the teamleader
+	When the user unassigns the teamleader
 	Then I get the errormesagge "Administrator login required"
