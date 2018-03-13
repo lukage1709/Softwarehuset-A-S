@@ -16,7 +16,15 @@ Then i get error message "cannot add activity: Project does not exist"
 
 Scenario: Non-teamleader attempts to create activity
 Given the teamleader is not logged in
-When user tries to name activity "Blue Rose"
+When user names activity "Blue Rose"
 Then activity is not created
 And I get error message "Activity not created. Requires teamleader login"
+
+Scenario: teamleader attempts to create activity in project which already exists
+Given the teamleader is logged in
+When teamleader names activity "Blue Rose"
+And activity "Blue Rose" already exists
+Then i get error message "Activity already exists in project"
+
+
 
