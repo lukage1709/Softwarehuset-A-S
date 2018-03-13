@@ -1,4 +1,4 @@
-Feature: Add employee
+Feature: Admin add employee to system
 	Description: The administrator adds a new employee
 	Actor: Admin
 	
