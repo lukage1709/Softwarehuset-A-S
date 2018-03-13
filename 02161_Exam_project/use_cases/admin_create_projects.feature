@@ -1,5 +1,5 @@
 Feature: Create project
-	Description: 
+	Description: Admin creates new project
 	Actors: Administrator
 
 Scenario: Create project
@@ -9,11 +9,11 @@ Scenario: Create project
 	
 Scenario: Create project when not the administrator
 	Given that the administrator is not logged in
-	When when the administrator creates a project with name "First project", startdate "xx-xxxx" og enddate "qq-qqqq"
-	Then I get the errormessage "Administrator login required"
+	When the user creates a project with name "First project", startdate "xx-xxxx" og enddate "qq-qqqq"
+	Then user gets the error message "Administrator login required"
 	
 Scenario: Project name already used
 	Given that the administrator is logged in
 	And there is a project with name "First Project"
 	When when the administrator creates a project with name "First project", startdate "xx-xxxx" og enddate "qq-qqqq"
-	Then I get the errormessage "Name is already used"	
+	Then I get the error message "Name for project is already used"	
