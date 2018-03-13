@@ -1,6 +1,6 @@
 Feature: employee registers time
-Description: The employee registers time worked on activities 
-Actors: Employee
+  Description: The employee registers time worked on activities 
+  Actors: Employee
 
 
 Scenario: Employee registers work hours 
