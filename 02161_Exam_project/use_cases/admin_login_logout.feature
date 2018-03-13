@@ -12,7 +12,7 @@ Then the admin logs in successfully
 Scenario: Administrator types wrong username
 Given that the admin is not already logged in
 And the admin username is "AdminAdmin"
-When the user logs in with other username
+When the user logs in with "Cjeps"
 Then the admin is not logged in
 
 Scenario: Admin logs out
