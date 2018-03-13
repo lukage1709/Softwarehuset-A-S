@@ -8,6 +8,12 @@ When teamleader names activity "Blue Rose"
 Then activity is created 
 And the activity name is set to "Blue Rose"
 
+Scenario: Teamleader attempts to make activity for nonexistent project
+Given the teamleader is logged in
+When the teamleader names activity "Blue Rose"
+And the project does not exist
+Then i get error message "cannot add activity: Project does not exist"
+
 Scenario: Non-teamleader attempts to create activity
 Given the teamleader is not logged in
 When user tries to name activity "Blue Rose"
