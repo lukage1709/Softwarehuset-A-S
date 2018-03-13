@@ -4,8 +4,8 @@ Feature: employee registers time
 
 
 Scenario: Employee registers work hours 
-Given the activity "Test" is assigned to a project 
-And the employee "Abcd" is logged into the system 
+Given the employee "Abcd" is logged into the system 
+And the activity "Test" is assigned to a project 
 When the employee registers time worked on activity
 Then the employee's time worked on the project is registered to the activity 
 
