@@ -23,4 +23,4 @@ And the employee "Abcd" is not assigned to the activity "UX changes"
 Then the employee's work hours are not registered to the activity
 
 
-#BÅDE PROJEKT OG IKKE PROJEKT RELATERET
+#BÅDE PROJEKT OG IKKE PROJEKT RELATERET AKTIVITET OG TIMETAL
