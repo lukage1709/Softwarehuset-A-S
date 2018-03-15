@@ -1,4 +1,4 @@
-Feature: Admin login/logout
+Feature: User login/logout
 	Description: The administrator logs in and out of the system
 	Actor: Admin
 
@@ -19,3 +19,6 @@ Scenario: Admin logs out
 Given that the admin is logged in
 When the admin logs out
 Then the admin is not logged in
+
+
+#SKAL ÆNDRES FRA ADMIN TIL USER
