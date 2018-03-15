@@ -2,6 +2,9 @@ Feature: User login/logout
 	Description: The administrator logs in and out of the system
 	Actor: Admin
 
+
+SKIFT FRA ADMIN TIL USER
+
 #password fjernet fra scenariet
 Scenario: Admin can login
 Given that the admin is not already logged in
