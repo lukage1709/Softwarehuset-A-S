@@ -15,3 +15,5 @@ And there is no activity assigned to a project
 When the employee views registered work hours
 Then the work hours are not viewed
 And I get the error message "Can't view work hours on activity, activity is not registered in system"
+
+#VENT
