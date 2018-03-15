@@ -19,6 +19,9 @@ And I get the error message "Can't register time used on activity: Activity does
 #
 
 
+
+#Måske ikke denne! hvis første scenario tager højde for nedenstående
+
 Scenario: Employee registers work hours on activity which the employee has not been assigned to
 Given the employee "Abcd" is logged into the system 
 When the employee registers work hours at an activity
