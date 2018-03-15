@@ -8,3 +8,4 @@ When the employee registers absence into the system
 Then the employee's absence is registered into the system
 
 
+#SKAL NOK SLETTES
