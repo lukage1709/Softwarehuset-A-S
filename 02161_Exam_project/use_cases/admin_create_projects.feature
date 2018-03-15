@@ -17,3 +17,7 @@ Given that the administrator is logged in
 And there is a project with name "First Project"
 When when the administrator creates a project with name "First project", startdate "xx-xxxx" og enddate "qq-qqqq"
 Then I get the error message "Name for project is already used"	
+
+
+
+#BRUG
