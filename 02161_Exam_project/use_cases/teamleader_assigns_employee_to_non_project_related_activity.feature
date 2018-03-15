@@ -15,3 +15,4 @@ When teamleader assigns employee to "vacation"
 Then the employee is not assigned to the activity 
 And the teamleader receives an erorr message "Cannot assign unavailabe employee to activity"
 
+#VENT
