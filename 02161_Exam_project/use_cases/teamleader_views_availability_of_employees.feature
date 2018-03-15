@@ -7,10 +7,12 @@ Given Teamleader is logged in
 When Teamleader requests "available employees"
 Then Teamleader receives list of "availability employees"
 
+
+#
 Scenario: teamleader not logged in attempts to view available employees for activities
 Given teamleader is not logged in
 When user requests "available employees"
 Then user receives error message "cannot show available employees. Requires teamleader login"
-
+#
  	
 #TEGN
