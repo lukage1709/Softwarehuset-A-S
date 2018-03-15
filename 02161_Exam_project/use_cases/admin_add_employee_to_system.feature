@@ -21,3 +21,6 @@ Scenario: Add an employee that is already added
 	When the administrator adds the employee again
 	Then the employee is not added to the list
 	And I get an error message "Employee is already on list of employees"
+	
+	
+	#Ikke nødvendig i første omgang
