@@ -2,7 +2,7 @@ Feature: Administrator registers employee in system
 	Description: The administrator adds a new employee
 	Actor: Administrator
 	
-Scenario: Register new employee
+Scenario: Register new employee 
 	Given that the admin is logged in 
 	And no employee with ID "Anje0001" is registered
 	And there is an employee with  and name "Anders Jensen"
