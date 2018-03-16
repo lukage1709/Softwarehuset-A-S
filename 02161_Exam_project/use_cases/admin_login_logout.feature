@@ -1,27 +1,20 @@
 Feature: User login/logout
-	Description: The administrator logs in and out of the system
-	Actor: Admin
+	Description: The user logs in and out of the system
+	Actor: User
 
-
-SKIFT FRA ADMIN TIL USER
-
-#password fjernet fra scenariet
-Scenario: Admin can login
-Given that the admin is not already logged in
-And the admin logins with "AdminAdmnin"
-Then the admin logs in successfully
+Scenario: User logs in
+	Given that the user is not already logged in
+	And the user logins with username "Abcd1234"
+	And "Abcd1234" is a registered user
+	Then the user logs in successfully
 	
-#password fjernet fra scenariet
-Scenario: Administrator types wrong username
-Given that the admin is not already logged in
-And the admin username is "AdminAdmin"
-When the user logs in with "Cjeps"
-Then the admin is not logged in
+Scenario: User types unknown username
+	Given that the user is not already logged in
+	When the user logs in with username "Unknown"
+	And "Unknown" is not a registered user.
+	Then the user is not logged in
 
-Scenario: Admin logs out
-Given that the admin is logged in
-When the admin logs out
-Then the admin is not logged in
-
-
-#SKAL ÆNDRES FRA ADMIN TIL USER
+Scenario: User logs out
+	Given that the user is logged in
+	When the user logs out
+	Then the user is not logged in
