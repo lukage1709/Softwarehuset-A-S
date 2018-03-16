@@ -1,30 +1,27 @@
-Feature: Admin add employee to system
+Feature: Administrator registers employee in system
 	Description: The administrator adds a new employee
-	Actor: Admin
+	Actor: Administrator
 	
-Scenario: Add an employee
+Scenario: Register new employee
 	Given that the admin is logged in 
-	And there is an employee with ID "anje" and name "Anders Jensen"
-	When the administrator adds the employee 
-	Then the employee is added to the list of employees
+	And no employee with ID "Anje0001" is registered
+	And there is an employee with  and name "Anders Jensen"
+	When the administrator registers the employee with name name "Anders Jensen" and "Anje0001"
+	Then the employee with ID "Anje0001"  is a registered employee
 
-#
-Scenario: Add an employee when not logged in as administrator
-	Given that the admin is not logged in 
-	And there is a employee with ID "anje" and name "Anders Jensen"
-	When the user adds the employee 
-	Then the employee is not added to the list of employees
-	And I get an error message "Administrator login required to add an employee: Admin not logged in"
-#
-
-
-
-Scenario: Add an employee that is already added
+Scenario: Register an employee that is already added
 	Given that the admin is logged in 
-	And an employee is in the list of employees
-	When the administrator adds the employee again
-	Then the employee is not added to the list
-	And I get an error message "Employee is already on list of employees"
+	And an employee with ID "Anje0001" and name "Anders Jensen" is registered
+	When the administrator registers the employee again
+	Then the employee is not registered
+	And I get an error message "Employee is already registered"
+	
+Scenario: Register with used ID
+	Given that the admin is logged in 
+	And an employee with ID "Anje0001" and name "Anders Jensen" is registered
+	When the administrator registers the employee with name "Andreas Jessen" and ID "Anje0001"
+	Then the employee is not registered
+	And I get an error message "Employee not registered - ID already used"
 	
 	
 	
