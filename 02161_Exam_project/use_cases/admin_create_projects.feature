@@ -1,27 +1,14 @@
 Feature: Create project
-	Description: Admin creates new project
+	Description: Administrator creates new project
 	Actors: Administrator
 
 Scenario: Create project
-Given that the administrator is logged in
-When when the administrator creates a project with name "First project", startdate "xx-xxxx" og enddate "qq-qqqq"
-Then there is a new project with name "First Project", startdate "xx-xxxx" og enddate "qq-qqqq"
+    Given that the administrator is logged in
+    When when the administrator creates a project with name "First project", startdate "05" "2018" og enddate "25" "2018"
+    Then there is a new project with name "First Project", startdate "Week:05, Year:2018" og enddate "Week:25, Year:2018"
 
-
-#
-Scenario: Create project when not the administrator
-Given that the administrator is not logged in
-When the user creates a project with name "First project", startdate "xx-xxxx" og enddate "qq-qqqq"
-Then I get the error message "Administrator login required to create project"
-
-#
-	
 Scenario: Project name already used
-Given that the administrator is logged in
-And there is a project with name "First Project"
-When when the administrator creates a project with name "First project", startdate "xx-xxxx" og enddate "qq-qqqq"
-Then I get the error message "Name for project is already used"	
-
-
-
-#BRUG
+    Given that the administrator is logged in
+    And there is a project with name "First Project"
+    When the administrator creates a project with name "First project", startdate "05" "2018" og enddate "25" "2018"
+    Then I get the error message "Name for project is already used"	
