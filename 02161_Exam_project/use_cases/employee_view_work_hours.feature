@@ -1,14 +1,14 @@
-Feature: Employee view registered worked time
-Description: The employee views their registered work hours
-Actors: Employee
-
-#keep
-
-Scenario: Employee views registered work hours 
-Given the employee "Abcd" is logged into the system 
-And the activity "Test" is assigned to a project
-When the employee views registered work hours at an activity
-Then the employees views the employee's registered work hours on the activity 
+#Feature: Employee view registered worked time
+#Description: The employee views their registered work hours
+#Actors: Employee
+#
+##keep
+#
+#Scenario: Employee views registered work hours 
+#Given the employee "Abcd" is logged into the system 
+#And the activity "Test" is assigned to a project
+#When the employee views registered work hours at an activity
+#Then the employees views the employee's registered work hours on the activity 
 
  
 #Scenario: Employee views registered work hours in not registered activity
