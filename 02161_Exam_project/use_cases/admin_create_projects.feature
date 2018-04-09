@@ -1,7 +1,7 @@
 Feature: Create project
 	Description: Administrator creates new project
 	Actors: Administrator
-
+#keep
 Scenario: Create project 
     Given that the administrator is logged in
     When when the administrator creates a project with name "First project", startdate "05" "2018" og enddate "25" "2018"
