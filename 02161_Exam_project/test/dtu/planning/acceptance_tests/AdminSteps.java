@@ -8,14 +8,20 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.equalTo;
+
+import dtu.planning.app.Employee;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 
 public class AdminSteps {
 	private PlanningApp planningApp;
 	private Project project; 
+	private Employee employee;
+	private List<Employee> employeeID;
 
 	public AdminSteps(PlanningApp planningApp) {
 		this.planningApp = planningApp;
@@ -47,6 +53,46 @@ public class AdminSteps {
 	}
 	
 	
+	/****************************************************************************************/
+
+	
+	
+	//Christina 
+	//Admin add employee to system 
+	/****************************************************************************************/
+
+	@Given("^no employee with ID \"([^\"]*)\" is registered$")
+	public void noEmployeeWithIDIsRegistered(String employeeID) throws Exception {
+		employee = new Employee(employeeID);
+		assertThat(employee.getID(), is(equalTo(employeeID)));
+		assertFalse(planningApp.searchEmployeeID(employeeID));
+		
+	}
+
+	@Given("^there is an employee with  and name \"([^\"]*)\"$")
+	public void thereIsAnEmployeeWithAndName(String employeeName) throws Exception {
+		if (employeeName.equals("Anders Jensen")) {
+		employee.setName("Anders Jensen");
+			
+		}
+	}
+
+	@When("^the administrator registers the employee with name name \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void theAdministratorRegistersTheEmployeeWithNameNameAnd(String employeeID, String employeeName) throws Exception {
+		employee = new Employee(employeeID, employeeName);
+		assertThat(employee.getID(),is(equalTo(employeeID)));
+		assertThat(employee.getName(),is(equalTo(employeeName)));
+		planningApp.registerEmployee(employee);
+	}
+
+	@Then("^the employee with ID \"([^\"]*)\"  is a registered employee$")
+	public void theEmployeeWithIDIsARegisteredEmployee(String arg1) throws Exception {
+	    List<Employee> employees = planningApp.getEmployees();
+	    assertThat(employees.size(),is(1));
+	    Employee emp = employees.get(0);
+	    assertThat(emp.getID(), is(employee.getID()));
+	    assertThat(emp.getName(), is(employee.getName()));
+	}
 	/****************************************************************************************/
 
 }

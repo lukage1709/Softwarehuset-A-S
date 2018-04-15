@@ -7,6 +7,7 @@ public class PlanningApp {
 	
 	private boolean adminLoggedIn = false;
 	private List<Project> currentProjects = new ArrayList<>();
+	private List<Employee> currentEmployees = new ArrayList<>();
 
 	public boolean adminLoggedIn() {
 		return adminLoggedIn;
@@ -44,5 +45,36 @@ public class PlanningApp {
 	public List<Project> getProjects() {
 		return currentProjects;
 	}
+
+	public void registerEmployee(Employee employee) throws Exception {
+		if (adminLoggedIn) {
+			if (currentEmployees.contains(employee)) {
+				throw new Exception("Employee is already registered");
+			}
+			currentEmployees.add(employee);
+		
+		}
+	
+	}	
+
+	public boolean searchEmployeeID(String searchID) {
+		 for (Employee employee : currentEmployees ) {
+			 if (employee.match(searchID)) {
+			 return true;
+			 }
+		 }
+		 return false;
+	}
+
+	public void addEmployee(Employee employee) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<Employee> getEmployees() {
+		// TODO Auto-generated method stub
+		return currentEmployees;
+	}
+	
 
 }

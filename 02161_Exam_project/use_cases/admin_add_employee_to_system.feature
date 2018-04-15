@@ -1,14 +1,14 @@
-#Feature: Administrator registers employee in system
-#	Description: The administrator adds a new employee
-#	Actor: Administrator
-#	
-#Scenario: Register new employee 
-#	Given that the admin is logged in 
-#	And no employee with ID "Anje0001" is registered
-#	And there is an employee with  and name "Anders Jensen"
-#	When the administrator registers the employee with name name "Anders Jensen" and "Anje0001"
-#	Then the employee with ID "Anje0001"  is a registered employee
-#
+Feature: Administrator registers employee in system
+	Description: The administrator adds a new employee
+	Actor: Administrator
+	
+Scenario: Register new employee 
+	Given that the admin is logged in 
+	And no employee with ID "Anje0001" is registered 
+	And there is an employee with  and name "Anders Jensen" 
+	When the administrator registers the employee with name name "Anders Jensen" and "Anje0001"
+	Then the employee with ID "Anje0001"  is a registered employee
+
 #Scenario: Register an employee that is already added
 #	Given that the admin is logged in 
 #	And an employee with ID "Anje0001" and name "Anders Jensen" is registered
