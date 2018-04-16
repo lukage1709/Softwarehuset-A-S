@@ -5,7 +5,7 @@ public class Project {
 	private String startDate;
 	private String endDate;
 	private Employee teamLeader;
-	private Employee noTeamLeader;
+	
 	
 	
 	// TODO: Løbenummer til projekter!

@@ -1,18 +1,23 @@
 package dtu.planning.acceptance_tests;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import dtu.planning.app.Employee;
 import dtu.planning.app.PlanningApp;
 
 public class LoginLogoutSteps {
 	
 	private PlanningApp planningApp;
 	private String password;
+	private Employee employee;
 	
 	public LoginLogoutSteps(PlanningApp planningApp) {
 		this.planningApp = planningApp;
@@ -68,4 +73,42 @@ public class LoginLogoutSteps {
 	}
 	
 	/****************************************************************************************/
+	// employee login successful(LUKAS)
+	
+	@Given("^that the user with id \"([^\"]*)\" is not already logged in$")
+	public void thatTheUserWithIdIsNotAlreadyLoggedIn(String employeeID) throws Exception {
+		assertThat(planningApp.getUser(),is((planningApp.searchEmployeeID(employeeID))));
+	}
+
+	@Given("^\"([^\"]*)\" is a registered user$")
+	public void isARegisteredUser(String employeeID) throws Exception {
+		Employee employee = new Employee(employeeID);
+		planningApp.registerEmployee(employee);
+		 assertTrue(employee.getID() == employeeID);
+		 
+	}
+	
+	
+	@Given("^the user logins with username \"([^\"]*)\"$")
+	public void theUserLoginsWithUsername(String employeeID) throws Exception {
+		 planningApp.userLogIn(employeeID);
+				   
+	}
+	
+	
+	
+	@Then("^the user with id \"([^\"]*)\" logs in successfully$")
+	public void theUserWithIdLogsInSuccessfully(String employeeID) throws Exception {
+	    planningApp.setCurrentUser(employeeID);
+	    
+	}
+	
+		
+	
+	
+	
+	
+
+	
+	
 }

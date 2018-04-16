@@ -1,12 +1,12 @@
-#Feature: User login/logout
-#	Description: The user logs in and out of the system
-#	Actor: User
-##keep
-#Scenario: User logs in
-#	Given that the user is not already logged in
-#	And the user logins with username "Abcd1234"
-#	And "Abcd1234" is a registered user
-#	Then the user logs in successfully
+Feature: User login/logout
+	Description: The user logs in and out of the system
+	Actor: User
+#keep
+Scenario: User logs in
+	Given that the user with id "Abcd1234" is not already logged in
+	And "Abcd1234" is a registered user
+	And the user logins with username "Abcd1234"
+	Then the user with id "Abcd1234" logs in successfully
 #	
 #Scenario: User types unknown username
 #	Given that the user is not already logged in

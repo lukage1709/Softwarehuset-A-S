@@ -8,6 +8,7 @@ public class PlanningApp {
 	private boolean adminLoggedIn = false;
 	private List<Project> currentProjects = new ArrayList<>();
 	private List<Employee> currentEmployees = new ArrayList<>();
+	private Employee user = null;
 
 	public boolean adminLoggedIn() {
 		return adminLoggedIn;
@@ -90,5 +91,37 @@ public class PlanningApp {
 		return null;
 
 }
+	
+	
+
+	public String userLogIn(String employeeID) {
+		return employeeID;	
+	}
+
+	public boolean registeredUser(String employeeID) {
+		 for (Employee employee : currentEmployees ) {
+			 if (employee.getID() == employeeID) {
+		return true;
+	}
+	
+}
+		return false;
+	
+	}
+	
+	
+	public void setCurrentUser(String employeeID) {
+		for (Employee employee : currentEmployees ) {
+			 if (employee.match(employeeID)) {
+				this.user = employee;
+			 }
+			
+			 }
+		
+	}
+	
+	public Employee getUser() {
+		return user;
+	}
 	
 }
