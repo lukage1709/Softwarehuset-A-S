@@ -27,6 +27,7 @@ public class PlanningApp {
 	/**
 	 * Creates a project provided the administrator is logged in
 	 * 
+	 * 
 	 * @param project name, start- and enddates
 	 * 
 	 */
