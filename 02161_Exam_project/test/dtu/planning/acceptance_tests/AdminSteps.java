@@ -142,7 +142,27 @@ public class AdminSteps {
 	@Then("^the employee is not registered$")
 	public void theEmployeeIsNotRegistered() throws Exception {
 	    assertThat(planningApp.getEmployees().contains(this.employee), is(false));
+	}
+	
+	// admin removes employee from system
+	
+	//1.
+	@Given("^there is a employee with ID \"([^\"]*)\"$")
+	public void thereIsAEmployeeWithID(String employeeID) throws Exception {
+		planningApp.registerEmployee(helper.getEmployee());
 	    
+	}
+
+	@When("^the administrator removes the employee$")
+	public void theAdministratorRemovesTheEmployee() throws Exception {
+		planningApp.removeEmployee(helper.getEmployee());
+		
+	}
+
+	@Then("^the employee is removed from the list of employees$")
+	public void theEmployeeIsRemovedFromTheListOfEmployees() throws Exception {
+		assertThat(planningApp.getEmployees().contains(employee), is(false));
+
 	}
 	
 	/****************************************************************************************/

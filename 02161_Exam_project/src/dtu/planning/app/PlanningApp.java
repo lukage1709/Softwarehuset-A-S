@@ -90,5 +90,10 @@ public class PlanningApp {
 		return null;
 
 }
+
+	public void removeEmployee(Employee employee) {
+		currentEmployees.remove(searchEmployeeID(employee.getID()));
+		
+	}
 	
 }

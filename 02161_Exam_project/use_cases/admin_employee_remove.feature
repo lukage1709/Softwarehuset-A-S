@@ -1,12 +1,12 @@
-#Feature: Remove employee
-#	Description: The administrator removes an employee
-#	Actor: Admin
-#	
-#Scenario: Remove an employee
-#	Given that the admin is logged in 
-#	And there is a employee with ID "anje"
-#	When the administrator removes the employee 
-#	Then the employee is removed from the list of employees
+Feature: Remove employee
+	Description: The administrator removes an employee
+	Actor: Admin
+	
+Scenario: Remove an employee
+	Given that the admin is logged in 
+	And there is a employee with ID "Anje0001"
+	When the administrator removes the employee 
+	Then the employee is removed from the list of employees
 #	
 #Scenario: Remove an employee when not logged in as administrator
 #	Given that the admin is not logged in 
