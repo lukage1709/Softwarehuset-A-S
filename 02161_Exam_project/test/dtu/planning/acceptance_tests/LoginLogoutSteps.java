@@ -24,6 +24,7 @@ public class LoginLogoutSteps {
 	@Given("^that the admin is not already logged in$")
 	public void thatTheAdminIsNotAlreadyLoggedIn() throws Exception {
 	    assertFalse(planningApp.adminLoggedIn());
+		System.out.println("Test");
 	}
 
 	@Given("^the admin logins with password \"([^\"]*)\"$")
