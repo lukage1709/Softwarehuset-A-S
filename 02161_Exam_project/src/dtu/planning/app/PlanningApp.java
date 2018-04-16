@@ -8,6 +8,7 @@ public class PlanningApp {
 	private boolean adminLoggedIn = false;
 	private List<Project> currentProjects = new ArrayList<>();
 	private List<Employee> currentEmployees = new ArrayList<>();
+	private boolean userLoggedIn= false;
 
 	public boolean adminLoggedIn() {
 		return adminLoggedIn;
