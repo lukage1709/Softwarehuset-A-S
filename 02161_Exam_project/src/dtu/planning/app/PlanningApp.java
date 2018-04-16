@@ -57,13 +57,13 @@ public class PlanningApp {
 	
 	}	
 
-	public boolean searchEmployeeID(String searchID) {
+	public Employee searchEmployeeID(String searchID) {
 		 for (Employee employee : currentEmployees ) {
 			 if (employee.match(searchID)) {
-			 return true;
+			 return employee;
 			 }
 		 }
-		 return false;
+		return null;
 	}
 
 	public void addEmployee(Employee employee) {
@@ -76,5 +76,14 @@ public class PlanningApp {
 		return currentEmployees;
 	}
 	
+	public Project searchProjectByID(String projectID) {
+		 for (Project project : currentProjects ) {
+			 if (project.getProjectByID(projectID)) {
+			 return project;
+			 }
+		 }
+		return null;
 
+}
+	
 }

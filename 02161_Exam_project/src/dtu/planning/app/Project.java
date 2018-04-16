@@ -4,6 +4,8 @@ public class Project {
 	private String name;
 	private String startDate;
 	private String endDate;
+	private Employee teamLeader;
+	private Employee noTeamLeader;
 	
 	
 	// TODO: Løbenummer til projekter!
@@ -28,4 +30,20 @@ public class Project {
 	public Object getEndDate() {
 		return endDate;
 	}
+	
+	public void assignTeamLeader(Employee e ) {
+		this.teamLeader = e;
+		
+	}
+	public Employee getTeamLeader() {
+		return this.teamLeader;
+	}
+	public boolean getProjectByID(String projectID) {
+		return name.contains(projectID);
+	}
+	
+	public void unassignTeamLeader(Employee e) {
+		this.teamLeader = null;
+	}
+	
 }
