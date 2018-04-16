@@ -8,6 +8,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -21,10 +22,13 @@ public class AdminSteps {
 	private PlanningApp planningApp;
 	private Project project; 
 	private Employee employee;
-	private List<Employee> employeeID;
+	private ErrorMessageHolder errorMessage;
+	public EmployeeHelper helper;
 
-	public AdminSteps(PlanningApp planningApp) {
+	public AdminSteps(PlanningApp planningApp, ErrorMessageHolder errorMessage, EmployeeHelper helper) {
 		this.planningApp = planningApp;
+		this.errorMessage = errorMessage;
+		this.helper = helper;
 	}
 
 	/* Linnea */
@@ -60,39 +64,79 @@ public class AdminSteps {
 	//Christina 
 	//Admin add employee to system 
 	/****************************************************************************************/
-
-	@Given("^no employee with ID \"([^\"]*)\" is registered$")
-	public void noEmployeeWithIDIsRegistered(String employeeID) throws Exception {
-		employee = new Employee(employeeID);
-		assertThat(employee.getID(), is(equalTo(employeeID)));
-		assertFalse(planningApp.searchEmployeeID(employeeID));
-		
-	}
-
-	@Given("^there is an employee with  and name \"([^\"]*)\"$")
-	public void thereIsAnEmployeeWithAndName(String employeeName) throws Exception {
-		if (employeeName.equals("Anders Jensen")) {
-		employee.setName("Anders Jensen");
-			
-		}
-	}
-
-	@When("^the administrator registers the employee with name name \"([^\"]*)\" and \"([^\"]*)\"$")
-	public void theAdministratorRegistersTheEmployeeWithNameNameAnd(String employeeID, String employeeName) throws Exception {
+	
+	//1
+	@Given("^there is an employee with \"([^\"]*)\" and name \"([^\"]*)\"$")
+	public void thereIsAnEmployeeWithAndName(String employeeID, String employeeName) throws Exception {
 		employee = new Employee(employeeID, employeeName);
 		assertThat(employee.getID(),is(equalTo(employeeID)));
 		assertThat(employee.getName(),is(equalTo(employeeName)));
+
+	}
+
+	@When("^the administrator registers the employee$")
+	public void theAdministratorRegistersTheEmployee() throws Exception {
 		planningApp.registerEmployee(employee);
 	}
 
 	@Then("^the employee with ID \"([^\"]*)\"  is a registered employee$")
 	public void theEmployeeWithIDIsARegisteredEmployee(String arg1) throws Exception {
-	    List<Employee> employees = planningApp.getEmployees();
-	    assertThat(employees.size(),is(1));
-	    Employee emp = employees.get(0);
-	    assertThat(emp.getID(), is(employee.getID()));
-	    assertThat(emp.getName(), is(employee.getName()));
+		List<Employee> employees = planningApp.getEmployees();
+		assertThat(employees.size(),is(1));
+		Employee emp = employees.get(0);
+		assertThat(emp.getID(), is(employee.getID()));
+		assertThat(emp.getName(), is(employee.getName()));
+
 	}
+
+	
+	//2.
+	@Given("^an employee with ID \"([^\"]*)\" and name \"([^\"]*)\" is registered$")
+	public void anEmployeeWithIDAndNameIsRegistered(String employeeID, String employeeName) throws Exception {
+		employee = new Employee(employeeID, employeeName);
+		assertThat(employee.getID(), is(equalTo(employeeID)));
+		assertThat(employee.getName(), is(equalTo(employeeName)));
+
+	}
+
+	@When("^the administrator registers the employee again$")
+	public void theAdministratorRegistersTheEmployeeAgain() throws Exception {
+		try {
+			planningApp.registerEmployee(helper.getEmployee());
+			planningApp.registerEmployee(helper.getEmployee());
+		} catch (Exception e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
+
+	}
+
+	@Then("^I get an error message \"([^\"]*)\"$")
+	public void iGetAnErrorMessage(String errorMessage) throws Exception {
+		assertEquals(errorMessage, this.errorMessage.getErrorMessage());
+	}
+	
+	//3
+	@When("^the administrator registers the employee with name \"([^\"]*)\" and ID \"([^\"]*)\"$")
+	public void theAdministratorRegistersTheEmployeeWithNameAndID(String employeeName, String employeeID) throws Exception {
+		//employee = new Employee("Anje0001", "Anders Jensen");
+		planningApp.registerEmployee(helper.getEmployee());
+		
+		employee = new Employee(employeeID, employeeName);
+		assertThat(employee.getID(), is(equalTo(employeeID)));
+		assertThat(employee.getName(), is(equalTo(employeeName)));
+		try {
+			planningApp.registerEmployee(employee);
+		} catch (Exception e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("^the employee is not registered$")
+	public void theEmployeeIsNotRegistered() throws Exception {
+	    assertThat(planningApp.getEmployees().contains(this.employee), is(false));
+	    
+	}
+	
 	/****************************************************************************************/
 
 }

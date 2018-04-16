@@ -50,25 +50,25 @@ public class PlanningApp {
 		if (adminLoggedIn) {
 			if (currentEmployees.contains(employee)) {
 				throw new Exception("Employee is already registered");
+			
 			}
+			if (searchEmployeeID(employee.getID()) != null) {
+				throw new Exception("Employee not registered - ID already used");
+			
+			}else {
 			currentEmployees.add(employee);
-		
+			}
 		}
 	
 	}	
 
-	public boolean searchEmployeeID(String searchID) {
+	public Employee searchEmployeeID(String searchID) {
 		 for (Employee employee : currentEmployees ) {
 			 if (employee.match(searchID)) {
-			 return true;
+			 return employee;
 			 }
 		 }
-		 return false;
-	}
-
-	public void addEmployee(Employee employee) {
-		// TODO Auto-generated method stub
-		
+		 return null;
 	}
 
 	public List<Employee> getEmployees() {
