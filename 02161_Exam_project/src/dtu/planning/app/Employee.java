@@ -9,6 +9,10 @@ public class Employee {
 		this.employeeID = employeeID;
 		this.employeeName = employeeName;
 	}
+	
+	public Employee(String employeeID) {
+		this.employeeID = employeeID;
+	}
 
 	public String getID() {
 		return employeeID;

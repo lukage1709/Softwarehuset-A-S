@@ -69,7 +69,11 @@ public class PlanningApp {
 			 return employee;
 			 }
 		 }
-		 return null;
+		return null;
+	}
+
+	public void addEmployee(Employee employee) {
+		// TODO Auto-generated method stub
 	}
 
 	public List<Employee> getEmployees() {
@@ -77,5 +81,14 @@ public class PlanningApp {
 		return currentEmployees;
 	}
 	
+	public Project searchProjectByID(String projectID) {
+		 for (Project project : currentProjects ) {
+			 if (project.getProjectByID(projectID)) {
+			 return project;
+			 }
+		 }
+		return null;
 
+}
+	
 }
