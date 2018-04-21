@@ -1,11 +1,16 @@
 package dtu.planning.app;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Project {
 	private String name;
 	private String startDate;
 	private String endDate;
 	private Employee teamLeader;
 	private Employee noTeamLeader;
+	private List<Activity> activities = new ArrayList<>();
 	
 	
 	// TODO: Løbenummer til projekter!
@@ -44,6 +49,28 @@ public class Project {
 	
 	public void unassignTeamLeader(Employee e) {
 		this.teamLeader = null;
+	}
+
+	public void addActivity(Activity activity) throws Exception {
+		if (getActivityByName(activity.getActivityName()) != null) {
+			throw new Exception("Activity name already used in this project");
+			
+		}
+		activities.add(activity);
+		
+	}
+
+	public List<Activity> getActivities() {
+		return Collections.unmodifiableList(activities);
+	}
+
+	public Activity getActivityByName(String activityName) {
+		for (Activity act : activities) {
+			if (act.getActivityName().equals(activityName)) {
+				return act;
+			}
+		}
+		return null;
 	}
 	
 }
