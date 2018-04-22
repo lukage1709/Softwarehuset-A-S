@@ -93,7 +93,7 @@ public class TeamLeaderSteps {
 
 	@Then("^the activity is in the activities list of that project$")
 	public void theActivityIsInTheActivitiesListOfThatProject() throws Exception {
-	    assertTrue(project.getActivities().contains(activity));
+		assertTrue(project.getActivities().contains(activity));
 	}
 	
 	@Given("^there is an activity with name \"([^\"]*)\" in the project$")
@@ -115,7 +115,76 @@ public class TeamLeaderSteps {
 	
 	
 	/****************************************************************************************/
+	
+	
+	
+	// Christina 
+	/****************************************************************************************/
+	
+	// teamleader assigns employee to activity
+	
+	// 1
+	@Given("^there is an activity with name \"([^\"]*)\" in the activities list of that project$")
+	public void thereIsAnActivityWithNameInTheActivitiesListOfThatProject(String activityName) throws Exception {
+		activity = new Activity(activityName, 0, "", "");
+		project.addActivity(activity);
+		System.out.println("1: " + project.getActivities());
+	}
+
+	@Given("^employee with ID \"([^\"]*)\" is available$")
+	public void employeeWithIDIsAvailable(String employeeID) throws Exception {
+		System.out.println("2: " + planningApp.getEmployees());
+	    assertTrue(planningApp.getEmployees().contains(planningApp.searchEmployeeID(employeeID)));
+	    System.out.println("3: " + planningApp.searchEmployeeID(employeeID));
+	}
+
+	@When("^teamleader assigns employee with ID \"([^\"]*)\" to activity \"([^\"]*)\"$")
+	public void teamleaderAssignsEmployeeWithIDToActivity(String employeeID, String activityName) throws Exception {
+		employee = planningApp.searchEmployeeID(employeeID);
+		System.out.println("4: " + employee);
+	    activity.assignEmployee(employee);
+	    System.out.println("5: " + activity.getAssignedEmployees());
+	    assertTrue(activity.getAssignedEmployees().contains(employee));
+	}
+
+	@Then("^the employee is assigned to activity \"([^\"]*)\" in project with ID \"([^\"]*)\"$")
+	public void theEmployeeIsAssignedToActivityInProjectWithID(String activityName, String projectID) throws Exception {
+		assertThat(activity.getAssignedEmployees().contains(employee), is(true));
 		
-	  
+	}
+	
+	// skal vi have to lister? en men alle employees og en med available employees
+	@Then("^the employee with ID \"([^\"]*)\" is still at the list \"([^\"]*)\"$")
+	public void theEmployeeWithIDIsStillAtTheList(String employeeID, String arg2) throws Exception {
+	    assertTrue(planningApp.getEmployees().contains(planningApp.searchEmployeeID(employeeID)));
+	}
+	
+	// 2
+	@Given("^there is an employee with ID \"([^\"]*)\" assigned to \"([^\"]*)\" in project with ID \"([^\"]*)\"$")
+	public void thereIsAnEmployeeWithIDAssignedToInProjectWithID(String employeeID, String activityName, String projectID) throws Exception {
+		System.out.println("6: " + activity.getAssignedEmployees());
+		employee = planningApp.searchEmployeeID(employeeID);
+		System.out.println("7: " + employee);
+	    activity.assignEmployee(employee);
+	    System.out.println("8: " + activity.getAssignedEmployees());
+		
+	}
+
+	@When("^teamleader unassigns employee with ID \"([^\"]*)\" from activity \"([^\"]*)\" in project with ID \"([^\"]*)\"$")
+	public void teamleaderUnassignsEmployeeWithIDFromActivityInProjectWithID(String employeeID, String activityName, String projectID) throws Exception {
+	    employee = planningApp.searchEmployeeID(employeeID);
+	    System.out.println("8: " + employee);
+	    activity.unassignEmployee(employee);
+	    System.out.println("9: " + activity.getAssignedEmployees());
+	}
+
+	@Then("^the employee is unassigned from activity \"([^\"]*)\" in project with ID \"([^\"]*)\"$")
+	public void theEmployeeIsUnassignedFromActivityInProjectWithID(String arg1, String arg2) throws Exception {
+		assertThat(activity.getAssignedEmployees().contains(employee), is(false));
+	}
+	 
+	
+	/****************************************************************************************/
+	
 	
 }
