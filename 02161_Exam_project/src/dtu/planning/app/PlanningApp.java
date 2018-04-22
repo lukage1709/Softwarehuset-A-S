@@ -63,6 +63,7 @@ public class PlanningApp {
 	
 	}	
 
+	
 	public Employee searchEmployeeID(String searchID) {
 		 for (Employee employee : currentEmployees ) {
 			 if (employee.match(searchID)) {
@@ -71,15 +72,12 @@ public class PlanningApp {
 		 }
 		return null;
 	}
-
-	public void addEmployee(Employee employee) {
-		// TODO Auto-generated method stub
-	}
+	
 
 	public List<Employee> getEmployees() {
-		// TODO Auto-generated method stub
 		return currentEmployees;
 	}
+	
 	
 	public Project searchProjectByID(String projectID) {
 		 for (Project project : currentProjects ) {
@@ -90,5 +88,21 @@ public class PlanningApp {
 		return null;
 
 }
+
+	public void removeEmployee(Employee employee) throws Exception {
+		if (adminLoggedIn) {
+			if (searchEmployeeID(employee.getID()) == null) {
+				throw new Exception("Employee does not exists in list of employees");
+
+			} else {
+				currentEmployees.remove(employee);
+			}
+
+		} else {
+			throw new Exception("Administrator login required to remove employee from system");
+
+		}
+
+	}
 	
 }

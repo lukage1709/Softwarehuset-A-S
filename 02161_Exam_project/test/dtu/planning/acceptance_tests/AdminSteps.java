@@ -1,5 +1,6 @@
 package dtu.planning.acceptance_tests;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cucumber.api.PendingException;
@@ -70,9 +71,9 @@ public class AdminSteps {
 	
 	
 	//Christina 
-	//Admin add employee to system 
 	/****************************************************************************************/
 	
+	//Admin add employee to system 
 	//1
 	@Given("^there is an employee with \"([^\"]*)\" and name \"([^\"]*)\"$")
 	public void thereIsAnEmployeeWithAndName(String employeeID, String employeeName) throws Exception {
@@ -142,7 +143,69 @@ public class AdminSteps {
 	@Then("^the employee is not registered$")
 	public void theEmployeeIsNotRegistered() throws Exception {
 	    assertThat(planningApp.getEmployees().contains(this.employee), is(false));
+	}
+	
+	
+	// Admin removes employee from system
+	//1.
+	@Given("^there is a employee with ID \"([^\"]*)\"$")
+	public void thereIsAEmployeeWithID(String employeeID) throws Exception {
+		planningApp.registerEmployee(helper.getEmployee());
 	    
+	}
+
+	@When("^the administrator removes the employee$")
+	public void theAdministratorRemovesTheEmployee() throws Exception {
+		planningApp.removeEmployee(helper.getEmployee());
+	}
+
+	@Then("^the employee is removed from the list of employees$")
+	public void theEmployeeIsRemovedFromTheListOfEmployees() throws Exception {
+		assertThat(planningApp.getEmployees().contains(this.employee), is(false));
+	}
+	
+	// 2
+	@Given("^that there is a employee with ID \"([^\"]*)\"$")
+	public void thatThereIsAEmployeeWithID(String employeeID) throws Exception {
+		employee = helper.getEmployee();
+	    planningApp.adminLogin("admin1234");
+	    planningApp.registerEmployee(employee);
+	}
+	
+	@Given("^that the admin is not logged in$")
+	public void thatTheAdminIsNotLoggedIn() throws Exception {
+		planningApp.adminLogOut();
+ 
+	}
+	@When("^the administrator tries to remove the employee$")
+	public void theAdministratorTriesToRemoveTheEmployee() throws Exception {
+		planningApp.registerEmployee(helper.getEmployee());
+		try {
+			planningApp.removeEmployee(helper.getEmployee());
+		} catch (Exception e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("^the employee is not removed from the list of employees$")
+	public void theEmployeeIsNotRemovedFromTheListOfEmployees() throws Exception {
+	    assertThat(planningApp.getEmployees().contains(employee), is(true));
+	}
+	
+	// 3
+	@Given("^an employee is not in the list of employees$")
+	public void anEmployeeIsNotInTheListOfEmployees() throws Exception {
+		planningApp.registerEmployee(helper.getEmployee());
+		planningApp.removeEmployee(helper.getEmployee());
+	}
+	
+	@When("^the administrator tries to remove the employee from list$")
+	public void theAdministratorTriesToRemoveTheEmployeeFromList() throws Exception {
+		try {
+			planningApp.removeEmployee(helper.getEmployee());
+		} catch (Exception e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
 	}
 	
 	/****************************************************************************************/
