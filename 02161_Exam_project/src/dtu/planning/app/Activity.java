@@ -16,8 +16,7 @@ public class Activity {
 		this.estimatedHours = estHours;
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
-		// skal evt tilføjes i konstruktøren??
-		//this.assignedEmployees = assignedEmployees;
+		
 	}
 
 	public String getActivityName() {
