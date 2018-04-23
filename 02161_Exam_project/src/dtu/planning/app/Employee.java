@@ -1,9 +1,13 @@
 package dtu.planning.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Employee {
 
 	private String employeeID;
 	private String employeeName;
+	private List<Activity> assignedActivities = new ArrayList<>();
 
 	public Employee(String employeeID, String employeeName) {
 		this.employeeID = employeeID;
