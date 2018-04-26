@@ -26,16 +26,13 @@ public class PlanningApp {
 	
 	/**
 	 * Creates a project provided the administrator is logged in
-	 * 
-	 * 
+	 *  
 	 * @param project name, start- and enddates
 	 * 
 	 */
-	public void createProject(String projectName, String startDate, String endDate) {
+	public void createProject(Project project) {
 		if (adminLoggedIn()) {
-			Project project = new Project(projectName, startDate, endDate);
-				currentProjects.add(project);
-			
+				currentProjects.add(project);	
 		}
 		
 	}
