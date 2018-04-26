@@ -4,12 +4,12 @@ Feature: Remove employee
 	
 Scenario: Remove an employee
 	Given that the admin is logged in 
-	And there is a employee with ID "Anje0001"
+	And there is a employee with ID "Anje"
 	When the administrator removes the employee 
 	Then the employee is removed from the list of employees
 #	
 Scenario: Remove an employee when not logged in as administrator
-	Given that there is a employee with ID "Anje0001"
+	Given that there is a employee with ID "Anje"
 	And that the admin is not logged in 
 	When the administrator tries to remove the employee 
 	Then the employee is not removed from the list of employees
