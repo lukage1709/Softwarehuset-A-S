@@ -3,7 +3,7 @@
 #    Actors: Employee
 ##keep
 #Scenario: Employee registers work hours 
-#    Given the employee "Abcd1234" is logged into the system 
+#    Given the employee "Anje" is logged into the system 
 #    And a project with id "030901" exists 
 #    And the activity "Activity 1" is assigned to project with ID "030901"
 #    And the employee is assigned to the activity "Activity 1"

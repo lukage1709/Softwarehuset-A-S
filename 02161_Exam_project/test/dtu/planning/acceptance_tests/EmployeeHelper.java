@@ -13,7 +13,7 @@ public class EmployeeHelper {
 	}
 	
 	private Employee exampleEmployee() {
-		Employee employee = new Employee("Anje0001", "Anders Jensen");
+		Employee employee = new Employee("Anje", "Anders Jensen");
 		return employee;
 	}
 }
