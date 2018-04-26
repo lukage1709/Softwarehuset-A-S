@@ -42,30 +42,43 @@ public class AdminSteps {
 
 	/* Linnea */
 	/****************************************************************************************/
-
-
-	@When("^when the administrator creates a project with name \"([^\"]*)\", startdate \"([^\"]*)\" og enddate \"([^\"]*)\"$")
-	public void whenTheAdministratorCreatesAProjectWithNameStartdateOgEnddate(String projectName, String startDate, String endDate) throws Exception {
-		project = new Project(projectName,startDate, endDate);
-		assertThat(project.getName(),is(equalTo(projectName)));
-		assertThat(project.getStartDate(),is(equalTo(startDate)));
-		assertThat(project.getEndDate(),is(equalTo(endDate)));
-		
-		planningApp.createProject(projectName, startDate, endDate);
-	}
 	
-	@Then("^there is a new project with name \"([^\"]*)\", startdate \"([^\"]*)\" og enddate \"([^\"]*)\"$")
-	public void thereIsANewProjectWithNameStartdateOgEnddate(String arg1, String arg2, String arg3) throws Exception {
+	@When("^when the administrator creates a project with name \"([^\"]*)\", start year \"([^\"]*)\", start month \"([^\"]*)\" and start day \"([^\"]*)\"$")
+	public void whenTheAdministratorCreatesAProjectWithNameStartYearStartMonthAndStartDay(String name, int startYear, int startMonth, int startDay) throws Exception {
+		project = new Project(name,startYear, startMonth, startDay);
+		assertThat(project.getName(),is(equalTo(name)));
+		assertThat(project.getStartYear(),is(equalTo(startYear)));
+		assertThat(project.getStartMonth(),is(equalTo(startMonth)));
+		assertThat(project.getStartDay(),is(equalTo(startDay)));
+		
+		planningApp.createProject(project);
+	}
+
+	@Then("^the project exists in the planning system$")
+	public void theProjectExistsInThePlanningSystem() throws Exception {
 	    List<Project> projects = planningApp.getProjects();
-	    assertThat(projects.size(), is(1));
+	    assertThat(projects.size(),is(1));
 	    Project p = projects.get(0);
 	    assertThat(p.getName(), is(project.getName()));
-	    assertThat(p.getStartDate(), is(project.getStartDate()));
-	    assertThat(p.getEndDate(), is(project.getEndDate()));
-	    
+	    assertThat(p.getStartYear(), is(project.getStartYear()));
+	    assertThat(p.getStartMonth(), is(project.getStartMonth()));
+	    assertThat(p.getStartDay(), is(project.getStartDay()));
+	}
+
+	@Given("^there is project with name \"([^\"]*)\", start year \"([^\"]*)\", start month \"([^\"]*)\" and start day \"([^\"]*)\"$")
+	public void thereIsProjectWithNameStartYearStartMonthAndStartDay(String name, int startYear, int startMonth, int startDay) throws Exception {
+		project = new Project(name,startYear, startMonth, startDay);
+		
+		planningApp.adminLogin("admin1234");
+		planningApp.createProject(project);
+		planningApp.adminLogOut();
 	}
 	
-	
+	@When("^when the administrator creates a new project with name \"([^\"]*)\", start year \"([^\"]*)\", start month \"([^\"]*)\" and start day \"([^\"]*)\"$")
+	public void whenTheAdministratorCreatesANewProjectWithNameStartYearStartMonthAndStartDay(String arg1, String arg2, String arg3, String arg4) throws Exception {
+		
+	}
+
 	/****************************************************************************************/
 
 	
@@ -214,7 +227,7 @@ public class AdminSteps {
 		//Admin assigns employee as teamleader of a project 
 		/****************************************************************************************/
 
-	@Given("^a project with id \"([^\"]*)\" exists$")
+/*	@Given("^a project with id \"([^\"]*)\" exists$")
 	public void aProjectWithIdExists(String projectID) throws Exception {
 		// create dummy project
 		
@@ -224,7 +237,7 @@ public class AdminSteps {
 		assertThat(project2,is(notNullValue()));
 	    
 	}
-
+*/
 	@Given("^there is an employee with id \"([^\"]*)\"$")
 	public void thereIsAnEmployeeWithId(String employeeID) throws Exception {
 		employee2 = new Employee(employeeID); // du kommer til at have et problem her. skal ogs� bruge name for employee
