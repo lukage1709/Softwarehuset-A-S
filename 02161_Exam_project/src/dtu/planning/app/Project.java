@@ -77,7 +77,6 @@ public class Project {
 	 */
 	private String calculateId() {
 		String idNumber = String.format("%06d", idCounter); 
-		System.out.println(idNumber);
 		idCounter++;
 		
 		return idNumber;
