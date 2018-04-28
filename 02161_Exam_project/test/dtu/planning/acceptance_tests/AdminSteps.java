@@ -61,9 +61,9 @@ public class AdminSteps {
 			planningApp.adminLogin("admin1234");
 			planningApp.createProject(newProject);
 			planningApp.adminLogOut();
+			
 		} catch (OperationNotAllowedException e) {
 			errorMessage.setErrorMessage(e.getMessage());
-			System.out.println(e.getMessage());
 		}
 	}
 	
