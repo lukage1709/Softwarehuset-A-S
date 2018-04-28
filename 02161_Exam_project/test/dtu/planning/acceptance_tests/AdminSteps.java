@@ -17,13 +17,15 @@ import static org.junit.Assert.assertTrue;
 
 
 import dtu.planning.app.Employee;
+import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 
 
 public class AdminSteps {
 	private PlanningApp planningApp;
-	private Project project; 
+	private Project newProject; 
+	private Project existingProject;
 	private Employee employee;
 	private ErrorMessageHolder errorMessage;
 	public EmployeeHelper helper;
@@ -42,41 +44,52 @@ public class AdminSteps {
 
 	/* Linnea */
 	/****************************************************************************************/
-	
-	@When("^when the administrator creates a project with name \"([^\"]*)\", start year \"([^\"]*)\", start month \"([^\"]*)\" and start day \"([^\"]*)\"$")
-	public void whenTheAdministratorCreatesAProjectWithNameStartYearStartMonthAndStartDay(String name, int startYear, int startMonth, int startDay) throws Exception {
-		project = new Project(name,startYear, startMonth, startDay);
-		assertThat(project.getName(),is(equalTo(name)));
-		assertThat(project.getStartYear(),is(equalTo(startYear)));
-		assertThat(project.getStartMonth(),is(equalTo(startMonth)));
-		assertThat(project.getStartDay(),is(equalTo(startDay)));
+
+	@Given("^the firm is going to create project with name \"([^\"]*)\", start year \"([^\"]*)\", start month \"([^\"]*)\" and start day \"([^\"]*)\"$")
+	public void theFirmIsGoingToCreateProjectWithNameStartYearStartMonthAndStartDay(String name, int startYear, int startMonth, int startDay) throws Exception {
+		newProject = new Project(name,startYear, startMonth, startDay);
 		
-		planningApp.createProject(project);
+		assertThat(newProject.getName(),is(equalTo(name)));
+		assertThat(newProject.getStartYear(),is(equalTo(startYear)));
+		assertThat(newProject.getStartMonth(),is(equalTo(startMonth)));
+		assertThat(newProject.getStartDay(),is(equalTo(startDay)));
 	}
 
+	@When("^when the administrator creates the project(?: with a name already in use|)$")
+	public void whenTheAdministratorCreatesTheProject() throws Exception {
+		try {
+			planningApp.adminLogin("admin1234");
+			planningApp.createProject(newProject);
+			planningApp.adminLogOut();
+		} catch (OperationNotAllowedException e) {
+			errorMessage.setErrorMessage(e.getMessage());
+			System.out.println(e.getMessage());
+		}
+	}
+	
 	@Then("^the project exists in the planning system$")
 	public void theProjectExistsInThePlanningSystem() throws Exception {
 	    List<Project> projects = planningApp.getProjects();
 	    assertThat(projects.size(),is(1));
 	    Project p = projects.get(0);
-	    assertThat(p.getName(), is(project.getName()));
-	    assertThat(p.getStartYear(), is(project.getStartYear()));
-	    assertThat(p.getStartMonth(), is(project.getStartMonth()));
-	    assertThat(p.getStartDay(), is(project.getStartDay()));
+	    assertThat(p.getName(), is(newProject.getName()));
+	    assertThat(p.getStartYear(), is(newProject.getStartYear()));
+	    assertThat(p.getStartMonth(), is(newProject.getStartMonth()));
+	    assertThat(p.getStartDay(), is(newProject.getStartDay()));
 	}
 
 	@Given("^there is project with name \"([^\"]*)\", start year \"([^\"]*)\", start month \"([^\"]*)\" and start day \"([^\"]*)\"$")
 	public void thereIsProjectWithNameStartYearStartMonthAndStartDay(String name, int startYear, int startMonth, int startDay) throws Exception {
-		project = new Project(name,startYear, startMonth, startDay);
+		existingProject = new Project(name,startYear, startMonth, startDay);
 		
 		planningApp.adminLogin("admin1234");
-		planningApp.createProject(project);
+		planningApp.createProject(existingProject);
 		planningApp.adminLogOut();
 	}
 	
-	@When("^when the administrator creates a new project with name \"([^\"]*)\", start year \"([^\"]*)\", start month \"([^\"]*)\" and start day \"([^\"]*)\"$")
-	public void whenTheAdministratorCreatesANewProjectWithNameStartYearStartMonthAndStartDay(String arg1, String arg2, String arg3, String arg4) throws Exception {
-		
+	@Then("^I get the error message \"([^\"]*)\"$")
+	public void iGetTheErrorMessage(String errorMessage) throws Exception {
+			assertEquals(errorMessage, this.errorMessage.getErrorMessage());
 	}
 
 	/****************************************************************************************/
