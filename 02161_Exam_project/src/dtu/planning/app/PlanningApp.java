@@ -37,9 +37,8 @@ public class PlanningApp {
 	 */
 	public void createProject(Project project) throws OperationNotAllowedException {
 		checkAdministratorLoggedIn();
-		System.out.println(currentProjects.size());
+
 		for (Project existingProject: currentProjects) {
-			System.out.println(existingProject.getName());
 			if (existingProject.getName().equals(project.getName())) {
 				throw new OperationNotAllowedException("Name for project is already used");
 			}
