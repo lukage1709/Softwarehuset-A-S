@@ -1,6 +1,11 @@
 package dtu.planning.app;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class PlanningApp {
@@ -100,6 +105,15 @@ public class PlanningApp {
 
 		}
 
+	}
+	
+	public Calendar yearWeekParser(String str) throws ParseException {
+		DateFormat format = new SimpleDateFormat("yyyy-ww");
+		Date date = format.parse(str);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		
+		return calendar;
 	}
 	
 }
