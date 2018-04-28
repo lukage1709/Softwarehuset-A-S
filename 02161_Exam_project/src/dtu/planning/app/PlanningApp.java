@@ -37,14 +37,14 @@ public class PlanningApp {
 	 */
 	public void createProject(Project project) throws OperationNotAllowedException {
 		checkAdministratorLoggedIn();
-
-		for (Project existingProject: currentProjects) {
-			if (existingProject.getName().equals(project.getName())) {
-				throw new OperationNotAllowedException("Name for project is already used");
-			}
-		}
-	currentProjects.add(project);
+		System.out.println(currentProjects.size());
 		
+		if (currentProjects.size()!= 0) {
+			checkNameIsAvailable(project);
+		}
+		
+		currentProjects.add(project);
+		System.out.println(currentProjects.size());
 	}
 	
 	private void checkAdministratorLoggedIn() throws OperationNotAllowedException {
@@ -53,6 +53,23 @@ public class PlanningApp {
 		} 
 	}
 	
+	private void checkNameIsAvailable(Project project) throws OperationNotAllowedException {
+		/* for (int i = 0; i < currentProjects.size(); i++) {
+			if (currentProjects.get(i).getName().equals(project.getName())) {
+				throw new OperationNotAllowedException("Name for project is already used");
+			}
+		} */
+		
+		List<String> projectNames = new ArrayList<>();
+		for (Project p : currentProjects) {
+			projectNames.add(p.getName());
+		}
+		
+		if (projectNames.contains(project.getName())) {
+			throw new OperationNotAllowedException("Name for project is already used");
+		}
+	} 
+
 	/**
 	 * @return the list of project currently registered in the system.
 	 */
