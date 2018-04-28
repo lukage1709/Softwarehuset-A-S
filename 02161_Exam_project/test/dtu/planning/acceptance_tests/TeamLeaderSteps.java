@@ -23,7 +23,7 @@ import dtu.planning.app.Project;
 public class TeamLeaderSteps {
 	private PlanningApp planningApp;
 	private Project project; 
-	private Employee employee;
+	private Employee employee, employee2;
 	private ErrorMessageHolder errorMessage;
 	public EmployeeHelper helper;
 	private List<Employee> employeeID;
@@ -45,7 +45,7 @@ public class TeamLeaderSteps {
 	public void anEmployeeIsLoggedIn() throws Exception {
 	    // create dummy employee
 		planningApp.adminLogin("admin1234");
-		Employee employee = new Employee("Anje0001", "Anders Jensen");
+		Employee employee = new Employee("Anje", "Anders Jensen");
 		planningApp.registerEmployee(employee);
 		assertTrue(planningApp.getEmployees().contains(employee));
 		planningApp.adminLogOut();
@@ -59,7 +59,8 @@ public class TeamLeaderSteps {
 	public void thereIsAProjectWithID(String projectID) throws Exception {
 		// create dummy project
 		planningApp.adminLogin("admin1234");
-		planningApp.createProject(projectID, "2018", "2018");
+		project = new Project(projectID, 2018, 5, 1);
+		planningApp.createProject(project);
 		project = planningApp.searchProjectByID(projectID);
 		assertThat(project,is(notNullValue()));
 		
@@ -78,11 +79,11 @@ public class TeamLeaderSteps {
 	
 	@When("^teamleader creates a new activity named \"([^\"]*)\", estimatedhours (\\d+), startweek \"([^\"]*)\" and endweek \"([^\"]*)\"$")
 	public void teamleaderCreatesANewActivityNamedEstimatedhoursStartweekAndEndweek(String name, int estHours, String startWeek, String endWeek) throws Exception {
-	    activity = new Activity(name, estHours, startWeek, endWeek);
+	    activity = new Activity(project.getActivityIdCounter(), name, estHours, planningApp.yearWeekParser(startWeek), planningApp.yearWeekParser(endWeek));
 	    assertThat(activity.getActivityName(),is(equalTo(name)));
 		assertThat(activity.getEstimatedHours(),is(equalTo(estHours)));
-		assertThat(activity.getStartWeek(),is(equalTo(startWeek)));
-		assertThat(activity.getEndWeek(),is(equalTo(endWeek)));
+		assertThat(activity.getStartWeek(),is(equalTo(planningApp.yearWeekParser(startWeek))));
+		assertThat(activity.getEndWeek(),is(equalTo(planningApp.yearWeekParser(endWeek))));
 	}
 
 	@When("^and adds the activity to the project$")
@@ -92,12 +93,13 @@ public class TeamLeaderSteps {
 
 	@Then("^the activity is in the activities list of that project$")
 	public void theActivityIsInTheActivitiesListOfThatProject() throws Exception {
+		System.out.println(activity.getActivityId());
 		assertTrue(project.getActivities().contains(activity));
 	}
 	
 	@Given("^there is an activity with name \"([^\"]*)\" in the project$")
 	public void thereIsAnActivityWithNameInTheProject(String activityName) throws Exception {
-		activity = new Activity(activityName, 0, "", "");
+		activity = new Activity(project.getActivityIdCounter(), activityName, 0, planningApp.yearWeekParser("2018-1"), planningApp.yearWeekParser("2018-3"));
 		project.addActivity(activity);
 		
 	    assertThat(project.getActivityByName(activityName), is(notNullValue()));
@@ -110,6 +112,32 @@ public class TeamLeaderSteps {
 	    } catch (Exception e) {
 			errorMessage.setErrorMessage(e.getMessage());
 		}
+	}
+	
+	@When("^teamleader worngly adds activity named \"([^\"]*)\", estimatedhours (\\d+), startweek \"([^\"]*)\" and endweek \"([^\"]*)\" to the project$")
+	public void teamleaderWornglyAddsActivityNamedEstimatedhoursStartweekAndEndweekToTheProject(String name, int estHours, String startWeek, String endWeek) throws Exception {
+		activity = new Activity(project.getActivityIdCounter(), name, estHours, planningApp.yearWeekParser(startWeek), planningApp.yearWeekParser(endWeek));
+	    assertThat(activity.getActivityName(),is(equalTo(name)));
+		assertThat(activity.getEstimatedHours(),is(equalTo(estHours)));
+		assertThat(activity.getStartWeek(),is(equalTo(planningApp.yearWeekParser(startWeek))));
+		assertThat(activity.getEndWeek(),is(equalTo(planningApp.yearWeekParser(endWeek))));
+		
+		try {
+	    	project.addActivity(activity);
+	    } catch (Exception e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@Given("^the employee is not team leader on that project$")
+	public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
+		planningApp.adminLogin("admin1234");
+		Employee employee2 = new Employee("Heha", "Henning Hansen");
+		planningApp.registerEmployee(employee2);
+		project.assignTeamLeader(employee2);
+		planningApp.adminLogOut();
+		
+		assertFalse(project.getTeamLeader().equals(mockEmployeeLoggedIn));
 	}
 	
 	
@@ -125,7 +153,7 @@ public class TeamLeaderSteps {
 	// 1
 	@Given("^there is an activity with name \"([^\"]*)\" in the activities list of that project$")
 	public void thereIsAnActivityWithNameInTheActivitiesListOfThatProject(String activityName) throws Exception {
-		activity = new Activity(activityName, 0, "", "");
+		activity = new Activity(project.getActivityIdCounter(), activityName, 0, planningApp.yearWeekParser("2018-1"), planningApp.yearWeekParser("2018-3"));
 		project.addActivity(activity);
 		assertThat(project.getActivityByName(activityName), is(notNullValue()));
 	}
