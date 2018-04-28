@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import dtu.planning.app.PlanningApp;
+
 public class Project {
 	private String name;
 	private Calendar startDate;
@@ -13,6 +15,7 @@ public class Project {
 	private Employee teamLeader;
 	private List<Activity> activities = new ArrayList<>();
 	private int idCounter = 1; 
+	private int activityIdCounter = 1;
 	
 	
 	public Project(String name, int startYear, int startMonth, int startDay) {
@@ -98,12 +101,21 @@ public class Project {
 	}
 
 	public void addActivity(Activity activity) throws Exception {
-		if (getActivityByName(activity.getActivityName()) != null) {
+		if (activityNameAlreadyExistsInProject(activity)) {
 			throw new Exception("Activity name already used in this project");
 			
 		}
+		if (activity.endWeekIsBeforeStartWeek()) {
+			throw new Exception("The activity cannot end before it starts");
+		}
 		activities.add(activity);
 		
+	}
+
+
+
+	public boolean activityNameAlreadyExistsInProject(Activity activity) {
+		return getActivityByName(activity.getActivityName()) != null;
 	}
 
 	public List<Activity> getActivities() {
@@ -119,7 +131,12 @@ public class Project {
 		return null;
 	}
 
-
+	public String getActivityIdCounter() {
+		String idNumber = String.format("%04d", activityIdCounter); 
+		idCounter++;
+		
+		return idNumber;
+	}
 
 	
 }

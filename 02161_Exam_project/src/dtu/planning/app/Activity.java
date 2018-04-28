@@ -1,17 +1,21 @@
 package dtu.planning.app;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 public class Activity {
 
+	private String activityId;
 	private String activityName;
 	private int estimatedHours;
-	private String startWeek;
-	private String endWeek;
+	private Calendar startWeek;
+	private Calendar endWeek;
 	private List<Employee> assignedEmployees = new ArrayList<>();
 
-	public Activity(String name, int estHours, String startWeek, String endWeek) {
+	public Activity(String activityId, String name, int estHours, Calendar startWeek, Calendar endWeek) {
+		this.activityId = activityId;
 		this.activityName = name;
 		this.estimatedHours = estHours;
 		this.startWeek = startWeek;
@@ -27,11 +31,11 @@ public class Activity {
 		return estimatedHours;
 	}
 
-	public String getStartWeek() {
+	public Calendar getStartWeek() {
 		return startWeek;
 	}
 
-	public String getEndWeek() {
+	public Calendar getEndWeek() {
 		return endWeek;
 	}
 
@@ -40,12 +44,20 @@ public class Activity {
 	}
 
 	public List<Employee> getAssignedEmployees() {
-		return assignedEmployees;
+		return Collections.unmodifiableList(assignedEmployees);
 	}
 
 	public void unassignEmployee(Employee employee) {
 		assignedEmployees.remove(employee);
 		
+	}
+
+	public String getActivityId() {
+		return activityId;
+	}
+	
+	public boolean endWeekIsBeforeStartWeek() {
+		return getEndWeek().before(getStartWeek());
 	}
 	
 }
