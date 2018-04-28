@@ -45,6 +45,17 @@ public class AdminSteps {
 	/* Linnea */
 	/****************************************************************************************/
 
+	@Given("^that the administrator is logged in$")
+	public void thatTheAdministratorIsLoggedIn() throws Exception {
+		planningApp.adminLogin("admin1234");
+		assertTrue(planningApp.adminLoggedIn());
+	}
+	
+	@Given("^that the administrator is not logged in$")
+	public void thatTheAdministratorIsNotLoggedIn() throws Exception {
+		assertFalse(planningApp.adminLoggedIn());
+	}
+	
 	@Given("^the firm is going to create project with name \"([^\"]*)\", start year \"([^\"]*)\", start month \"([^\"]*)\" and start day \"([^\"]*)\"$")
 	public void theFirmIsGoingToCreateProjectWithNameStartYearStartMonthAndStartDay(String name, int startYear, int startMonth, int startDay) throws Exception {
 		newProject = new Project(name,startYear, startMonth, startDay);
@@ -56,13 +67,10 @@ public class AdminSteps {
 	}
 
 	@When("^when the administrator creates the project(?: with a name already in use|)$")
-	public void whenTheAdministratorCreatesTheProject() throws Exception {
+	public void whenTheAdministratorCreatesTheProject() throws OperationNotAllowedException {
 		try {
-			planningApp.adminLogin("admin1234");
 			planningApp.createProject(newProject);
-			planningApp.adminLogOut();
-			
-		} catch (OperationNotAllowedException e) {
+		} catch (Exception e) {
 			errorMessage.setErrorMessage(e.getMessage());
 		}
 	}
@@ -85,6 +93,18 @@ public class AdminSteps {
 		planningApp.adminLogin("admin1234");
 		planningApp.createProject(existingProject);
 		planningApp.adminLogOut();
+	}
+	
+	
+	@Given("^the firm is going to create project with the same name, start year \"([^\"]*)\", start month \"([^\"]*)\" and start day \"([^\"]*)\"$")
+	public void theFirmIsGoingToCreateProjectWithTheSameNameStartYearStartMonthAndStartDay(int startYear, int startMonth, int startDay) throws Exception {
+		newProject = new Project(existingProject.getName(),startYear, startMonth, startDay);
+		
+		assertThat(newProject.getName(),is(equalTo(existingProject.getName())));
+		assertThat(newProject.getStartYear(),is(equalTo(startYear)));
+		assertThat(newProject.getStartMonth(),is(equalTo(startMonth)));
+		assertThat(newProject.getStartDay(),is(equalTo(startDay)));	
+		
 	}
 	
 	@Then("^I get the error message \"([^\"]*)\"$")
