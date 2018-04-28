@@ -27,14 +27,26 @@ public class PlanningApp {
 	/**
 	 * Creates a project provided the administrator is logged in
 	 *  
-	 * @param project name, start- and enddates
+	 * @param project to be created
 	 * 
 	 */
-	public void createProject(Project project) {
-		if (adminLoggedIn()) {
-				currentProjects.add(project);	
+	public void createProject(Project project) throws OperationNotAllowedException {
+		checkAdministratorLoggedIn();
+		System.out.println(currentProjects.size());
+		for (Project existingProject: currentProjects) {
+			System.out.println(existingProject.getName());
+			if (existingProject.getName().equals(project.getName())) {
+				throw new OperationNotAllowedException("Name for project is already used");
+			}
 		}
+	currentProjects.add(project);
 		
+	}
+	
+	private void checkAdministratorLoggedIn() throws OperationNotAllowedException {
+		if (!adminLoggedIn()) {
+			throw new OperationNotAllowedException("Administrator login required");
+		} 
 	}
 	
 	/**
