@@ -37,14 +37,12 @@ public class PlanningApp {
 	 */
 	public void createProject(Project project) throws OperationNotAllowedException {
 		checkAdministratorLoggedIn();
-		System.out.println(currentProjects.size());
 		
 		if (currentProjects.size()!= 0) {
 			checkNameIsAvailable(project);
 		}
 		
 		currentProjects.add(project);
-		System.out.println(currentProjects.size());
 	}
 	
 	private void checkAdministratorLoggedIn() throws OperationNotAllowedException {
