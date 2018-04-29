@@ -13,6 +13,7 @@ public class PlanningApp {
 	private boolean adminLoggedIn = false;
 	private List<Project> currentProjects = new ArrayList<>();
 	private List<Employee> currentEmployees = new ArrayList<>();
+	private Employee currentUser = null;
 
 	public boolean adminLoggedIn() {
 		return adminLoggedIn;
@@ -140,6 +141,32 @@ public class PlanningApp {
 		calendar.setTime(date);
 		
 		return calendar;
+	}
+	
+	public Employee getcurrentUser() {
+	    if (currentUser == null) {
+	        return null;
+	    }
+	    return currentUser;
+	}
+
+
+	public void userLogin(String employeeID) {
+	    if ( searchEmployeeID(employeeID)!=null) {
+	        setCurrentUser( searchEmployeeID(employeeID));
+	    }
+	    
+	}
+
+	public void logOut() {
+	    currentUser = null;		
+	}
+
+
+
+	public void setCurrentUser(Employee employee) {
+	    currentUser = employee;
+	 
 	}
 	
 }
