@@ -45,17 +45,6 @@ public class AdminSteps {
 	/* Linnea */
 	/****************************************************************************************/
 
-	@Given("^that the administrator is logged in$")
-	public void thatTheAdministratorIsLoggedIn() throws Exception {
-		planningApp.adminLogin("admin1234");
-		assertTrue(planningApp.adminLoggedIn());
-	}
-	
-	@Given("^that the administrator is not logged in$")
-	public void thatTheAdministratorIsNotLoggedIn() throws Exception {
-		assertFalse(planningApp.adminLoggedIn());
-	}
-	
 	@Given("^the firm is going to create project with name \"([^\"]*)\", start year \"([^\"]*)\", start month \"([^\"]*)\" and start day \"([^\"]*)\"$")
 	public void theFirmIsGoingToCreateProjectWithNameStartYearStartMonthAndStartDay(String name, int startYear, int startMonth, int startDay) throws Exception {
 		newProject = new Project(name,startYear, startMonth, startDay);
