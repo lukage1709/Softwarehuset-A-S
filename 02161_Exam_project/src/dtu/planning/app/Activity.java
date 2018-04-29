@@ -13,6 +13,7 @@ public class Activity {
 	private Calendar startWeek;
 	private Calendar endWeek;
 	private List<Employee> assignedEmployees = new ArrayList<>();
+	private int workedHours;
 
 	public Activity(String activityId, String name, int estHours, Calendar startWeek, Calendar endWeek) {
 		this.activityId = activityId;
@@ -20,7 +21,7 @@ public class Activity {
 		this.estimatedHours = estHours;
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
-		
+		this.workedHours = 0;
 	}
 
 	public String getActivityName() {
@@ -58,6 +59,15 @@ public class Activity {
 	
 	public boolean endWeekIsBeforeStartWeek() {
 		return getEndWeek().before(getStartWeek());
+	}
+
+	public int getWorkedHours() {
+		return workedHours;
+	}
+
+	public void registerWorkedHours(int hours) {
+		workedHours += hours;
+		
 	}
 	
 }
