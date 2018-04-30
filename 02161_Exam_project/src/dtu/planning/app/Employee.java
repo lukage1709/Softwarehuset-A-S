@@ -39,8 +39,20 @@ public class Employee {
 		return Collections.unmodifiableList(assignedActivities);
 	}
 	
-	public void addToAssignedActivities(Activity activity) {
+	public void addToAssignedActivities(Activity activity) throws OperationNotAllowedException {
+		if (assignedActivities.contains(activity)) {
+			throw new OperationNotAllowedException("Cannot assign employee twice");
+		}
 		assignedActivities.add(activity);
+	}
+
+	public void removeFromAssignedActivities(Activity activity) throws OperationNotAllowedException {
+		if (!assignedActivities.contains(activity)) {
+			throw new OperationNotAllowedException("Employee not assigned to this activity!");
+		}
+		
+		assignedActivities.remove(activity);
+		
 	}
 
 

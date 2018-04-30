@@ -40,16 +40,20 @@ public class Activity {
 		return endWeek;
 	}
 
-	public void assignEmployee(Employee employee) {
+	public void assignEmployee(Employee employee) throws OperationNotAllowedException {
+		employee.addToAssignedActivities(this);
 		assignedEmployees.add(employee);
+		
 	}
 
 	public List<Employee> getAssignedEmployees() {
 		return Collections.unmodifiableList(assignedEmployees);
 	}
 
-	public void unassignEmployee(Employee employee) {
+	public void unassignEmployee(Employee employee) throws OperationNotAllowedException {
+		employee.removeFromAssignedActivities(this);
 		assignedEmployees.remove(employee);
+		
 		
 	}
 

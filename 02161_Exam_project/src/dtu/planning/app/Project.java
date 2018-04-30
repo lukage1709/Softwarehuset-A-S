@@ -16,8 +16,6 @@ public class Project {
 	private List<Activity> activities = new ArrayList<>();
 	private int idCounter = 1; 
 	private int activityIdCounter = 1;
-	private List<Project> currentProjects_local = new ArrayList<>();
-	private List<Employee> currentEmployees_local = new ArrayList<>();
 	
 	
 	public Project(String name, Calendar startDate ) {
@@ -87,10 +85,6 @@ public class Project {
 		return name.contains(projectID);
 	}
 	
-	public void unassignTeamLeader(Employee e) {
-		this.teamLeader = null;
-	}
-
 	public void addActivity(Activity activity) throws Exception {
 		if (activityNameAlreadyExistsInProject(activity)) {
 			throw new Exception("Activity name already used in this project");
