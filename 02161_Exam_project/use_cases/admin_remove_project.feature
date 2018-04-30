@@ -1,21 +1,35 @@
-#Feature: Administrator removes project
-#	Description: Admin deletes project
-#	Actor: Administrator
-#
-#
-#Scenario: Administrator removes project succesfully
-#Given that the administrator is logged in
-#And a project with id "030901" exists
-#When the administrator removes the project
-#Then all it's activities are deleted 
-#And the project no longer exists
-#
-#
-#Scenario: Removing a project when not the administrator
-#Given that the administrator is not logged in
-#And a project with id "030901" exists
-#When the user removes a project with id "030901"
-#Then I get the error message "Administrator login required to delete project"
-#
-#	 
-##VENT
+Feature: Administrator removes project
+	Description: Admin deletes project
+	Actor: Administrator
+
+
+Scenario: Administrator removes project succesfully
+Given that a project with id "2018-000001" exists
+And that the admin is logged in
+When the administrator removes the project
+Then there are no longer any employees assigned to the activities
+And the project is no longer registered under current projects 
+
+
+Scenario: Administrator removes project with activities succesfully
+Given that a project with id "2018-000001" exists
+And the project has at least one activity assigned to it
+And the activity has at least one employee assigned to it
+And that the admin is logged in
+When the administrator removes the project
+Then there are no longer any employees assigned to the activities
+And the project is no longer registered under current projects
+
+
+Scenario: Removing a project when not the administrator
+Given that a project with id "2018-000001" exists
+And the admin is not logged in
+When the administrator removes the project
+Then I get the error message "Administrator login required"
+
+Scenario: Removing project again
+Given that a project with id "2018-000001" no longer exists
+And that the admin is logged in
+When the administrator removes the project again
+Then I get the error message "Project does not exist"
+

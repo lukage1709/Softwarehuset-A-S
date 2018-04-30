@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib/cucumber-core-2.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/cucumber-html-0.2.6.jar"/>
-	<classpathentry kind="lib" path="lib/cucumber-java-2.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/cucumber-junit-2.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/cucumber-jvm-deps-1.0.6.jar"/>
-	<classpathentry kind="lib" path="lib/cucumber-picocontainer-2.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/gherkin-5.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/maven-surefire-plugin-2.12.4.jar"/>
-	<classpathentry kind="lib" path="lib/picocontainer-2.15.jar"/>
-	<classpathentry kind="lib" path="lib/tag-expressions-1.1.1.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Linnea/Desktop/library02_solution/lib/cucumber-junit-2.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Linnea/Desktop/Studie/2.semester/02161_Software_Engineering01/Softwarehuset-A-S/02161_Exam_project/lib/cucumber-core-2.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Linnea/Desktop/Studie/2.semester/02161_Software_Engineering01/Softwarehuset-A-S/02161_Exam_project/lib/cucumber-html-0.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Linnea/Desktop/Studie/2.semester/02161_Software_Engineering01/Softwarehuset-A-S/02161_Exam_project/lib/cucumber-java-2.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Linnea/Desktop/Studie/2.semester/02161_Software_Engineering01/Softwarehuset-A-S/02161_Exam_project/lib/cucumber-junit-2.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Linnea/Desktop/Studie/2.semester/02161_Software_Engineering01/Softwarehuset-A-S/02161_Exam_project/lib/cucumber-jvm-deps-1.0.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Linnea/Desktop/Studie/2.semester/02161_Software_Engineering01/Softwarehuset-A-S/02161_Exam_project/lib/cucumber-picocontainer-2.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Linnea/Desktop/Studie/2.semester/02161_Software_Engineering01/Softwarehuset-A-S/02161_Exam_project/lib/gherkin-5.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Linnea/Desktop/Studie/2.semester/02161_Software_Engineering01/Softwarehuset-A-S/02161_Exam_project/lib/maven-surefire-plugin-2.12.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Linnea/Desktop/Studie/2.semester/02161_Software_Engineering01/Softwarehuset-A-S/02161_Exam_project/lib/picocontainer-2.15.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Linnea/Desktop/Studie/2.semester/02161_Software_Engineering01/Softwarehuset-A-S/02161_Exam_project/lib/tag-expressions-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

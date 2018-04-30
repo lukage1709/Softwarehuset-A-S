@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,14 @@ public class PlanningApp {
 	private List<Employee> currentEmployees = new ArrayList<>();
 	private Employee currentUser = null;
 
+	/**
+	 * @return the list of project currently registered in the system.
+	 */
+	public List<Project> getProjects() {
+		return Collections.unmodifiableList(currentProjects);
+	}
+	
+	
 	public boolean adminLoggedIn() {
 		return adminLoggedIn;
 	}
@@ -29,6 +38,10 @@ public class PlanningApp {
 		
 	}
 
+	
+	
+
+	
 	
 	/**
 	 * Creates a project provided the administrator is logged in
@@ -67,13 +80,33 @@ public class PlanningApp {
 		if (projectNames.contains(project.getName())) {
 			throw new OperationNotAllowedException("Name for project is already used");
 		}
+		
 	} 
-
+	
 	/**
-	 * @return the list of project currently registered in the system.
+	 * Removes project
 	 */
-	public List<Project> getProjects() {
-		return currentProjects;
+	public void removeProject(Project existingProject) throws OperationNotAllowedException {
+		checkAdministratorLoggedIn();
+		checkProjectExists(existingProject);
+		removeAllEmployeesFromProject(existingProject);
+		
+		currentProjects.remove(existingProject);
+		
+	}
+ 
+	private void removeAllEmployeesFromProject(Project project) throws OperationNotAllowedException {
+		if (project.getActivities() != null) {
+			for (Activity a: project.getActivities()) {
+				a.removeAllEmployees();
+			}
+		}
+	}
+	
+	private void checkProjectExists(Project project) throws OperationNotAllowedException {
+		if (!currentProjects.contains(project)) {
+			throw new OperationNotAllowedException("Project does not exist");			
+		}
 	}
 
 	public void registerEmployee(Employee employee) throws Exception {

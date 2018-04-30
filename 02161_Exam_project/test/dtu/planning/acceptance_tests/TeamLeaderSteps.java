@@ -27,7 +27,7 @@ public class TeamLeaderSteps {
 	private ErrorMessageHolder errorMessage;
 	public EmployeeHelper helper;
 	private List<Employee> employeeID;
-	private Employee mockEmployeeLoggedIn;
+	private Employee employeeLoggedIn;
 	private Activity activity;
 
 	public TeamLeaderSteps(PlanningApp planningApp, ErrorMessageHolder errorMessage, EmployeeHelper helper) {
@@ -35,7 +35,7 @@ public class TeamLeaderSteps {
 		this.errorMessage = errorMessage;
 		this.helper = helper;
 		
-		this.mockEmployeeLoggedIn = null;
+		this.employeeLoggedIn = null;
 	}
 
 	/* Thomas */
@@ -44,14 +44,15 @@ public class TeamLeaderSteps {
 	@Given("^an employee is logged in$")
 	public void anEmployeeIsLoggedIn() throws Exception {
 	    // create dummy employee
-		planningApp.adminLogin("admin1234");
-		Employee employee = new Employee("Anje", "Anders Jensen");
-		planningApp.registerEmployee(employee);
-		assertTrue(planningApp.getEmployees().contains(employee));
-		planningApp.adminLogOut();
-		
-		mockEmployeeLoggedIn = employee;
-		assertThat(mockEmployeeLoggedIn, is(equalTo(employee)));
+		employee = helper.getEmployee();
+	    planningApp.adminLogin("admin1234");
+	    planningApp.registerEmployee(employee);
+	    assertTrue(planningApp.getEmployees().contains(employee));
+	    planningApp.adminLogOut();
+	    
+	    planningApp.userLogin(employee.getID());
+	    employeeLoggedIn = planningApp.getcurrentUser();
+	    assertTrue(employeeLoggedIn.equals(employee));
 		
 	}
 
@@ -67,15 +68,16 @@ public class TeamLeaderSteps {
 		planningApp.adminLogOut();
 	}
 
-//	@Given("^the employee is team leader on that project$")
-//	public void theEmployeeIsTeamLeaderOnThatProject() throws Exception {
-//		// and assign team leader
-//		planningApp.adminLogin("admin1234");
-//		project.assignTeamLeader(mockEmployeeLoggedIn);
-//		planningApp.adminLogOut();
-//		
-//		assertTrue(project.getTeamLeader().equals(mockEmployeeLoggedIn));
-//	}
+  	@Given("^the employee is team leader on that project$")
+	public void theEmployeeIsTeamLeaderOnThatProject() throws Exception {
+		// and assign team leader
+		planningApp.adminLogin("admin1234");
+		project.assignTeamleader(employeeLoggedIn);
+		planningApp.adminLogOut();
+		
+		assertTrue(project.getTeamLeader().equals(employeeLoggedIn));
+	}
+
 	
 	@When("^teamleader creates a new activity named \"([^\"]*)\", estimatedhours (\\d+), startweek \"([^\"]*)\" and endweek \"([^\"]*)\"$")
 	public void teamleaderCreatesANewActivityNamedEstimatedhoursStartweekAndEndweek(String name, int estHours, String startWeek, String endWeek) throws Exception {
@@ -93,7 +95,6 @@ public class TeamLeaderSteps {
 
 	@Then("^the activity is in the activities list of that project$")
 	public void theActivityIsInTheActivitiesListOfThatProject() throws Exception {
-		System.out.println(activity.getActivityId());
 		assertTrue(project.getActivities().contains(activity));
 	}
 	
@@ -128,18 +129,19 @@ public class TeamLeaderSteps {
 			errorMessage.setErrorMessage(e.getMessage());
 		}
 	}
-//	
-//	@Given("^the employee is not team leader on that project$")
-//	public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
-//		planningApp.adminLogin("admin1234");
-//		Employee employee2 = new Employee("Heha", "Henning Hansen");
-//		planningApp.registerEmployee(employee2);
-//		project.assignTeamleader(employee2);
-//		planningApp.adminLogOut();
-//		
-//		assertFalse(project.getTeamLeader().equals(mockEmployeeLoggedIn));
-//	}
-//	
+  
+  	@Given("^the employee is not team leader on that project$")
+public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
+		planningApp.adminLogin("admin1234");
+		Employee employee2 = new Employee("Heha", "Henning Hansen");
+		planningApp.registerEmployee(employee2);
+		project.assignTeamleader(employee2);
+	planningApp.adminLogOut();
+		
+	assertFalse(project.getTeamLeader().equals(mockEmployeeLoggedIn));
+	}
+	
+
 	
 	/****************************************************************************************/
 	

@@ -39,7 +39,7 @@ public class Project {
 
 	/**
 	 * @return startDate
-	 * Til refactoring: Denne metode kan måske erstatte de tre næste
+	 * Til refactoring: Denne metode kan mÃ¥ske erstatte de tre nÃ¦ste
 	 */
 	public Calendar getStartDate() {
 		return startDate;
@@ -66,9 +66,16 @@ public class Project {
 		return startDate.get(Calendar.DAY_OF_MONTH);
 	}
 	
-	
+	/**
+	 * @return project number.
+	 */	
+	public String getProjectNumber() {
+		String id = projectNumber;
+		return id;
+	}
 	
 	/**
+	 * Calculates a project number
 	 * @return projectnumber
 	 */
 	private String generateProjectNumber(int startYear) {
@@ -79,7 +86,7 @@ public class Project {
 	
 	/**
 	 * @return a new sequence number with exactly 6 digits.
-	 * It is assummed that the number of projects will not be greater than 999999
+	 * It is assumed that the number of projects will not be greater than 999999
 	 */
 	private String calculateId() {
 		String idNumber = String.format("%06d", idCounter); 
@@ -139,31 +146,23 @@ public class Project {
 		return idNumber;
 	}
 
-
-
 	public void assignTeamleader(Employee employee) {
-		this.teamLeader = employee;
-		
-
-		
+		this.teamLeader = employee;	
 	}
 
-
-
-	public Employee getTeamleader() {
+  public Employee getTeamleader() {
 		return teamLeader;
 	}
-
-
-
-	public void unassignTeamleader() {
+  
+  public void unassignTeamleader() {
 		this.teamLeader = null;
 		
 	}
+  
+  /**
+	 * Removes all activities by making activities an empty list
+	 */
+	public void removeAllActivities() {
+		activities = new ArrayList<>();		
+	}
 	
-
-
-
-
-	
-}
