@@ -52,9 +52,7 @@ public class PlanningApp {
 	public void createProject(Project project) throws OperationNotAllowedException {
 		checkAdministratorLoggedIn();
 		
-		if (currentProjects.size()!= 0) {
-			checkNameIsAvailable(project);
-		}
+		checkNameIsAvailable(project);
 		
 		currentProjects.add(project);
 	}

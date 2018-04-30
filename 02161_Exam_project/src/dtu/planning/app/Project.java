@@ -18,15 +18,12 @@ public class Project {
 	private int activityIdCounter = 1;
 	
 	
-	public Project(String name, int startYear, int startMonth, int startDay) {
+	public Project(String name, Calendar startDate ) {
 		this.name = name;
-		this.startDate = new GregorianCalendar(startYear, startMonth, startDay);
-		this.projectNumber = generateProjectNumber(startYear);
-
+		this.startDate = startDate;
+		this.projectNumber = generateProjectNumber(getStartYear());
 	}
 	
-
-
 	/**
 	 * @return name of project.
 	 */
@@ -36,7 +33,6 @@ public class Project {
 
 	/**
 	 * @return startDate
-	 * Til refactoring: Denne metode kan måske erstatte de tre næste
 	 */
 	public Calendar getStartDate() {
 		return startDate;
@@ -49,19 +45,6 @@ public class Project {
 		return startDate.get(Calendar.YEAR);
 	}
 	
-	/**
-	 * @return start month of project.
-	 */
-	public int getStartMonth() {
-		return startDate.get(Calendar.MONTH);
-	}
-	
-	/**
-	 * @return name of project.
-	 */
-	public int getStartDay() {
-		return startDate.get(Calendar.DAY_OF_MONTH);
-	}
 	
 	/**
 	 * @return project number.
