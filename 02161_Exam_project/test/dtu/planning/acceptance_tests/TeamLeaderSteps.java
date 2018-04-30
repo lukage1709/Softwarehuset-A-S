@@ -67,15 +67,15 @@ public class TeamLeaderSteps {
 		planningApp.adminLogOut();
 	}
 
-	@Given("^the employee is team leader on that project$")
-	public void theEmployeeIsTeamLeaderOnThatProject() throws Exception {
-		// and assign team leader
-		planningApp.adminLogin("admin1234");
-		project.assignTeamLeader(mockEmployeeLoggedIn);
-		planningApp.adminLogOut();
-		
-		assertTrue(project.getTeamLeader().equals(mockEmployeeLoggedIn));
-	}
+//	@Given("^the employee is team leader on that project$")
+//	public void theEmployeeIsTeamLeaderOnThatProject() throws Exception {
+//		// and assign team leader
+//		planningApp.adminLogin("admin1234");
+//		project.assignTeamLeader(mockEmployeeLoggedIn);
+//		planningApp.adminLogOut();
+//		
+//		assertTrue(project.getTeamLeader().equals(mockEmployeeLoggedIn));
+//	}
 	
 	@When("^teamleader creates a new activity named \"([^\"]*)\", estimatedhours (\\d+), startweek \"([^\"]*)\" and endweek \"([^\"]*)\"$")
 	public void teamleaderCreatesANewActivityNamedEstimatedhoursStartweekAndEndweek(String name, int estHours, String startWeek, String endWeek) throws Exception {
@@ -128,18 +128,18 @@ public class TeamLeaderSteps {
 			errorMessage.setErrorMessage(e.getMessage());
 		}
 	}
-	
-	@Given("^the employee is not team leader on that project$")
-	public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
-		planningApp.adminLogin("admin1234");
-		Employee employee2 = new Employee("Heha", "Henning Hansen");
-		planningApp.registerEmployee(employee2);
-		project.assignTeamLeader(employee2);
-		planningApp.adminLogOut();
-		
-		assertFalse(project.getTeamLeader().equals(mockEmployeeLoggedIn));
-	}
-	
+//	
+//	@Given("^the employee is not team leader on that project$")
+//	public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
+//		planningApp.adminLogin("admin1234");
+//		Employee employee2 = new Employee("Heha", "Henning Hansen");
+//		planningApp.registerEmployee(employee2);
+//		project.assignTeamleader(employee2);
+//		planningApp.adminLogOut();
+//		
+//		assertFalse(project.getTeamLeader().equals(mockEmployeeLoggedIn));
+//	}
+//	
 	
 	/****************************************************************************************/
 	

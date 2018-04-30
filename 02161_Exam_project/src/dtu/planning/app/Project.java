@@ -16,12 +16,15 @@ public class Project {
 	private List<Activity> activities = new ArrayList<>();
 	private int idCounter = 1; 
 	private int activityIdCounter = 1;
+	private List<Project> currentProjects_local = new ArrayList<>();
+	private List<Employee> currentEmployees_local = new ArrayList<>();
 	
 	
 	public Project(String name, int startYear, int startMonth, int startDay) {
 		this.name = name;
 		this.startDate = new GregorianCalendar(startYear, startMonth, startDay);
 		this.projectNumber = generateProjectNumber(startYear);
+		this.teamLeader = null;
 
 	}
 	
@@ -85,10 +88,8 @@ public class Project {
 		return idNumber;
 	}
 
-	public void assignTeamLeader(Employee e ) {
-		this.teamLeader = e;
-		
-	}
+	
+	
 	public Employee getTeamLeader() {
 		return this.teamLeader;
 	}
@@ -137,6 +138,32 @@ public class Project {
 		
 		return idNumber;
 	}
+
+
+
+	public void assignTeamleader(Employee employee) {
+		this.teamLeader = employee;
+		
+
+		
+	}
+
+
+
+	public Employee getTeamleader() {
+		return teamLeader;
+	}
+
+
+
+	public void unassignTeamleader() {
+		this.teamLeader = null;
+		
+	}
+	
+
+
+
 
 	
 }

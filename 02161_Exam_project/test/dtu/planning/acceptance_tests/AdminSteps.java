@@ -8,7 +8,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import static org.hamcrest.CoreMatchers.is;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -35,6 +35,7 @@ public class AdminSteps {
 	private Employee employee2;
 	private Employee employee3;
 	private Project project3;
+	private Project project;
 
 	public AdminSteps(PlanningApp planningApp, ErrorMessageHolder errorMessage, EmployeeHelper helper) {
 		this.planningApp = planningApp;
@@ -249,66 +250,60 @@ public class AdminSteps {
 		//Admin assigns employee as teamleader of a project 
 		/****************************************************************************************/
 
-/*	@Given("^a project with id \"([^\"]*)\" exists$")
+	@Given("^a project with id \"([^\"]*)\" exists$")
 	public void aProjectWithIdExists(String projectID) throws Exception {
-		// create dummy project
+		planningApp.adminLogin("admin1234");
+		project = new Project(projectID, 2018, 5, 1);
+		planningApp.createProject(project);
+		project = planningApp.searchProjectByID(projectID);
+		assertThat(project,is(notNullValue()));
 		
-		planningApp.createProject(projectID, "2018", "2018");
-		
-		project2 = planningApp.searchProjectByID(projectID);
-		assertThat(project2,is(notNullValue()));
-	    
-	}
-*/
-	@Given("^there is an employee with id \"([^\"]*)\"$")
-	public void thereIsAnEmployeeWithId(String employeeID) throws Exception {
-		employee2 = new Employee(employeeID); // du kommer til at have et problem her. skal ogs� bruge name for employee
-		planningApp.registerEmployee(employee2);
-		List<Employee> employee_with_id = planningApp.getEmployees();
-	    assertTrue(employee_with_id.contains(employee2));
-	   
-	   
-	}
-
-	@When("^the administrator assigns the employee as teamleader$") 
-	public void theAdministratorAssignsTheEmployeeAsTeamleader() throws Exception { 
-		// teamLeader = employee2;   //planningApp.searchEmployeeID(employeeID);
-		project2.assignTeamLeader(employee2);
-	   
-	   
-	}
-
-	@Then("^the employee with id \"([^\"]*)\" is set to teamleader of the project$")
-	public void theEmployeeWithIdIsSetToTeamleaderOfTheProject(String employeeID) throws Exception {
-		assertTrue(project2.getTeamLeader().equals(planningApp.searchEmployeeID(employeeID)));
+		planningApp.adminLogOut();
 	}
 	
-	//Admin unassigns employee from being the teamleader of a project
+	@Given("^there is an employee with id \"([^\"]*)\"$")
+	public void thereIsAnEmployeeWithId(String arg1) throws Exception {
+		 employee = helper.getEmployee();
+		 planningApp.adminLogin("admin1234");
+		 planningApp.registerEmployee(employee);
+		 planningApp.adminLogOut();
+		 assertTrue(planningApp.searchEmployeeID(arg1) != null);
+	}
+	
+	@When("^the administrator assigns the employee  as teamleader for project$")
+	public void theAdministratorAssignsTheEmployeeAsTeamleaderForProject() throws Exception {
+	    project.assignTeamleader(employee);
+	}
+	
+	@Then("^the employee is set to teamleader of the project$")
+	public void theEmployeeIsSetToTeamleaderOfTheProject() throws Exception {
+	    assertTrue(project.getTeamleader() == employee);
+	}
+	
+	//unassign teamleader (lukas)
 	
 	@Given("^there is an employee with id \"([^\"]*)\" assigned as teamleader to project \"([^\"]*)\"$")
-	public void thereIsAnEmployeeWithIdAssignedAsTeamleaderToProject(String employeeID, String projectID) throws Exception {
-		project3 = planningApp.searchProjectByID(projectID);
-		employee3 = new Employee(employeeID);
-		planningApp.registerEmployee(employee3);
-		project3.assignTeamLeader(employee3);
-		   
+	public void thereIsAnEmployeeWithIdAssignedAsTeamleaderToProject(String arg1, String arg2) throws Exception {
 		
-		assertTrue(planningApp.searchProjectByID(projectID).getTeamLeader().equals(planningApp.searchEmployeeID(employeeID)));
-	}
-
-
-	@When("^the administrator unassigns the employee with id \"([^\"]*)\" as teamleader for project \"([^\"]*)\"$")
-	public void theAdministratorUnassignsTheEmployeeWithIdAsTeamleaderForProject(String employeeID, String projectID) throws Exception {
-		planningApp.searchProjectByID(projectID).unassignTeamLeader(planningApp.searchEmployeeID(employeeID));
+	    assertTrue(project.getTeamleader() == employee);
 	}
 	
-	@Then("^the employee with id \"([^\"]*)\" is no longer teamleader of the project with id \"([^\"]*)\"$")
-	public void theEmployeeWithIdIsNoLongerTeamleaderOfTheProjectWithId(String employeeID, String projectID) throws Exception {
-		assertThat(planningApp.searchProjectByID(projectID).getTeamLeader(),is(not(planningApp.searchEmployeeID(employeeID))));
+	@When("^the administrator unassigns the employee as teamleader for project$")
+	public void theAdministratorUnassignsTheEmployeeAsTeamleaderForProject() throws Exception {
+	    project.unassignTeamleader();
+	    throw new PendingException();
 	}
+	
+	@Then("^the employee with is no longer teamleader of the project$")
+	public void theEmployeeWithIsNoLongerTeamleaderOfTheProject() throws Exception {
+	    assertTrue(project.getTeamleader() == null);
+	    
+	}
+	
 	
 	/****************************************************************************************/
 
+	
 
 
 	
