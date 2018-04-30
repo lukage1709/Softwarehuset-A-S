@@ -60,7 +60,7 @@ public class TeamLeaderSteps {
 	public void thereIsAProjectWithID(String projectID) throws Exception {
 		// create dummy project
 		planningApp.adminLogin("admin1234");
-		project = new Project(projectID, 2018, 5, 1);
+		project = new Project(projectID, planningApp.yearWeekParser("2018-5"));
 		planningApp.createProject(project);
 		project = planningApp.searchProjectByID(projectID);
 		assertThat(project,is(notNullValue()));
