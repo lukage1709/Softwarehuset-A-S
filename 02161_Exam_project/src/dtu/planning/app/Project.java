@@ -63,9 +63,16 @@ public class Project {
 		return startDate.get(Calendar.DAY_OF_MONTH);
 	}
 	
-	
+	/**
+	 * @return project number.
+	 */	
+	public String getProjectNumber() {
+		String id = projectNumber;
+		return id;
+	}
 	
 	/**
+	 * Calculates a project number
 	 * @return projectnumber
 	 */
 	private String generateProjectNumber(int startYear) {
@@ -76,7 +83,7 @@ public class Project {
 	
 	/**
 	 * @return a new sequence number with exactly 6 digits.
-	 * It is assummed that the number of projects will not be greater than 999999
+	 * It is assumed that the number of projects will not be greater than 999999
 	 */
 	private String calculateId() {
 		String idNumber = String.format("%06d", idCounter); 
@@ -136,6 +143,14 @@ public class Project {
 		idCounter++;
 		
 		return idNumber;
+	}
+
+
+	/**
+	 * Removes all activities by making activities an empty list
+	 */
+	public void removeAllActivities() {
+		activities = new ArrayList<>();		
 	}
 
 	

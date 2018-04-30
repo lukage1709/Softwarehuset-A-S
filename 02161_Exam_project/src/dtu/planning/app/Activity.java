@@ -61,13 +61,21 @@ public class Activity {
 		return getEndWeek().before(getStartWeek());
 	}
 
+
 	public int getWorkedHours() {
 		return workedHours;
 	}
 
 	public void registerWorkedHours(int hours) {
 		workedHours += hours;
+	}
 		
+	/**
+	 * Removes all employees by making assignedEmployees an empty list
+	 */
+	public void removeAllEmployees() {
+		assignedEmployees = new ArrayList<>();
+
 	}
 	
 }

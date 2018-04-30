@@ -8,14 +8,14 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import static org.hamcrest.CoreMatchers.is;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-
+import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
@@ -26,6 +26,8 @@ public class AdminSteps {
 	private PlanningApp planningApp;
 	private Project newProject; 
 	private Project existingProject;
+	private Project nonExistingProject;
+	private Activity activity;
 	private Employee employee;
 	private ErrorMessageHolder errorMessage;
 	public EmployeeHelper helper;
@@ -82,6 +84,8 @@ public class AdminSteps {
 		planningApp.adminLogin("admin1234");
 		planningApp.createProject(existingProject);
 		planningApp.adminLogOut();
+		
+		assertTrue(planningApp.getProjects().contains(existingProject));
 	}
 	
 	
@@ -100,7 +104,65 @@ public class AdminSteps {
 	public void iGetTheErrorMessage(String errorMessage) throws Exception {
 			assertEquals(errorMessage, this.errorMessage.getErrorMessage());
 	}
-
+	
+	@Given("^that a project with id \"([^\"]*)\" exists$")
+	public void thatAProjectWithIdExists(String projectId) throws Exception {
+		existingProject = new Project("projectToDelete",2018, 02, 01);
+		
+		planningApp.adminLogin("admin1234");
+		planningApp.createProject(existingProject);
+		planningApp.adminLogOut();
+		
+		assertEquals(existingProject.getProjectNumber(),projectId);
+	}  
+	
+	@When("^the administrator removes the project(?: again|)$")
+	public void theAdministratorRemovesTheProject() throws OperationNotAllowedException {
+		try {
+			planningApp.removeProject(existingProject);
+		} catch (Exception e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@Then("^there are no longer any employees assigned to the activities$")
+	public void thereAreNoLongerAnyEmployeesAssignedToTheActivities() throws Exception {
+	    if (existingProject.getActivities() != null) {
+	    	for (Activity a: existingProject.getActivities()) {
+				assertThat(a.getAssignedEmployees().size(),is(equalTo(0)));
+			}
+	    }	    
+	}
+	
+	@Then("^the project is no longer registered under current projects$")
+	public void theProjectIsNoLongerRegisteredUnderCurrentProjects() throws Exception {
+	   assertFalse(planningApp.getProjects().contains(existingProject));
+	}
+	
+	
+	@Given("^the project has at least one activity assigned to it$")
+	public void theProjectHasAtLeastOneActivityAssignedToIt() throws Exception {
+		activity = new Activity(existingProject.getActivityIdCounter(), "Activity 1", 20, planningApp.yearWeekParser("2018-2"), planningApp.yearWeekParser("2018-5"));
+		existingProject.addActivity(activity);
+		assertThat(existingProject.getActivities().size(),is(equalTo(1)));
+	}
+	
+	@Given("^the activity has at least one employee assigned to it$")
+	public void theActivityHasAtLeastOneEmployeeAssignedToIt() throws Exception {
+		employee = planningApp.searchEmployeeID("anje");
+	    activity.assignEmployee(employee);
+	    assertTrue(activity.getAssignedEmployees().contains(employee));
+	}
+		
+	
+	@Given("^that a project with id \"([^\"]*)\" no longer exists$")
+	public void thatAProjectWithIdNoLongerExists(String projectId) throws Exception {	
+		nonExistingProject = new Project("projectToDelete",2018, 02, 01);
+		
+		assertEquals(nonExistingProject.getProjectNumber(),projectId);
+		assertFalse(planningApp.getProjects().contains(nonExistingProject));
+	}
+		
 	/****************************************************************************************/
 
 	
