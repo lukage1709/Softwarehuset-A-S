@@ -170,8 +170,9 @@ public class AdminSteps {
 
 
 	@Given("^that a project with id \"([^\"]*)\" no longer exists$")
-	public void thatAProjectWithIdNoLongerExists(String projectId) throws Exception {	
-		nonExistingProject = new Project("projectToDelete",planningApp.yearWeekParser(projectId));
+	public void thatAProjectWithIdNoLongerExists(String projectId) throws Exception {
+		String startDateForProject = projectId.split("-")[0] + "-1";
+		nonExistingProject = new Project("projectToDelete",planningApp.yearWeekParser(startDateForProject));
 
 		assertEquals(nonExistingProject.getProjectNumber(),projectId);
 		assertFalse(planningApp.getProjects().contains(nonExistingProject));
