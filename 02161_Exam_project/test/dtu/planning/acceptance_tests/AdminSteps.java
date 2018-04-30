@@ -13,6 +13,7 @@ import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -130,11 +131,12 @@ public class AdminSteps {
 			}
 		}	    
 	} 
-	
+
 	@Then("^the project is no longer registered under current projects$")
 	public void theProjectIsNoLongerRegisteredUnderCurrentProjects() throws Exception {
-	   assertFalse(planningApp.getProjects().contains(existingProject));
+		assertFalse(planningApp.getProjects().contains(existingProject));
 	}
+
 
 	/*@Then("^the employees are no longer assigned to the project$")
 	public void theEmployeesAreNoLongerAssignedToTheProject() throws Exception {
@@ -148,12 +150,8 @@ public class AdminSteps {
 			}
 		}
 
-	} DELETE THIS WHEN DONE
+	} FOR LATER
 
-	@Then("^the project is no longer registered under current projects$")
-	public void theProjectIsNoLongerRegisteredUnderCurrentProjects() throws Exception {
-	   assertFalse(planningApp.getProjects().contains(existingProject));
-	}
 	 */
 
 	@Given("^the project has at least one activity assigned to it$")
@@ -178,8 +176,11 @@ public class AdminSteps {
 		assertEquals(nonExistingProject.getProjectNumber(),projectId);
 		assertFalse(planningApp.getProjects().contains(nonExistingProject));
 	}
-	
-	
+
+	//
+
+
+
 	/****************************************************************************************/
 
 
@@ -237,6 +238,7 @@ public class AdminSteps {
 	public void iGetAnErrorMessage(String errorMessage) throws Exception {
 		assertEquals(errorMessage, this.errorMessage.getErrorMessage());
 	}
+
 
 	//3
 	@When("^the administrator registers the employee with name \"([^\"]*)\" and ID \"([^\"]*)\"$")
@@ -328,73 +330,63 @@ public class AdminSteps {
 	//Admin assigns employee as teamleader of a project 
 	/****************************************************************************************/
 
-	/*
-	/*	@Given("^a project with id \"([^\"]*)\" exists$")
-	public void aProjectWithIdExists(String projectID) throws Exception {
-		// create dummy project
 
-		planningApp.createProject(projectID, "2018", "2018");
-
-		project2 = planningApp.searchProjectByID(projectID);
-		assertThat(project2,is(notNullValue()));
-
-	}
-	 
-
-	@Given("^there is an employee with id \"([^\"]*)\"$")
-	public void thereIsAnEmployeeWithId(String employeeID) throws Exception {
-		employee2 = new Employee(employeeID); // du kommer til at have et problem her. skal ogs� bruge name for employee
-		planningApp.registerEmployee(employee2);
-		List<Employee> employee_with_id = planningApp.getEmployees();
-		assertTrue(employee_with_id.contains(employee2));
-
-
-	}
-
-	@When("^the administrator assigns the employee as teamleader$") 
-	public void theAdministratorAssignsTheEmployeeAsTeamleader() throws Exception { 
-		// teamLeader = employee2;   //planningApp.searchEmployeeID(employeeID);
-		project2.assignTeamLeader(employee2);
-
-	*/
-
-	/*
-	@Given("^a project with id \"([^\"]*)\" exists$")
-	public void aProjectWithIdExists(String projectID) throws Exception {
+	/*@Given("^there is an employee with id \"([^\"]*)\"$")
+	public void thereIsAnEmployeeWithId(String employeeId) throws Exception {
+		employee = new Employee("Anders Jensen", employeeId);
 		planningApp.adminLogin("admin1234");
-		project = new Project(projectID, 2018, 5, 1);
-		planningApp.createProject(project);
-		project = planningApp.searchProjectByID(projectID);
-		assertThat(project,is(notNullValue()));
-		
+		planningApp.registerEmployee(employee);
+		assertTrue(planningApp.getEmployees().contains(employee));
 		planningApp.adminLogOut();
-	}
-	
+	} */
+
 	@Given("^there is an employee with id \"([^\"]*)\"$")
 	public void thereIsAnEmployeeWithId(String arg1) throws Exception {
-		 employee = helper.getEmployee();
-		 planningApp.adminLogin("admin1234");
-		 planningApp.registerEmployee(employee);
-		 planningApp.adminLogOut();
-		 assertTrue(planningApp.searchEmployeeID(arg1) != null);
+		employee = helper.getEmployee();
+		planningApp.adminLogin("admin1234");
+		planningApp.registerEmployee(employee);
+		planningApp.adminLogOut();
+		assertTrue(planningApp.searchEmployeeID(arg1) != null);
 	}
-	
+
 	@When("^the administrator assigns the employee  as teamleader for project$")
 	public void theAdministratorAssignsTheEmployeeAsTeamleaderForProject() throws Exception {
-	    project.assignTeamleader(employee);
- 
-
+		existingProject.assignTeamleader(employee);
 	}
-	
-	*/
-	
-	/*
-	
+
+
+
 	@Then("^the employee is set to teamleader of the project$")
 	public void theEmployeeIsSetToTeamleaderOfTheProject() throws Exception {
-	    assertTrue(project.getTeamleader() == employee);
-	} */
+	    assertTrue(existingProject.getTeamleader().equals(employee));
+	} 
 	
+	// 
+	
+	@Given("^the project has a teamleader with id \"([^\"]*)\"$")
+	public void theProjectHasATeamleaderWithId(String employeeId) throws Exception {
+		employee = new Employee("Anders Jensen", employeeId);
+		
+		planningApp.adminLogin("admin1234");
+		planningApp.registerEmployee(employee);
+		assertTrue(planningApp.getEmployees().contains(employee));
+		planningApp.adminLogOut();
+		
+		existingProject.assignTeamleader(employee);
+		assertTrue(existingProject.getTeamleader().equals(employee));
+	}
+	
+	@When("^the administrator unassigns the employee as teamleader for project$")
+	public void theAdministratorUnassignsTheEmployeeAsTeamleaderForProject() throws Exception {
+	    existingProject.unassignTeamleader();
+	}
+	
+	
+	@Then("^the project no longer has the employee as teamleader$")
+	public void theProjectNoLongerHasTheEmployeeAsTeamleader() throws Exception {
+		assertNull(existingProject.getTeamleader());
+	}
+
 	/*
 
 	//Admin unassigns employee from being the teamleader of a project
@@ -408,17 +400,17 @@ public class AdminSteps {
 
 
 		assertTrue(planningApp.searchProjectByID(projectID).getTeamLeader().equals(planningApp.searchEmployeeID(employeeID)));
-	*/
-	
+	 */
+
 	//unassign teamleader (lukas)
-	
+
 	/* @Given("^there is an employee with id \"([^\"]*)\" assigned as teamleader to project \"([^\"]*)\"$")
 	public void thereIsAnEmployeeWithIdAssignedAsTeamleaderToProject(String arg1, String arg2) throws Exception {
-		
+
 	    assertTrue(project.getTeamleader() == employee);
 
 	}
-	
+
 	@When("^the administrator unassigns the employee as teamleader for project$")
 	public void theAdministratorUnassignsTheEmployeeAsTeamleaderForProject() throws Exception {
 	    project.unassignTeamleader();
@@ -431,19 +423,19 @@ public class AdminSteps {
 	public void theEmployeeWithIdIsNoLongerTeamleaderOfTheProjectWithId(String employeeID, String projectID) throws Exception {
 		assertThat(planningApp.searchProjectByID(projectID).getTeamLeader(),is(not(planningApp.searchEmployeeID(employeeID))));
 	}
-	*/
+	 */
 	/*
-	
+
 	@Then("^the employee with is no longer teamleader of the project$")
 	public void theEmployeeWithIsNoLongerTeamleaderOfTheProject() throws Exception {
 	    assertTrue(project.getTeamleader() == null);
-	    
+
 	}
-	
-	*/
+
+	 */
 	/****************************************************************************************/
 
-	
+
 
 
 

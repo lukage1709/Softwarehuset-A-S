@@ -23,7 +23,8 @@ import dtu.planning.app.Project;
 public class TeamLeaderSteps {
 	private PlanningApp planningApp;
 	private Project project; 
-	private Employee employee, employee2;
+	private Project existingProject;
+	private Employee employee, employee2, availableEmployee, assignedEmployee, teamleader;
 	private ErrorMessageHolder errorMessage;
 	public EmployeeHelper helper;
 	private List<Employee> employeeID;
@@ -56,7 +57,7 @@ public class TeamLeaderSteps {
 		
 	}
 
-	@Given("^there is a project with ID \"([^\"]*)\"$")
+	/* @Given("^there is a project with ID \"([^\"]*)\"$") // TO DO: DELETE THIS, PROJECTID USED WRONG!!!
 	public void thereIsAProjectWithID(String projectID) throws Exception {
 		// create dummy project
 		planningApp.adminLogin("admin1234");
@@ -66,12 +67,20 @@ public class TeamLeaderSteps {
 		assertThat(project,is(notNullValue()));
 		
 		planningApp.adminLogOut();
-	}
+	} */
 
   	@Given("^the employee is team leader on that project$")
 	public void theEmployeeIsTeamLeaderOnThatProject() throws Exception {
+		employee = helper.getEmployee();
+	    
+	    planningApp.userLogin(employee.getID());
+	    employeeLoggedIn = planningApp.getcurrentUser();
+	    assertTrue(employeeLoggedIn.equals(employee));
+  		
 		// and assign team leader
 		planningApp.adminLogin("admin1234");
+		System.out.println(employeeLoggedIn.getID());
+		System.out.println(project.getProjectNumber());
 		project.assignTeamleader(employeeLoggedIn);
 		planningApp.adminLogOut();
 		
@@ -144,8 +153,62 @@ public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
 
 	
 	/****************************************************************************************/
+  	
+  	// Linnea
+  	/****************************************************************************************/
+	@Given("^there is a project with ID \"([^\"]*)\"$")
+	public void thereIsAProjectWithID(String projectId) throws Exception {
+		project = new Project("Project with employees",planningApp.yearWeekParser("2018-02"));
+
+		planningApp.adminLogin("admin1234");
+		planningApp.createProject(project);
+		planningApp.adminLogOut();
+
+		assertEquals(project.getProjectNumber(),projectId);
+	} 
+	
+	@Given("^a project with id \"([^\"]*)\" exists$")
+	public void aProjectWithIdExists(String projectId) throws Exception {
+		existingProject = new Project("projectToDelete",planningApp.yearWeekParser("2018-02"));
+
+		planningApp.adminLogin("admin1234");
+		planningApp.createProject(existingProject);
+		planningApp.adminLogOut();
+
+		assertEquals(existingProject.getProjectNumber(),projectId);
+	}
+
+	
+	@Given("^this project has a teamleader with id \"([^\"]*)\"$")
+	public void thisProjectHasATeamleaderWithId(String employeeId) throws Exception {
+		teamleader = new Employee(employeeId, "Anders Jensen");
+		
+		planningApp.adminLogin("admin1234");
+		planningApp.registerEmployee(teamleader);
+		assertTrue(planningApp.getEmployees().contains(teamleader));
+		planningApp.adminLogOut();
+		
+		existingProject.assignTeamleader(teamleader);
+		assertTrue(existingProject.getTeamleader().equals(teamleader));
+	}
+
+	
+	@Given("^the teamleader is logged in$")
+	public void theTeamleaderIsLoggedIn() throws Exception {
+		planningApp.userLogin(existingProject.getTeamLeader().getID());
+	    assertEquals(planningApp.getcurrentUser(), existingProject.getTeamLeader());   
+	}
 	
 	
+	@Then("^the activity is written on the employees list of activities$")
+	public void theActivityIsWrittenOnTheEmployeesListOfActivities() throws Exception {
+	   assertTrue(availableEmployee.getAssignedActivities().contains(activity));
+	}
+	
+	@Then("^the activity is no longer written on the employees list of activities$")
+	public void theActivityIsNoLongerWrittenOnTheEmployeesListOfActivities() throws Exception {
+		assertFalse(assignedEmployee.getAssignedActivities().contains(activity));
+	}
 	
 	// Christina 
 	/****************************************************************************************/
@@ -155,53 +218,69 @@ public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
 	// 1
 	@Given("^there is an activity with name \"([^\"]*)\" in the activities list of that project$")
 	public void thereIsAnActivityWithNameInTheActivitiesListOfThatProject(String activityName) throws Exception {
-		activity = new Activity(project.getActivityIdCounter(), activityName, 0, planningApp.yearWeekParser("2018-1"), planningApp.yearWeekParser("2018-3"));
-		project.addActivity(activity);
-		assertThat(project.getActivityByName(activityName), is(notNullValue()));
+		activity = new Activity(existingProject.getActivityIdCounter(), activityName, 0, planningApp.yearWeekParser("2018-1"), planningApp.yearWeekParser("2018-3"));
+		existingProject.addActivity(activity);
+		assertThat(existingProject.getActivityByName(activityName), is(notNullValue()));
 	}
 
 	@Given("^employee with ID \"([^\"]*)\" is available$")
-	public void employeeWithIDIsAvailable(String employeeID) throws Exception {
-	    assertTrue(planningApp.getEmployees().contains(planningApp.searchEmployeeID(employeeID)));
+	public void employeeWithIDIsAvailable(String employeeId) throws Exception {
+		availableEmployee = new Employee(employeeId, "Carsten Nelson");
+		planningApp.adminLogin("admin1234");
+		planningApp.registerEmployee(availableEmployee);
+		assertTrue(planningApp.getEmployees().contains(availableEmployee));
+		planningApp.adminLogOut();
+		
+	    // assertTrue(planningApp.getEmployees().contains(planningApp.searchEmployeeID(employeeId))); WHY DOES THIS NOT WORK?
 	}
 
 	@When("^teamleader assigns employee with ID \"([^\"]*)\" to activity \"([^\"]*)\"$")
 	public void teamleaderAssignsEmployeeWithIDToActivity(String employeeID, String activityName) throws Exception {
-		employee = planningApp.searchEmployeeID(employeeID);
+		/* employee = planningApp.searchEmployeeID(employeeID);
 	    activity.assignEmployee(employee);
-	    assertTrue(activity.getAssignedEmployees().contains(employee));
+	    */
+		activity.assignEmployee(availableEmployee);
+		assertTrue(activity.getAssignedEmployees().contains(availableEmployee));
 	}
 
 	@Then("^the employee is assigned to activity in project with ID$")
 	public void theEmployeeIsAssignedToActivityInProjectWithID() throws Exception {
-		assertThat(activity.getAssignedEmployees().contains(employee), is(true));
+		assertTrue(activity.getAssignedEmployees().contains(availableEmployee));
 		
 	}
 	
 	// her skulle der måske kaldes den der beregning??
 	@Then("^the employee with ID \"([^\"]*)\" is still at the list \"([^\"]*)\"$")
 	public void theEmployeeWithIDIsStillAtTheList(String employeeID, String arg2) throws Exception {
-	    assertTrue(planningApp.getEmployees().contains(planningApp.searchEmployeeID(employeeID)));
+	    // assertTrue(planningApp.getEmployees().contains(planningApp.searchEmployeeID(employeeID)));
+		assertTrue(planningApp.getEmployees().contains(availableEmployee));
 	}
 	
 	// 2
 	@Given("^there is an employee with ID \"([^\"]*)\" assigned to the activity in the project$")
-	public void thereIsAnEmployeeWithIDAssignedToTheActivityInTheProject(String employeeID) throws Exception {
-		employee = planningApp.searchEmployeeID(employeeID);
-	    activity.assignEmployee(employee);
-	    assertThat(activity.getAssignedEmployees().contains(employee), is(true));
+	public void thereIsAnEmployeeWithIDAssignedToTheActivityInTheProject(String employeeId) throws Exception {
+		// employee = planningApp.searchEmployeeID(employeeId);
+		assignedEmployee = new Employee(employeeId, "Carsten Nelson");
+		
+		planningApp.adminLogin("admin1234");
+		planningApp.registerEmployee(assignedEmployee);
+		assertTrue(planningApp.getEmployees().contains(assignedEmployee));
+		planningApp.adminLogOut();
+		
+		activity.assignEmployee(assignedEmployee);
+		assertThat(activity.getAssignedEmployees().contains(assignedEmployee), is(true));
 		
 	}
 
 	@When("^teamleader unassigns employee with ID \"([^\"]*)\" from the activity in the project$")
-	public void teamleaderUnassignsEmployeeWithIDFromTheActivityInTheProject(String employeeID) throws Exception {
-	    employee = planningApp.searchEmployeeID(employeeID);
-	    activity.unassignEmployee(employee);
+	public void teamleaderUnassignsEmployeeWithIDFromTheActivityInTheProject(String employeeId) throws Exception {
+	    assertEquals(assignedEmployee.getID(), employeeId);
+	    activity.unassignEmployee(assignedEmployee);
 	}
 
 	@Then("^the employee is unassigned from activity \"([^\"]*)\" in the project$")
 	public void theEmployeeIsUnassignedFromActivityInTheProject(String arg1) throws Exception {
-		assertThat(activity.getAssignedEmployees().contains(employee), is(false));
+		assertThat(activity.getAssignedEmployees().contains(assignedEmployee), is(false));
 	}
 	 
 	
