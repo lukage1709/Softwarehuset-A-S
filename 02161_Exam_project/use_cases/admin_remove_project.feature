@@ -2,23 +2,15 @@ Feature: Administrator removes project
 	Description: Admin deletes project
 	Actor: Administrator
 
-
-Scenario: Administrator removes project succesfully
+Scenario: Administrator removes project with activities succesfully
 Given that a project with id "2018-000001" exists
+And the project has at least one activity assigned to it
+And the activity has at least one registered employee assigned to it
 And that the admin is logged in
 When the administrator removes the project
-Then there are no longer any employees assigned to the activities
-And the project is no longer registered under current projects 
-
-
-#Scenario: Administrator removes project with activities succesfully
-#Given that a project with id "2018-000001" exists
-#And the project has at least one activity assigned to it
-#And the activity has at least one employee assigned to it
-#And that the admin is logged in
-#When the administrator removes the project
-#Then there are no longer any employees assigned to the activities
-#And the project is no longer registered under current projects
+Then the projects activities are no longer registered as current activities for the employees
+And there are no longer any employees assigned to the activities
+And the project is no longer registered under current projects
 
 
 Scenario: Removing a project when not the administrator
