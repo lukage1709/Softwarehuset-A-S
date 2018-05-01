@@ -9,12 +9,15 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+
 public class PlanningApp {
 	
 	private boolean adminLoggedIn = false;
 	private List<Project> currentProjects = new ArrayList<>();
 	private List<Employee> currentEmployees = new ArrayList<>();
+	private List<Employee> availableEmployees = new ArrayList<>();
 	private Employee currentUser = null;
+
 
 	/**
 	 * @return the list of project currently registered in the system.
@@ -119,6 +122,14 @@ public class PlanningApp {
 		}
 	}
 
+	
+	
+	/**
+	 * Register an employee if the administrator is logged in
+	 *  
+	 * @param employee to be registered
+	 * 
+	 */
 	public void registerEmployee(Employee employee) throws Exception {
 		if (adminLoggedIn) {
 			if (currentEmployees.contains(employee)) {
@@ -146,8 +157,11 @@ public class PlanningApp {
 	}
 	
 
+	/**
+	 * @return the list of employees currently registered in the system.
+	 */
 	public List<Employee> getEmployees() {
-		return currentEmployees;
+		return Collections.unmodifiableList(currentEmployees);
 	}
 	
 	
@@ -185,6 +199,27 @@ public class PlanningApp {
 		
 		return calendar;
 	}
+
+	
+	/**
+	 * Gets list of available employees not working in specific weeks
+	 *  
+	 * @param start and end dates 
+	 * @return 
+	 * 
+	 */
+	public void getAvailableEmployeesInWeek(Calendar startweek, Calendar endweek) {
+		 for (Employee employee : currentEmployees) {
+			 if (employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
+		 }
+		
+	}
+
+	public List<Employee> getAvailableEmployees() {
+		return Collections.unmodifiableList(availableEmployees);
+	}
+	
+
 	
 	public Employee getcurrentUser() {
 	    if (currentUser == null) {

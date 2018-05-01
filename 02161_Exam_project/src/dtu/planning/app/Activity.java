@@ -66,6 +66,13 @@ public class Activity {
 	}
 
 
+	boolean isAvailableInPeriod(Calendar newActivityStart, Calendar newActivityEnd) {
+		return (!((getStartWeek().before(newActivityStart) && getEndWeek().after(newActivityEnd)) 
+				 || (getStartWeek().after(newActivityStart) && getStartWeek().before(newActivityEnd))
+				 || (getEndWeek().after(newActivityStart) && getEndWeek().before(newActivityEnd))
+				 || (getStartWeek().equals(newActivityStart) && getEndWeek().equals(newActivityEnd)) ));
+  }
+
 	public int getWorkedHours() {
 		return workedHours;
 	}
@@ -79,6 +86,7 @@ public class Activity {
 	 */
 	public void removeAllEmployees() {
 		assignedEmployees = new ArrayList<>();
+
 
 	}
 	
