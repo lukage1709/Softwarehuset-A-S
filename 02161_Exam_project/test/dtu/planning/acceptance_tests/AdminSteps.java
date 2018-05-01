@@ -31,6 +31,8 @@ public class AdminSteps {
 	private Project nonExistingProject;
 	private Activity activity;
 	private Employee employee;
+	private List<Activity> activitiesToExistingProject;
+	private List<Employee> employeesOnExistingProject;
 	private ErrorMessageHolder errorMessage;
 	public EmployeeHelper helper;
 	private List<Employee> employeeID;
@@ -123,14 +125,22 @@ public class AdminSteps {
 		}
 	}
 
+	@Then("^the projects activities are no longer registered as current activities for the employees$")
+	public void theProjectsActivitiesAreNoLongerRegisteredAsCurrentActivitiesForTheEmployees() throws Exception {
+		for (Activity a: activitiesToExistingProject) {
+			for (Employee e: employeesOnExistingProject) {
+				assertFalse(e.getAssignedActivities().contains(a));
+			}
+		}
+	}
+
 	@Then("^there are no longer any employees assigned to the activities$")
 	public void thereAreNoLongerAnyEmployeesAssignedToTheActivities() throws Exception {
-		if (existingProject.getActivities() != null) {
-			for (Activity a: existingProject.getActivities()) {
-				assertThat(a.getAssignedEmployees().size(),is(equalTo(0)));
-			}
-		}	    
-	} 
+		for (Activity a: existingProject.getActivities()) {
+			assertThat(a.getAssignedEmployees().size(),is(equalTo(0)));
+		}
+	}	    
+
 
 	@Then("^the project is no longer registered under current projects$")
 	public void theProjectIsNoLongerRegisteredUnderCurrentProjects() throws Exception {
@@ -138,36 +148,42 @@ public class AdminSteps {
 	}
 
 
-	/*@Then("^the employees are no longer assigned to the project$")
-	public void theEmployeesAreNoLongerAssignedToTheProject() throws Exception {
-		List<Employee> employeesToUnassign = new ArrayList<>();	
-
-		for (Activity a: existingProject.getActivities()) {
-			employeesToUnassign = a.getAssignedEmployees();
-
-			for (Employee e: employeesToUnassign) {
-				assertFalse(e.getAssignedActivities().contains(a));
-			}
-		}
-
-	} FOR LATER
-
-	 */
-
 	@Given("^the project has at least one activity assigned to it$")
 	public void theProjectHasAtLeastOneActivityAssignedToIt() throws Exception {
 		activity = new Activity(existingProject.getActivityIdCounter(), "Activity 1", 20, planningApp.yearWeekParser("2018-2"), planningApp.yearWeekParser("2018-5"));
 		existingProject.addActivity(activity);
+
+		activitiesToExistingProject = new ArrayList<>();
+		activitiesToExistingProject = existingProject.getActivities();
+		assertThat(activitiesToExistingProject.size(),is(1));
+	}
+
+
+	@Given("^the activity has at least one registered employee assigned to it$")
+	public void theActivityHasAtLeastOneRegisteredEmployeeAssignedToIt() throws Exception {
 		assertThat(existingProject.getActivities().size(),is(equalTo(1)));
-	}
+		activity = existingProject.getActivities().get(0);
 
-	@Given("^the activity has at least one employee assigned to it$")
-	public void theActivityHasAtLeastOneEmployeeAssignedToIt() throws Exception {
-		employee = planningApp.searchEmployeeID("anje");
-		activity.assignEmployee(employee);
-		assertTrue(activity.getAssignedEmployees().contains(employee));
-	}
+		employee = new Employee("anje", "Anders Jensen");
+		planningApp.adminLogin("admin1234");
+		planningApp.registerEmployee(employee);
+		planningApp.adminLogOut();
+		assertTrue(planningApp.getEmployees().contains(employee));
 
+		try {
+			activity.assignEmployee(employee);
+			assertTrue(activity.getAssignedEmployees().contains(employee));
+		} catch (Exception e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
+
+		employeesOnExistingProject = new ArrayList<>();
+		for (Activity a: activitiesToExistingProject) {
+			employeesOnExistingProject.addAll(a.getAssignedEmployees());
+		}
+
+		assertThat(employeesOnExistingProject.size(),is(1));
+	}
 
 	@Given("^that a project with id \"([^\"]*)\" no longer exists$")
 	public void thatAProjectWithIdNoLongerExists(String projectId) throws Exception {
@@ -359,30 +375,30 @@ public class AdminSteps {
 
 	@Then("^the employee is set to teamleader of the project$")
 	public void theEmployeeIsSetToTeamleaderOfTheProject() throws Exception {
-	    assertTrue(existingProject.getTeamleader().equals(employee));
+		assertTrue(existingProject.getTeamleader().equals(employee));
 	} 
-	
+
 	// 
-	
+
 	@Given("^the project has a teamleader with id \"([^\"]*)\"$")
 	public void theProjectHasATeamleaderWithId(String employeeId) throws Exception {
 		employee = new Employee("Anders Jensen", employeeId);
-		
+
 		planningApp.adminLogin("admin1234");
 		planningApp.registerEmployee(employee);
 		assertTrue(planningApp.getEmployees().contains(employee));
 		planningApp.adminLogOut();
-		
+
 		existingProject.assignTeamleader(employee);
 		assertTrue(existingProject.getTeamleader().equals(employee));
 	}
-	
+
 	@When("^the administrator unassigns the employee as teamleader for project$")
 	public void theAdministratorUnassignsTheEmployeeAsTeamleaderForProject() throws Exception {
-	    existingProject.unassignTeamleader();
+		existingProject.unassignTeamleader();
 	}
-	
-	
+
+
 	@Then("^the project no longer has the employee as teamleader$")
 	public void theProjectNoLongerHasTheEmployeeAsTeamleader() throws Exception {
 		assertNull(existingProject.getTeamleader());
