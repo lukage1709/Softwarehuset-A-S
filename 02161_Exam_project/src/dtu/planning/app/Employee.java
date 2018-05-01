@@ -28,7 +28,7 @@ public class Employee {
 	}
 
 	public boolean match(String searchID) {
-		return employeeID.contains(searchID);	
+		return employeeID.equals(searchID);	
 	}
 	
 	public void unassignActivity(Activity activity) {

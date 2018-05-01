@@ -87,12 +87,24 @@ public class PlanningApp {
 	public void removeProject(Project existingProject) throws OperationNotAllowedException {
 		checkAdministratorLoggedIn();
 		checkProjectExists(existingProject);
-		removeAllEmployeesFromProject(existingProject);
 		
+		removeActivitiesFromEmployees(existingProject);
+		removeAllEmployeesFromProject(existingProject);
+				
 		currentProjects.remove(existingProject);
 		
 	}
  
+	private void removeActivitiesFromEmployees(Project existingProject) {
+		for (Activity a: existingProject.getActivities()) {
+			for (Employee e: a.getAssignedEmployees()) {
+				e.unassignActivity(a);
+			}
+		}
+		
+	}
+
+
 	private void removeAllEmployeesFromProject(Project project) throws OperationNotAllowedException {
 		if (project.getActivities() != null) {
 			for (Activity a: project.getActivities()) {
