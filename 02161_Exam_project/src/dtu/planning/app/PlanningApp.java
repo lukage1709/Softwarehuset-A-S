@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 
 public class PlanningApp {
 	
@@ -198,9 +200,10 @@ public class PlanningApp {
 	 */
 	public void getAvailableEmployeesInWeek(Calendar startweek, Calendar endweek) {
 		 for (Employee employee : currentEmployees) {
-			 if (employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
+			 if (!employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
+			 System.out.println("1:" + employee.toString() + " " + employee.getAssignedActivities());
 		 }
-		
+		 System.out.println("2" + availableEmployees.toString());
 	}
 
 	public List<Employee> getAvailableEmployees() {

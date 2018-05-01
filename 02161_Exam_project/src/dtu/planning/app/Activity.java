@@ -67,10 +67,10 @@ public class Activity {
 
 
 	boolean isAvailableInPeriod(Calendar newActivityStart, Calendar newActivityEnd) {
-		return (!((getStartWeek().before(newActivityStart) && getEndWeek().after(newActivityEnd)) 
+		return ((getStartWeek().before(newActivityStart) && getEndWeek().after(newActivityEnd)) 
 				 || (getStartWeek().after(newActivityStart) && getStartWeek().before(newActivityEnd))
 				 || (getEndWeek().after(newActivityStart) && getEndWeek().before(newActivityEnd))
-				 || (getStartWeek().equals(newActivityStart) && getEndWeek().equals(newActivityEnd)) ));
+				 || (getStartWeek().equals(newActivityStart) && getEndWeek().equals(newActivityEnd)) );
   }
 
 	public int getWorkedHours() {
