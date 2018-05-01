@@ -4,14 +4,14 @@
 #
 #Scenario: Unassign teamleader
 #	Given that the administrator is logged in
-#	And there is a project with id "030901"
+#	And there is a project with id "2018-000001"
 #	And the project has a teamleader with id "Anje"
 #	When the administrator unassigns the teamleader
 #	Then the project has no teamleader
 #	
 #Scenario: Unassign teamleader when not the administrator
 #	Given that the administrator is not logged in
-#	And there is a project with id "030901"
+#	And there is a project with id "2018-000001"
 #	And the project has a teamleader with id "Anje"
 #	When the user unassigns the teamleader
 #	Then I get the error mesagge "Administrator login required to unassign teamleader"

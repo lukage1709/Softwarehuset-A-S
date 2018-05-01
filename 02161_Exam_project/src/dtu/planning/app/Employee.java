@@ -1,6 +1,7 @@
 package dtu.planning.app;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Employee {
@@ -28,6 +29,30 @@ public class Employee {
 
 	public boolean match(String searchID) {
 		return employeeID.contains(searchID);	
+	}
+	
+	public void unassignActivity(Activity activity) {
+		assignedActivities.remove(activity);
+	}
+
+	public List<Activity> getAssignedActivities() {
+		return Collections.unmodifiableList(assignedActivities);
+	}
+	
+	public void addToAssignedActivities(Activity activity) throws OperationNotAllowedException {
+		if (assignedActivities.contains(activity)) {
+			throw new OperationNotAllowedException("Cannot assign employee twice");
+		}
+		assignedActivities.add(activity);
+	}
+
+	public void removeFromAssignedActivities(Activity activity) throws OperationNotAllowedException {
+		if (!assignedActivities.contains(activity)) {
+			throw new OperationNotAllowedException("Employee not assigned to this activity!");
+		}
+		
+		assignedActivities.remove(activity);
+		
 	}
 
 

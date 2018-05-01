@@ -16,7 +16,17 @@ public class PlanningApp {
 	private List<Project> currentProjects = new ArrayList<>();
 	private List<Employee> currentEmployees = new ArrayList<>();
 	private List<Employee> availableEmployees = new ArrayList<>();
+	private Employee currentUser = null;
 
+
+	/**
+	 * @return the list of project currently registered in the system.
+	 */
+	public List<Project> getProjects() {
+		return Collections.unmodifiableList(currentProjects);
+	}
+	
+	
 	public boolean adminLoggedIn() {
 		return adminLoggedIn;
 	}
@@ -32,6 +42,10 @@ public class PlanningApp {
 	}
 
 	
+	
+
+	
+	
 	/**
 	 * Creates a project provided the administrator is logged in
 	 *  
@@ -40,14 +54,10 @@ public class PlanningApp {
 	 */
 	public void createProject(Project project) throws OperationNotAllowedException {
 		checkAdministratorLoggedIn();
-
-		for (Project existingProject: currentProjects) {
-			if (existingProject.getName().equals(project.getName())) {
-				throw new OperationNotAllowedException("Name for project is already used");
-			}
-		}
-	currentProjects.add(project);
 		
+		checkNameIsAvailable(project);
+		
+		currentProjects.add(project);
 	}
 	
 	private void checkAdministratorLoggedIn() throws OperationNotAllowedException {
@@ -56,11 +66,48 @@ public class PlanningApp {
 		} 
 	}
 	
+	private void checkNameIsAvailable(Project project) throws OperationNotAllowedException {
+		/* for (int i = 0; i < currentProjects.size(); i++) {
+			if (currentProjects.get(i).getName().equals(project.getName())) {
+				throw new OperationNotAllowedException("Name for project is already used");
+			}
+		} */
+		
+		List<String> projectNames = new ArrayList<>();
+		for (Project p : currentProjects) {
+			projectNames.add(p.getName());
+		}
+		
+		if (projectNames.contains(project.getName())) {
+			throw new OperationNotAllowedException("Name for project is already used");
+		}
+		
+	} 
+	
 	/**
-	 * @return the list of project currently registered in the system.
+	 * Removes project
 	 */
-	public List<Project> getProjects() {
-		return currentProjects;
+	public void removeProject(Project existingProject) throws OperationNotAllowedException {
+		checkAdministratorLoggedIn();
+		checkProjectExists(existingProject);
+		removeAllEmployeesFromProject(existingProject);
+		
+		currentProjects.remove(existingProject);
+		
+	}
+ 
+	private void removeAllEmployeesFromProject(Project project) throws OperationNotAllowedException {
+		if (project.getActivities() != null) {
+			for (Activity a: project.getActivities()) {
+				a.removeAllEmployees();
+			}
+		}
+	}
+	
+	private void checkProjectExists(Project project) throws OperationNotAllowedException {
+		if (!currentProjects.contains(project)) {
+			throw new OperationNotAllowedException("Project does not exist");			
+		}
 	}
 
 	
@@ -161,5 +208,31 @@ public class PlanningApp {
 	}
 	
 
+	
+	public Employee getcurrentUser() {
+	    if (currentUser == null) {
+	        return null;
+	    }
+	    return currentUser;
+	}
+
+
+	public void userLogin(String employeeID) {
+	    if ( searchEmployeeID(employeeID)!=null) {
+	        setCurrentUser( searchEmployeeID(employeeID));
+	    }
+	    
+	}
+
+	public void logOut() {
+	    currentUser = null;		
+	}
+
+
+
+	public void setCurrentUser(Employee employee) {
+	    currentUser = employee;
+	 
+	}
 	
 }
