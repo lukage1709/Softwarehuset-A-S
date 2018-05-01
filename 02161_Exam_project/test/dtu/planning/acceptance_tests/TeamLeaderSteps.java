@@ -245,7 +245,7 @@ public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
 		activity.assignEmployee(availableEmployee);
 		assertTrue(activity.getAssignedEmployees().contains(availableEmployee));
 	}
-
+	
 	@Then("^the employee is assigned to activity in project with ID$")
 	public void theEmployeeIsAssignedToActivityInProjectWithID() throws Exception {
 		assertTrue(activity.getAssignedEmployees().contains(availableEmployee));
@@ -310,7 +310,7 @@ public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
 	
 	@When("^Teamleader requests available employees in the same time as the activity$")
 	public void teamleaderRequestsAvailableEmployeesInTheSameTimeAsTheActivity() throws Exception {
-		planningApp.searchEmployeeID(employee.getID()).assignActivity(existingActivity); 
+//		planningApp.searchEmployeeID(employee.getID()).addToAssignedActivities(existingActivity); 
 		planningApp.getAvailableEmployeesInWeek(newActivity.getStartWeek(), newActivity.getEndWeek());
 
 	}

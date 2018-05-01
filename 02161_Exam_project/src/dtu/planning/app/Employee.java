@@ -1,8 +1,10 @@
 package dtu.planning.app;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Employee {
 
@@ -25,6 +27,10 @@ public class Employee {
 
 	public String getName() {
 		return employeeName;
+	}
+	@Override
+	public String toString() {
+		return getName() + " " + getID() + " " + hashCode();
 	}
 
 	public boolean match(String searchID) {
@@ -53,6 +59,21 @@ public class Employee {
 		
 		assignedActivities.remove(activity);
 		
+	}
+
+	public boolean isEmployeeAvailable(Calendar startweek, Calendar endweek) {
+		for (Activity activity : assignedActivities) {
+			
+			System.out.println("\nopr.aktivitet: \n" + activity.getStartWeek().getTime() + "\n" + activity.getEndWeek().getTime());
+			
+			Calendar newActivityStart = startweek;
+			Calendar newActivityEnd = endweek;
+			System.out.println("ny aktivitet:\n" + newActivityStart.getTime() + "\n" + newActivityEnd.getTime());
+			
+			return (activity.isAvailableInPeriod(newActivityStart, newActivityEnd));
+			
+		 }
+		return false;
 	}
 
 
