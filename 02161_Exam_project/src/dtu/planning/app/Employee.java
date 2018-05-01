@@ -64,11 +64,8 @@ public class Employee {
 	public boolean isEmployeeAvailable(Calendar startweek, Calendar endweek) {
 		for (Activity activity : assignedActivities) {
 			
-			System.out.println("\nopr.aktivitet: \n" + activity.getStartWeek().getTime() + "\n" + activity.getEndWeek().getTime());
-			
 			Calendar newActivityStart = startweek;
 			Calendar newActivityEnd = endweek;
-			System.out.println("ny aktivitet:\n" + newActivityStart.getTime() + "\n" + newActivityEnd.getTime());
 			
 			return (activity.isAvailableInPeriod(newActivityStart, newActivityEnd));
 			

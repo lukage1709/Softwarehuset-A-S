@@ -213,9 +213,8 @@ public class PlanningApp {
 	public void getAvailableEmployeesInWeek(Calendar startweek, Calendar endweek) {
 		 for (Employee employee : currentEmployees) {
 			 if (!employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
-			 System.out.println("1:" + employee.toString() + " " + employee.getAssignedActivities());
 		 }
-		 System.out.println("2" + availableEmployees.toString());
+		 getAvailableEmployees();
 	}
 
 	public List<Employee> getAvailableEmployees() {
