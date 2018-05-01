@@ -59,5 +59,13 @@ public class Activity {
 	public boolean endWeekIsBeforeStartWeek() {
 		return getEndWeek().before(getStartWeek());
 	}
+
+	boolean isAvailableInPeriod(Calendar newActivityStart, Calendar newActivityEnd) {
+		return (!((getStartWeek().before(newActivityStart) && getEndWeek().after(newActivityEnd)) 
+				 || (getStartWeek().after(newActivityStart) && getStartWeek().before(newActivityEnd))
+				 || (getEndWeek().after(newActivityStart) && getEndWeek().before(newActivityEnd))
+				 || (getStartWeek().equals(newActivityStart) && getEndWeek().equals(newActivityEnd)) ));
+		
+	}
 	
 }
