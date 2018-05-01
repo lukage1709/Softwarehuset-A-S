@@ -245,7 +245,7 @@ public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
 		activity.assignEmployee(availableEmployee);
 		assertTrue(activity.getAssignedEmployees().contains(availableEmployee));
 	}
-
+	
 	@Then("^the employee is assigned to activity in project with ID$")
 	public void theEmployeeIsAssignedToActivityInProjectWithID() throws Exception {
 		assertTrue(activity.getAssignedEmployees().contains(availableEmployee));
