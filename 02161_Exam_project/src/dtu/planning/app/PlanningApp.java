@@ -257,4 +257,13 @@ public class PlanningApp {
 	 
 	}
 	
+	public boolean isUserTeamleader() {
+	    for (Project project : currentProjects ) {
+	        if (project.getTeamleader().equals(currentUser)){
+	            return true;
+	            }
+	         }
+	        return false;
+	        }
+	
 }
