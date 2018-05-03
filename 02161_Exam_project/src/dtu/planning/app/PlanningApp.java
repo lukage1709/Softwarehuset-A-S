@@ -69,12 +69,7 @@ public class PlanningApp {
 	}
 	
 	private void checkNameIsAvailable(Project project) throws OperationNotAllowedException {
-		/* for (int i = 0; i < currentProjects.size(); i++) {
-			if (currentProjects.get(i).getName().equals(project.getName())) {
-				throw new OperationNotAllowedException("Name for project is already used");
-			}
-		} */
-		
+
 		List<String> projectNames = new ArrayList<>();
 		for (Project p : currentProjects) {
 			projectNames.add(p.getName());
@@ -166,28 +161,18 @@ public class PlanningApp {
 		return Collections.unmodifiableList(currentEmployees);
 	}
 	
-	
-	public Project searchProjectByID(String projectID) {
-		 for (Project project : currentProjects ) {
-			 if (project.getProjectByID(projectID)) {
-			 return project;
-			 }
-		 }
-		return null;
-
-}
 
 	public void removeEmployee(Employee employee) throws Exception {
 		if (adminLoggedIn) {
 			if (searchEmployeeID(employee.getID()) == null) {
-				throw new Exception("Employee does not exists in list of employees");
+				throw new OperationNotAllowedException("Employee does not exists in list of employees");
 
 			} else {
 				currentEmployees.remove(employee);
 			}
 
 		} else {
-			throw new Exception("Administrator login required to remove employee from system");
+			throw new OperationNotAllowedException("Administrator login required to remove employee from system");
 
 		}
 

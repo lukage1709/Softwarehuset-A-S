@@ -1,12 +1,9 @@
 package dtu.planning.app;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-
-import dtu.planning.app.PlanningApp;
 
 public class Project {
 	private String name;
@@ -81,9 +78,7 @@ public class Project {
 	public Employee getTeamLeader() {
 		return this.teamLeader;
 	}
-	public boolean getProjectByID(String projectID) {
-		return name.contains(projectID);
-	}
+
 	
 	public void addActivity(Activity activity) throws Exception {
 		if (activityNameAlreadyExistsInProject(activity)) {
@@ -135,12 +130,6 @@ public class Project {
 		this.teamLeader = null;
 		
 	}
-  
-  	/**
-	 * Removes all activities by making activities an empty list
-	 */
-	public void removeAllActivities() {
-		activities = new ArrayList<>();		
-	}
+
 }
 	

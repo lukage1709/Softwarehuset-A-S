@@ -28,10 +28,6 @@ public class Activity {
 		return activityName;
 	}
 
-	public int getEstimatedHours() {
-		return estimatedHours;
-	}
-
 	public Calendar getStartWeek() {
 		return startWeek;
 	}
@@ -55,10 +51,6 @@ public class Activity {
 		assignedEmployees.remove(employee);
 		
 		
-	}
-
-	public String getActivityId() {
-		return activityId;
 	}
 	
 	public boolean endWeekIsBeforeStartWeek() {
@@ -88,6 +80,10 @@ public class Activity {
 		assignedEmployees = new ArrayList<>();
 
 
+	}
+
+	public int getEstimatedHours() {
+		return estimatedHours;
 	}
 	
 }
