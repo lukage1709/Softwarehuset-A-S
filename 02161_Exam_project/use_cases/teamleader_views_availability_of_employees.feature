@@ -34,13 +34,5 @@ Scenario: Teamleader succesfully views employees available for activities
 	When Teamleader requests available employees in the same time as the activity
 	Then Teamleader receives list of availability employees not working in week six
 
-
-#Scenario: teamleader not logged in attempts to view available employees for activities
-#	Given an employee is logged in
-#	And there is a project with ID "2018-000001"
-#	And there is an activity with name "Activity 1" startdate "2018-02" and enddate "2018-05" in the activities list
-#	And the employee is not team leader on that project
-#	When Teamleader requests available employees in the same time as the activity
-#	Then user receives error message "cannot show available employees. Requires teamleader login"
-# 	
+ 	
 #TEGN, vent
