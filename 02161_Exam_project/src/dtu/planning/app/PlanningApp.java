@@ -208,14 +208,18 @@ public class PlanningApp {
 	 *  
 	 * @param start and end dates 
 	 * @return 
+	 * @throws Exception 
 	 * 
 	 */
-	public void getAvailableEmployeesInWeek(Calendar startweek, Calendar endweek) {
-		 for (Employee employee : currentEmployees) {
-			 if (!employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
-		 }
-		 getAvailableEmployees();
+	public void getAvailableEmployeesInWeek(Calendar startweek, Calendar endweek) throws Exception {
+			for (Employee employee : currentEmployees) {
+				if (!employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
+			}
+			getAvailableEmployees();
+
 	}
+	
+	
 
 	public List<Employee> getAvailableEmployees() {
 		return Collections.unmodifiableList(availableEmployees);

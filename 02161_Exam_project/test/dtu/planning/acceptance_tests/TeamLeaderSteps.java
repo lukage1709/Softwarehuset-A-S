@@ -341,12 +341,6 @@ public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
 		assertThat(planningApp.getAvailableEmployees().contains(employee2), is(true));
 
 	}
-	// 4 not TL
-	@Then("^user receives error message \"([^\"]*)\"$")
-	public void userReceivesErrorMessage(String arg1) throws Exception {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new PendingException();
-	}
 	
 	/****************************************************************************************/
 	
