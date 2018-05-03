@@ -241,11 +241,12 @@ public class AdminSteps {
 	}
 
 	@Then("^I get an error message \"([^\"]*)\"$")
-	public void iGetAnErrorMessage(String errorMessage) throws Exception {
-		assertEquals(errorMessage, this.errorMessage.getErrorMessage());
+	public void iGetAnErrorMessage(String errormessage) throws Exception {
+
+		assertEquals(errormessage, errorMessage.getErrorMessage());
 	}
 
-
+	
 	//3
 	@When("^the administrator registers the employee with name \"([^\"]*)\" and ID \"([^\"]*)\"$")
 	public void theAdministratorRegistersTheEmployeeWithNameAndID(String employeeName, String employeeID) throws Exception {

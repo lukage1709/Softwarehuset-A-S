@@ -102,10 +102,10 @@ public class TeamLeaderSteps {
 	public void andAddsTheActivityToTheProject() throws Exception {
 		project.addActivity(newActivity);
 	}
-
+	
 	@Then("^the activity is in the activities list of that project$")
 	public void theActivityIsInTheActivitiesListOfThatProject() throws Exception {
-		assertTrue(project.getActivities().contains(activity));
+		assertTrue(project.getActivities().contains(newActivity));
 
 	}
 	
