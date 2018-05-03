@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Employee {
 
@@ -15,10 +14,6 @@ public class Employee {
 	public Employee(String employeeID, String employeeName) {
 		this.employeeID = employeeID;
 		this.employeeName = employeeName;
-	}
-	
-	public Employee(String employeeID) {
-		this.employeeID = employeeID;
 	}
 
 	public String getID() {
