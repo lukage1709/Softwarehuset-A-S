@@ -199,6 +199,10 @@ public class PlanningApp {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		
+		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			calendar.add(Calendar.DATE, 1);
+		}
+		
 		return calendar;
 	}
 
