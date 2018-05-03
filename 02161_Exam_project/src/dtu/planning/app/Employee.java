@@ -56,12 +56,8 @@ public class Employee {
 		
 	}
 
-	public boolean isEmployeeAvailable(Calendar startweek, Calendar endweek) {
+	public boolean isEmployeeAvailable(Calendar newActivityStart, Calendar newActivityEnd) {
 		for (Activity activity : assignedActivities) {
-			
-			Calendar newActivityStart = startweek;
-			Calendar newActivityEnd = endweek;
-			
 			return (activity.isAvailableInPeriod(newActivityStart, newActivityEnd));
 			
 		 }
