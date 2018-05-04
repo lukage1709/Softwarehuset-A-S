@@ -58,10 +58,10 @@ public class Employee {
 
 	public boolean isEmployeeAvailable(Calendar newActivityStart, Calendar newActivityEnd) {
 		for (Activity activity : assignedActivities) {
-			return (activity.isAvailableInPeriod(newActivityStart, newActivityEnd));
+			return (!activity.isAvailableInPeriod(newActivityStart, newActivityEnd));
 			
 		 }
-		return false;
+		return true;
 	}
 
 
