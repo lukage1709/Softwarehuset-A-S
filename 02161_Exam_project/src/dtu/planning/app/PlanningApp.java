@@ -202,7 +202,7 @@ public class PlanningApp {
 	 */
 	public void getAvailableEmployeesInWeek(Calendar startweek, Calendar endweek) throws Exception {
 			for (Employee employee : currentEmployees) {
-				if (!employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
+				if (employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
 			}
 			getAvailableEmployees();
 
