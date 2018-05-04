@@ -206,6 +206,12 @@ public class PlanningApp {
 		}
 		getAvailableEmployees();
 
+		for (Employee employee : currentEmployees) {
+			if (employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
+		}
+		getAvailableEmployees();
+
+
 	}
 
 
@@ -250,14 +256,14 @@ public class PlanningApp {
 		}
 		return false;
 	}
-	
+
 	public Project getExistingProjectByProjectNumber(String projectNumber) throws Exception {
 		for (Project p: currentProjects) {
 			if (p.getProjectNumber().equals(projectNumber)) {
 				return p;
 			}
 		}
-		
+
 		throw new Exception("There are no current projects with project number " + projectNumber);
 	}
 
