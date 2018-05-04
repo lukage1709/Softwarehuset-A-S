@@ -11,11 +11,11 @@ public class Project {
 	private String projectNumber;
 	private Employee teamLeader;
 	private List<Activity> activities = new ArrayList<>();
-	private int idCounter = 1; 
+	private static int idCounter = 1; 
 	private int activityIdCounter = 1;
 	
 	
-	public Project(String name, Calendar startDate ) {
+	public Project(String name, Calendar startDate) {
 		this.name = name;
 		this.startDate = startDate;
 		this.projectNumber = generateProjectNumber(getStartYear());

@@ -41,6 +41,10 @@ public class Employee {
 	}
 	
 	public void addToAssignedActivities(Activity activity) throws OperationNotAllowedException {
+		if (!activity.getAssignedEmployees().contains(this)) { // Because of the bidirectional relationship between employee and activity
+			activity.assignEmployee(this);
+		}
+		
 		if (assignedActivities.contains(activity)) {
 			throw new OperationNotAllowedException("Cannot assign employee twice");
 		}

@@ -37,8 +37,9 @@ public class Activity {
 	}
 
 	public void assignEmployee(Employee employee) throws OperationNotAllowedException {
-		employee.addToAssignedActivities(this);
 		assignedEmployees.add(employee);
+		employee.addToAssignedActivities(this);
+		
 		
 	}
 
@@ -47,9 +48,8 @@ public class Activity {
 	}
 
 	public void unassignEmployee(Employee employee) throws OperationNotAllowedException {
-		employee.removeFromAssignedActivities(this);
 		assignedEmployees.remove(employee);
-		
+		employee.removeFromAssignedActivities(this);
 		
 	}
 	
