@@ -1,10 +1,10 @@
 Feature: Teamleader assigns employee to activity
 	Description: Teamleaders ability to assign a developer to an activity related to the project.
 	Actors: Teamleader
-#Keep	
+	
 
 Scenario: Teamleader assigns employee to activity
-	Given a project with id "2018-000001" exists
+	Given that there is a project with the name "Test Project"
 	And this project has a teamleader with id "Anje"
 	And there is an activity with name "Activity 1" in the activities list of that project
 	And employee with ID "Cane" is available
@@ -15,7 +15,7 @@ Scenario: Teamleader assigns employee to activity
 	And the employee with ID "Cane" is still at the list "Available employees"	
 
 Scenario: Teamleader unassigns employee to activity
-	Given a project with id "2018-000001" exists
+	Given that there is a project with the name "Test Project"
 	And this project has a teamleader with id "Anje"
 	And there is an activity with name "Activity 1" in the activities list of that project
 	And there is an employee with ID "Cane" assigned to the activity in the project

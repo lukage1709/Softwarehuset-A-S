@@ -3,9 +3,9 @@
 #	Actors: Administrator
 #
 #Scenario: Unassign teamleader
-#	Given that the administrator is logged in
-#	And there is a project with id "2018-000001"
+#	Given that a project with the name "Test Project" exists
 #	And the project has a teamleader with id "Anje"
+#	And that the admin is logged in
 #	When the administrator unassigns the teamleader
 #	Then the project has no teamleader
 #	

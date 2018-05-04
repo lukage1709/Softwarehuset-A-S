@@ -58,18 +58,6 @@ public class TeamLeaderSteps {
 		
 	}
 
-	/* @Given("^there is a project with ID \"([^\"]*)\"$") // TO DO: DELETE THIS, PROJECTID USED WRONG!!!
-	public void thereIsAProjectWithID(String projectID) throws Exception {
-		// create dummy project
-		planningApp.adminLogin("admin1234");
-		project = new Project(projectID, planningApp.yearWeekParser("2018-5"));
-		planningApp.createProject(project);
-		project = planningApp.searchProjectByID(projectID);
-		assertThat(project,is(notNullValue()));
-		
-		planningApp.adminLogOut();
-	} */
-
   	@Given("^the employee is team leader on that project$")
 	public void theEmployeeIsTeamLeaderOnThatProject() throws Exception {
 		employee = helper.getEmployee();
@@ -158,7 +146,7 @@ public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
   	
   	// Linnea
   	/****************************************************************************************/
-	@Given("^there is a project with ID \"([^\"]*)\"$")
+	@Given("^there is a project with ID \"([^\"]*)\"$") // TODO: Can be deleted once id has been removed
 	public void thereIsAProjectWithID(String projectId) throws Exception {
 		project = new Project("Project with employees",planningApp.yearWeekParser("2018-02"));
 
@@ -169,7 +157,7 @@ public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
 		assertEquals(project.getProjectNumber(),projectId);
 	} 
 	
-	@Given("^a project with id \"([^\"]*)\" exists$")
+	@Given("^a project with id \"([^\"]*)\" exists$") // TODO: Can be deleted once id has been removed
 	public void aProjectWithIdExists(String projectId) throws Exception {
 		existingProject = new Project("projectToDelete",planningApp.yearWeekParser("2018-02"));
 
@@ -179,7 +167,18 @@ public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
 
 		assertEquals(existingProject.getProjectNumber(),projectId);
 	}
+	
+	@Given("^that there is a project with the name \"([^\"]*)\"$")
+	public void thatThereIsAProjectWithTheName(String name) throws Exception {
+		existingProject = new Project(name,planningApp.yearWeekParser("2018-05"));
 
+		planningApp.adminLogin("admin1234");
+		planningApp.createProject(existingProject);
+		planningApp.adminLogOut();
+
+		assertTrue(planningApp.getProjects().contains(existingProject));
+	}
+	
 	
 	@Given("^this project has a teamleader with id \"([^\"]*)\"$")
 	public void thisProjectHasATeamleaderWithId(String employeeId) throws Exception {
@@ -189,7 +188,7 @@ public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
 		planningApp.registerEmployee(teamleader);
 		assertTrue(planningApp.getEmployees().contains(teamleader));
 		planningApp.adminLogOut();
-		
+
 		existingProject.assignTeamleader(teamleader);
 		assertTrue(existingProject.getTeamleader().equals(teamleader));
 	}

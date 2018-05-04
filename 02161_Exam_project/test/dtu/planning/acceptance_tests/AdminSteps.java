@@ -92,8 +92,9 @@ public class AdminSteps {
 	}
 
 
-	@Given("^that a project with id \"([^\"]*)\" exists$")
+	@Given("^that a project with id \"([^\"]*)\" exists$") // TO DO: This can be deleted
 	public void thatAProjectWithIdExists(String projectId) throws Exception {
+		//existingProject = planningApp.getExistingProjectByProjectNumber(projectId);
 		existingProject = new Project("projectToDelete",planningApp.yearWeekParser("2018-02"));
 
 		planningApp.adminLogin("admin1234");
@@ -101,7 +102,18 @@ public class AdminSteps {
 		planningApp.adminLogOut();
 
 		assertEquals(existingProject.getProjectNumber(),projectId);
-	}  
+	} 
+
+	@Given("^that a project with the name \"([^\"]*)\" exists$")
+	public void thatAProjectWithTheNameExists(String name) throws Exception {
+		existingProject = new Project(name,planningApp.yearWeekParser("2018-02"));
+
+		planningApp.adminLogin("admin1234");
+		planningApp.createProject(existingProject);
+		planningApp.adminLogOut();
+
+		assertEquals(existingProject.getName(),name);
+	}
 
 
 	@When("^the administrator removes the project(?: again|)$")
@@ -173,15 +185,24 @@ public class AdminSteps {
 		assertThat(employeesOnExistingProject.size(),is(1));
 	}
 
-	@Given("^that a project with id \"([^\"]*)\" no longer exists$")
+	@Given("^that a project with id \"([^\"]*)\" no longer exists$") // TODO: Has been exchanged for method under it
 	public void thatAProjectWithIdNoLongerExists(String projectId) throws Exception {
 		String startDateForProject = projectId.split("-")[0] + "-1";
-		
+
 		existingProject = new Project("projectToDelete",planningApp.yearWeekParser(startDateForProject));
 
 		assertEquals(existingProject.getProjectNumber(),projectId);
 		assertFalse(planningApp.getProjects().contains(existingProject));
 	}
+	
+	@Given("^that a project with the name \"([^\"]*)\" has already been removed$")
+	public void thatAProjectWithTheNameHasAlreadyBeenRemoved(String name) throws Exception {
+	    existingProject= new Project(name, planningApp.yearWeekParser("2018-2")); // This name is misleading, but required for the removing check. 
+	    
+	    assertFalse(planningApp.getProjects().contains(existingProject));
+	}
+
+
 
 	//
 
@@ -246,7 +267,7 @@ public class AdminSteps {
 		assertEquals(errormessage, errorMessage.getErrorMessage());
 	}
 
-	
+
 	//3
 	@When("^the administrator registers the employee with name \"([^\"]*)\" and ID \"([^\"]*)\"$")
 	public void theAdministratorRegistersTheEmployeeWithNameAndID(String employeeName, String employeeID) throws Exception {
