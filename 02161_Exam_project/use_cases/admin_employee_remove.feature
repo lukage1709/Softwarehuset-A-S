@@ -13,7 +13,7 @@ Scenario: Remove an employee when not logged in as administrator
 	And that the admin is not logged in 
 	When the administrator tries to remove the employee 
 	Then the employee is not removed from the list of employees
-	And I get an error message "Administrator login required to remove employee from system"
+	And I get an error message "Administrator login required"
 	
 Scenario: Remove an employee that does not exists
 	Given that the admin is logged in 

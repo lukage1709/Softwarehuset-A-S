@@ -13,7 +13,7 @@ Scenario: Teamleader assigns employee to activity
 	Then the employee is assigned to activity in project with ID
 	And the activity is written on the employees list of activities
 	And the employee with ID "Cane" is still at the list "Available employees"	
-
+#
 Scenario: Teamleader unassigns employee to activity
 	Given that there is a project with the name "Test Project"
 	And this project has a teamleader with id "Anje"

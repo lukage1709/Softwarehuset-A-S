@@ -44,10 +44,6 @@ public class PlanningApp {
 	}
 
 
-
-
-
-
 	/**
 	 * Creates a project provided the administrator is logged in
 	 *  
@@ -127,18 +123,17 @@ public class PlanningApp {
 	 * @param employee to be registered
 	 * 
 	 */
-	public void registerEmployee(Employee employee) throws Exception {
-		if (adminLoggedIn) {
-			if (currentEmployees.contains(employee)) {
-				throw new Exception("Employee is already registered");
+	public void registerEmployee(Employee employee) throws OperationNotAllowedException {
+		checkAdministratorLoggedIn();
+		if (currentEmployees.contains(employee)) {
+			throw new OperationNotAllowedException("Employee is already registered");
 
-			}
-			if (searchEmployeeID(employee.getID()) != null) {
-				throw new Exception("Employee not registered - ID already used");
+		}
+		if (searchEmployeeID(employee.getID()) != null) {
+			throw new OperationNotAllowedException("Employee not registered - ID already used");
 
-			}else {
-				currentEmployees.add(employee);
-			}
+		}else {
+			currentEmployees.add(employee);
 		}
 
 	}	
@@ -163,17 +158,13 @@ public class PlanningApp {
 
 
 	public void removeEmployee(Employee employee) throws Exception {
-		if (adminLoggedIn) {
-			if (searchEmployeeID(employee.getID()) == null) {
-				throw new OperationNotAllowedException("Employee does not exists in list of employees");
+		checkAdministratorLoggedIn();
 
-			} else {
-				currentEmployees.remove(employee);
-			}
+		if (searchEmployeeID(employee.getID()) == null) {
+			throw new OperationNotAllowedException("Employee does not exists in list of employees");
 
 		} else {
-			throw new OperationNotAllowedException("Administrator login required to remove employee from system");
-
+			currentEmployees.remove(employee);
 		}
 
 	}
@@ -202,15 +193,9 @@ public class PlanningApp {
 	 */
 	public void getAvailableEmployeesInWeek(Calendar startweek, Calendar endweek) throws Exception {
 		for (Employee employee : currentEmployees) {
-			if (!employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
-		}
-		getAvailableEmployees();
-
-		for (Employee employee : currentEmployees) {
 			if (employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
 		}
 		getAvailableEmployees();
-
 
 	}
 
