@@ -74,7 +74,12 @@ public class Activity {
 	}
 
 	public void registerWorkedHours(int hours) {
-		workedHours += hours;
+		if (workedHours + hours < 0) {
+			workedHours = 0;
+		} else {
+			workedHours += hours;
+		}
+		
 	}
 		
 	/**

@@ -1,6 +1,7 @@
 package dtu.planning.acceptance_tests;
 
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -74,6 +75,22 @@ public class EmployeeSteps {
 	    assertThat(activity.getWorkedHours(), is(equalTo(registeredWorkHours + workedHours)));
 	}
 	
+	
+	@Given("^the activity has (\\d+) hours registered$")
+	public void theActivityHasHoursRegistered(int hours) throws Exception {
+	    activity.registerWorkedHours(hours);
+	    assertThat(activity.getWorkedHours(), is(equalTo(hours)));
+	}
+	
+	@When("^the employee registers a negative amount of \"([^\"]*)\" hours to the activity$")
+	public void theEmployeeRegistersANegativeAmountOfHoursToTheActivity(int hours) throws Exception {
+		activity.registerWorkedHours(hours);
+	}
+
+	@Then("^the hours registered on the activity is (\\d+)$")
+	public void theHoursRegisteredOnTheActivityIs(int hours) throws Exception {
+		assertThat(activity.getWorkedHours(), is(equalTo(hours)));
+	}
 	
 	/****************************************************************************************/
 	
