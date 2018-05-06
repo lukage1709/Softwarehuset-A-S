@@ -13,7 +13,7 @@ Scenario: Teamleader assigns employee to activity
 	Then the employee is assigned to activity in project with ID
 	And the activity is written on the employees list of activities
 	And the employee with ID "Cane" is still at the list "Available employees"	
-#
+
 Scenario: Teamleader unassigns employee to activity
 	Given that there is a project with the name "Test Project"
 	And this project has a teamleader with id "Anje"
@@ -24,5 +24,14 @@ Scenario: Teamleader unassigns employee to activity
 	Then the employee is unassigned from activity "Activity 1" in the project
 	And the activity is no longer written on the employees list of activities
 	
+Scenario: Teamleader unassigns employee to activity again
+	Given that there is a project with the name "Test Project"
+	And this project has a teamleader with id "Anje"
+	And there is an activity with name "Activity 1" in the activities list of that project
+	And there is an employee with ID "Cane" who no longer assigned to the activity in the project
+	And the teamleader is logged in
+	When teamleader unassigns employee with ID "Cane" from the activity in the project again
+	Then this results in the errormessage "Employee not assigned to this activity!"
+
     
 
