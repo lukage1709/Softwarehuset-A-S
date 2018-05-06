@@ -17,7 +17,6 @@ public class PlanningApp {
 	private boolean adminLoggedIn = false;
 	private List<Project> currentProjects = new ArrayList<>();
 	private List<Employee> currentEmployees = new ArrayList<>();
-	private List<Employee> availableEmployees = new ArrayList<>();
 	private Employee currentUser = null;
 
 
@@ -195,18 +194,13 @@ public class PlanningApp {
 	 * @throws Exception 
 	 * 
 	 */
-	public void getAvailableEmployeesInWeek(Calendar startweek, Calendar endweek) throws Exception {
+	public List<Employee> getAvailableEmployeesInWeek(Calendar startweek, Calendar endweek) {
+		List<Employee> availableEmployees = new ArrayList<>();
 		for (Employee employee : currentEmployees) {
 			if (employee.isEmployeeAvailable(startweek, endweek)) availableEmployees.add(employee);
 		}
-		getAvailableEmployees();
+		return availableEmployees;
 
-	}
-
-
-
-	public List<Employee> getAvailableEmployees() {
-		return Collections.unmodifiableList(availableEmployees);
 	}
 
 
@@ -246,14 +240,14 @@ public class PlanningApp {
 		return false;
 	}
 
-	public Project getExistingProjectByProjectNumber(String projectNumber) throws Exception {
+	public Project getExistingProjectByProjectNumber(String projectNumber) {
 		for (Project p: currentProjects) {
 			if (p.getProjectNumber().equals(projectNumber)) {
 				return p;
 			}
 		}
 
-		throw new Exception("There are no current projects with project number " + projectNumber);
+		return null;
 	}
 
 }
