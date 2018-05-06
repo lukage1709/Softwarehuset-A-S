@@ -51,10 +51,14 @@ public class PlanningApp {
 	/**
 	 * Creates a project provided the administrator is logged in
 	 *  
-	 * @param project to be created
-	 * 
+	 *  @param project to be created
+	 *  
+	 *  @pre project != null
+	 *  @post currentProject.size() == currentProject@pre.size().plus(project)
 	 */
 	public void createProject(Project project) throws OperationNotAllowedException {
+		assert project != null;
+		
 		checkAdministratorLoggedIn();
 
 		checkNameIsAvailable(project);
@@ -178,7 +182,7 @@ public class PlanningApp {
 
 	}
 
-	public Calendar yearWeekParser(String str) throws ParseException {
+	public static Calendar yearWeekParser(String str) throws ParseException {
 		DateFormat format = new SimpleDateFormat("yyyy-ww");
 		Date date = format.parse(str);
 		Calendar calendar = Calendar.getInstance();
