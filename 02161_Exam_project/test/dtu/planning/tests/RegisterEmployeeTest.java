@@ -18,23 +18,6 @@ public class RegisterEmployeeTest {
 	private List<Employee> currentEmployees = new ArrayList<>();
 	
 	
-	//method tested:
-	
-	/* public void registerEmployee(Employee employee) throws OperationNotAllowedException {
-		checkAdministratorLoggedIn();
-		if (currentEmployees.contains(employee)) {
-			throw new OperationNotAllowedException("Employee is already registered");
-
-		}
-		if (searchEmployeeID(employee.getID()) != null) {
-			throw new OperationNotAllowedException("Employee not registered - ID already used");
-
-		}else {
-			currentEmployees.add(employee);
-		}
-
-	}	
-	*/
 	
 	
 
@@ -54,8 +37,6 @@ public class RegisterEmployeeTest {
 		planningApp.adminLogin("admin1234");
 		planningApp.registerEmployee(employee);
 		planningApp.registerEmployee(employee);
-		planningApp.adminLogOut();
-		
 	}
 	
 	@Test (expected = OperationNotAllowedException.class)
@@ -67,7 +48,7 @@ public class RegisterEmployeeTest {
 		employee2 = new Employee("Anje", "Anders Jensen");
 		planningApp.registerEmployee(employee2);
 		planningApp.registerEmployee(employee);
-		planningApp.adminLogOut();
+	
 		
 	
 	}
