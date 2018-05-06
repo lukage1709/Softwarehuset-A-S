@@ -92,18 +92,6 @@ public class AdminSteps {
 	}
 
 
-	@Given("^that a project with id \"([^\"]*)\" exists$") // TO DO: This can be deleted
-	public void thatAProjectWithIdExists(String projectId) throws Exception {
-		//existingProject = planningApp.getExistingProjectByProjectNumber(projectId);
-		existingProject = new Project("projectToDelete",planningApp.yearWeekParser("2018-02"));
-
-		planningApp.adminLogin("admin1234");
-		planningApp.createProject(existingProject);
-		planningApp.adminLogOut();
-
-		assertEquals(existingProject.getProjectNumber(),projectId);
-	} 
-
 	@Given("^that a project with the name \"([^\"]*)\" exists$")
 	public void thatAProjectWithTheNameExists(String name) throws Exception {
 		existingProject = new Project(name,planningApp.yearWeekParser("2018-02"));
@@ -185,15 +173,6 @@ public class AdminSteps {
 		assertThat(employeesOnExistingProject.size(),is(1));
 	}
 
-	@Given("^that a project with id \"([^\"]*)\" no longer exists$") // TODO: Has been exchanged for method under it
-	public void thatAProjectWithIdNoLongerExists(String projectId) throws Exception {
-		String startDateForProject = projectId.split("-")[0] + "-1";
-
-		existingProject = new Project("projectToDelete",planningApp.yearWeekParser(startDateForProject));
-
-		assertEquals(existingProject.getProjectNumber(),projectId);
-		assertFalse(planningApp.getProjects().contains(existingProject));
-	}
 	
 	@Given("^that a project with the name \"([^\"]*)\" has already been removed$")
 	public void thatAProjectWithTheNameHasAlreadyBeenRemoved(String name) throws Exception {
@@ -263,15 +242,14 @@ public class AdminSteps {
 
 	@Then("^I get an error message \"([^\"]*)\"$")
 	public void iGetAnErrorMessage(String errormessage) throws Exception {
-
 		assertEquals(errormessage, errorMessage.getErrorMessage());
+		
 	}
 
 
 	//3
 	@When("^the administrator registers the employee with name \"([^\"]*)\" and ID \"([^\"]*)\"$")
 	public void theAdministratorRegistersTheEmployeeWithNameAndID(String employeeName, String employeeID) throws Exception {
-		//employee = new Employee("Anje0001", "Anders Jensen");
 		planningApp.registerEmployee(helper.getEmployee());
 
 		employee = new Employee(employeeID, employeeName);
@@ -294,6 +272,7 @@ public class AdminSteps {
 	//1.
 	@Given("^there is a employee with ID \"([^\"]*)\"$")
 	public void thereIsAEmployeeWithID(String employeeID) throws Exception {
+		planningApp.adminLogin("admin1234");
 		planningApp.registerEmployee(helper.getEmployee());
 
 	}
@@ -314,6 +293,7 @@ public class AdminSteps {
 		employee = helper.getEmployee();
 		planningApp.adminLogin("admin1234");
 		planningApp.registerEmployee(employee);
+
 	}
 
 	@Given("^that the admin is not logged in$")
@@ -323,11 +303,11 @@ public class AdminSteps {
 	}
 	@When("^the administrator tries to remove the employee$")
 	public void theAdministratorTriesToRemoveTheEmployee() throws Exception {
-		planningApp.registerEmployee(helper.getEmployee());
 		try {
 			planningApp.removeEmployee(helper.getEmployee());
 		} catch (Exception e) {
 			errorMessage.setErrorMessage(e.getMessage());
+
 		}
 	}
 

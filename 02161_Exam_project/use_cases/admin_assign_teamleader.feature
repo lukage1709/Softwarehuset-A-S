@@ -5,7 +5,7 @@
 #Scenario: Assign a teamleader
 #	Given that a project with the name "Test Project" exists
 #	And there is an employee with id "Anje"
-#	And the employee is available
+#	And employee with ID "Cane" is available
 #	And that the admin is logged in
 #	When the administrator assigns the employee  as teamleader for project 
 #	Then the employee is set to teamleader of the project
