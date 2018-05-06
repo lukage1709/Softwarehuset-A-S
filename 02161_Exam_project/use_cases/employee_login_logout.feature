@@ -4,14 +4,14 @@ Feature: User login/logout
 #keep
 Scenario: User logs in
 	Given that a user is not already logged in
-	And the user logins with userID "Anje"
 	And "Anje" is a registered user
+	When the user logs in with id "Anje"
 	Then the user with id "Anje" logs in successfully
 	
 Scenario: User types unknown username
 	Given that a user is not already logged in
-	When the user logs in with username "Unknown"
 	And "Unknown" is not a registered user.
+	When the user logs in with id "Unknown"
 	Then the user is not logged in
 
 Scenario: User logs out
