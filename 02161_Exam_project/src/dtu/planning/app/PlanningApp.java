@@ -194,6 +194,12 @@ public class PlanningApp {
 
 		return calendar;
 	}
+	
+	public static String yearWeekFormat(Calendar cal) {
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-ww");
+		String formatted = format1.format(cal.getTime());
+		return formatted;
+	}
 
 
 	/**
