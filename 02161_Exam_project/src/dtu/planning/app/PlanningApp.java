@@ -28,23 +28,33 @@ public class PlanningApp {
 	}
 
 
+	/**
+	 * @return whether or not the administrator is logged in
+	 */
 	public boolean adminLoggedIn() {
 		return adminLoggedIn;
 	}
 
+	/**
+	 * Logs in administrator if correct password is given
+	 * @param password
+	 * @return true if correct password, false if not
+	 */
 	public boolean adminLogin(String password) {
 		adminLoggedIn = password.equals("admin1234");
 		return adminLoggedIn;
 	}
 
+	/**
+	 * Logs in administrator out
+	 */
 	public void adminLogOut() {
 		adminLoggedIn = false;
-
 	}
 
 
 	/**
-	 * Creates a project provided the administrator is logged in
+	 * Creates a project provided preconditions are 
 	 *  
 	 *  @param project to be created
 	 *  
@@ -55,16 +65,16 @@ public class PlanningApp {
 	 */
 	public void createProject(Project project) throws OperationNotAllowedException {
 		List<Project> projectsAtPre = new ArrayList<>(getProjects()); // To be used for postcondition
-		
+
 		checkAdministratorLoggedIn();
 
 		checkNameIsAvailable(project);
-		
+
 		assert project != null; // Assert statements are put after defensive programming checks
 		assert adminLoggedIn()==true;
 
 		currentProjects.add(project);
-		
+
 		projectsAtPre.add(project);
 		assert projectsAtPre.equals(currentProjects);
 	}
@@ -170,7 +180,7 @@ public class PlanningApp {
 
 	public void removeEmployee(Employee employee) throws OperationNotAllowedException {
 		checkAdministratorLoggedIn();
-	
+
 		assert employee != null;
 
 		if (searchEmployeeID(employee.getID()) == null) {
