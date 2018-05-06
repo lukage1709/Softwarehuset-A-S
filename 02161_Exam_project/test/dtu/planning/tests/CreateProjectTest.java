@@ -12,7 +12,7 @@ import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 
-public class createProjectTest {
+public class CreateProjectTest {
 
 	public PlanningApp testInputData(boolean logInFirst, List<Project> projectsToAdd)  throws ParseException,  OperationNotAllowedException
 	{

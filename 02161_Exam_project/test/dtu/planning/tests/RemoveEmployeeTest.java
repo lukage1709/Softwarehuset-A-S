@@ -1,4 +1,4 @@
-package dtu.planning.acceptance_tests;
+package dtu.planning.tests;
 
 import org.junit.Assert.*;
 

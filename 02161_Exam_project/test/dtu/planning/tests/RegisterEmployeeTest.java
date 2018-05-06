@@ -11,7 +11,7 @@ import dtu.planning.app.Employee;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 
-public class registerEmployeeTest {
+public class RegisterEmployeeTest {
 	
 	PlanningApp planningApp = new PlanningApp();
 	Employee employee, employee2;
