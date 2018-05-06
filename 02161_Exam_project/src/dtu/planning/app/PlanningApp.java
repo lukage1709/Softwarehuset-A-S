@@ -49,16 +49,24 @@ public class PlanningApp {
 	 *  @param project to be created
 	 *  
 	 *  @pre project != null
+	 *  @pre admin logged in
+	 *  @pre project name is unique
 	 *  @post currentProject.size() == currentProject@pre.size().plus(project)
 	 */
 	public void createProject(Project project) throws OperationNotAllowedException {
-		assert project != null;
+		List<Project> projectsAtPre = new ArrayList<>(getProjects()); // To be used for postcondition
 		
 		checkAdministratorLoggedIn();
 
 		checkNameIsAvailable(project);
+		
+		assert project != null; // Assert statements are put after defensive programming checks
+		assert adminLoggedIn()==true;
 
 		currentProjects.add(project);
+		
+		projectsAtPre.add(project);
+		assert projectsAtPre.equals(currentProjects);
 	}
 
 	private void checkAdministratorLoggedIn() throws OperationNotAllowedException {
