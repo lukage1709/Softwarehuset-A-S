@@ -23,7 +23,11 @@ public class Activity {
 		this.endWeek = endWeek;
 		this.workedHours = 0;
 	}
-
+	
+	public String getActivityId() {
+		return activityId;
+	}
+	
 	public String getActivityName() {
 		return activityName;
 	}
@@ -70,7 +74,12 @@ public class Activity {
 	}
 
 	public void registerWorkedHours(int hours) {
-		workedHours += hours;
+		if (workedHours + hours < 0) {
+			workedHours = 0;
+		} else {
+			workedHours += hours;
+		}
+		
 	}
 		
 	/**
@@ -78,8 +87,6 @@ public class Activity {
 	 */
 	public void removeAllEmployees() {
 		assignedEmployees = new ArrayList<>();
-
-
 	}
 
 	public int getEstimatedHours() {

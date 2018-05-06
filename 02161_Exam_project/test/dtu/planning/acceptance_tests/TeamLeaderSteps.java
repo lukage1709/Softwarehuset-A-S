@@ -10,6 +10,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
 import dtu.planning.app.PlanningApp;
@@ -25,6 +28,7 @@ public class TeamLeaderSteps {
 	private Activity newActivity, existingActivity;
 	private Employee employeeLoggedIn;
 	private Activity activity;
+	private List<Employee> availableEmployees = new ArrayList();
 
 	public TeamLeaderSteps(PlanningApp planningApp, ErrorMessageHolder errorMessage, EmployeeHelper helper) {
 		this.planningApp = planningApp;
@@ -75,8 +79,8 @@ public class TeamLeaderSteps {
 		}
 	}
 	
-	@When("^teamleader worngly adds activity named \"([^\"]*)\", estimatedhours (\\d+), startweek \"([^\"]*)\" and endweek \"([^\"]*)\" to the project$")
-	public void teamleaderWornglyAddsActivityNamedEstimatedhoursStartweekAndEndweekToTheProject(String name, int estHours, String startWeek, String endWeek) throws Exception {
+	@When("^teamleader wrongly adds activity named \"([^\"]*)\", estimatedhours (\\d+), startweek \"([^\"]*)\" and endweek \"([^\"]*)\" to the project$")
+	public void teamleaderWronglyAddsActivityNamedEstimatedhoursStartweekAndEndweekToTheProject(String name, int estHours, String startWeek, String endWeek) throws Exception {
 		newActivity = new Activity(existingProject.getActivityIdCounter(), name, estHours, planningApp.yearWeekParser(startWeek), planningApp.yearWeekParser(endWeek));
 	    assertThat(newActivity.getActivityName(),is(equalTo(name)));
 		assertThat(newActivity.getEstimatedHours(),is(equalTo(estHours)));
@@ -90,15 +94,26 @@ public class TeamLeaderSteps {
 		}
 	}
   
-  	@Given("^the employee is not team leader on that project$")
-  	public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
+//  	@Given("^the employee is not team leader on that project$")
+//  	public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
+//		planningApp.adminLogin("admin1234");
+//		Employee employee2 = new Employee("Heha", "Henning Hansen");
+//		planningApp.registerEmployee(employee2);
+//		existingProject.assignTeamleader(employee2);
+//		planningApp.adminLogOut();
+//		
+//	}
+  	
+  	@Given("^that there is a project with the name \"([^\"]*)\" that starts \"([^\"]*)\"$")
+  	public void thatThereIsAProjectWithTheNameThatStarts(String activityName, String startDate) throws Exception {
+  		existingProject = new Project(activityName, planningApp.yearWeekParser(startDate));
+
 		planningApp.adminLogin("admin1234");
-		Employee employee2 = new Employee("Heha", "Henning Hansen");
-		planningApp.registerEmployee(employee2);
-		existingProject.assignTeamleader(employee2);
+		planningApp.createProject(existingProject);
 		planningApp.adminLogOut();
-		
-	}
+
+		assertTrue(planningApp.getProjects().contains(existingProject));
+  	}
 	
 
 	
@@ -110,7 +125,7 @@ public class TeamLeaderSteps {
 	
 	@Given("^that there is a project with the name \"([^\"]*)\"$")
 	public void thatThereIsAProjectWithTheName(String name) throws Exception {
-		existingProject = new Project(name,planningApp.yearWeekParser("2018-05"));
+		existingProject = new Project(name,planningApp.yearWeekParser("2018-01"));
 
 		planningApp.adminLogin("admin1234");
 		planningApp.createProject(existingProject);
@@ -242,34 +257,34 @@ public class TeamLeaderSteps {
 	
 	@When("^Teamleader requests available employees in the same time as the activity$")
 	public void teamleaderRequestsAvailableEmployeesInTheSameTimeAsTheActivity() throws Exception {
-		planningApp.getAvailableEmployeesInWeek(newActivity.getStartWeek(), newActivity.getEndWeek());
+		availableEmployees = planningApp.getAvailableEmployeesInWeek(newActivity.getStartWeek(), newActivity.getEndWeek());
 	
 	}
 
 	@Then("^Teamleader receives list of availability employees not working in week two, tree and four$")
 	public void teamleaderReceivesListOfAvailabilityEmployeesNotWorkingInWeekTwoTreeAndFour() throws Exception {
-		assertThat(planningApp.getAvailableEmployees().contains(employee), is(false));
-		assertThat(planningApp.getAvailableEmployees().contains(employee2), is(true));
+		assertThat(availableEmployees.contains(employee), is(false));
+		assertThat(availableEmployees.contains(employee2), is(true));
 
 	}
 	// 2
 	@Then("^Teamleader receives list of availability employees not working in week one, and two$")
 	public void teamleaderReceivesListOfAvailabilityEmployeesNotWorkingInWeekOneAndTwo() throws Exception {
-		assertThat(planningApp.getAvailableEmployees().contains(employee), is(false));
-		assertThat(planningApp.getAvailableEmployees().contains(employee2), is(true));
+		assertThat(availableEmployees.contains(employee), is(false));
+		assertThat(availableEmployees.contains(employee2), is(true));
 		
 	}
 	// 3
 	@Then("^Teamleader receives list of availability employees not working in week four and five$")
 	public void teamleaderReceivesListOfAvailabilityEmployeesNotWorkingInWeekFourAndFive() throws Exception {
-		assertThat(planningApp.getAvailableEmployees().contains(employee), is(false));
-		assertThat(planningApp.getAvailableEmployees().contains(employee2), is(true));
+		assertThat(availableEmployees.contains(employee), is(false));
+		assertThat(availableEmployees.contains(employee2), is(true));
 	}
 	// 4
 	@Then("^Teamleader receives list of availability employees not working in week six$")
 	public void teamleaderReceivesListOfAvailabilityEmployeesNotWorkingInWeekSix() throws Exception {
-		assertThat(planningApp.getAvailableEmployees().contains(employee), is(true));
-		assertThat(planningApp.getAvailableEmployees().contains(employee2), is(true));
+		assertThat(availableEmployees.contains(employee), is(true));
+		assertThat(availableEmployees.contains(employee2), is(true));
 
 	}
 	
