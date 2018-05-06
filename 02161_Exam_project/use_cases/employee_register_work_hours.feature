@@ -1,4 +1,4 @@
-Feature: Rmployee registers time
+Feature: Employee registers time
     Description: The employee registers time worked on activities 
     Actors: Employee
 #keep

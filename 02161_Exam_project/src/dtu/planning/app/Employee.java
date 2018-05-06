@@ -23,10 +23,6 @@ public class Employee {
 	public String getName() {
 		return employeeName;
 	}
-	@Override
-	public String toString() {
-		return getName() + " " + getID() + " " + hashCode();
-	}
 
 	public boolean match(String searchID) {
 		return employeeID.equals(searchID);	

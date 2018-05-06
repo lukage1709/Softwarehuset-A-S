@@ -204,6 +204,12 @@ public class PlanningApp {
 
 		return calendar;
 	}
+	
+	public static String yearWeekFormat(Calendar cal) {
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-ww");
+		String formatted = format1.format(cal.getTime());
+		return formatted;
+	}
 
 
 	/**
@@ -253,7 +259,7 @@ public class PlanningApp {
 
 	public boolean isUserTeamleader() {
 		for (Project project : currentProjects ) {
-			if (project.getTeamleader().equals(currentUser)){
+			if (project.getTeamleader() != null && project.getTeamleader().equals(currentUser)){
 				return true;
 			}
 		}
@@ -266,7 +272,6 @@ public class PlanningApp {
 				return p;
 			}
 		}
-
 		return null;
 	}
 
