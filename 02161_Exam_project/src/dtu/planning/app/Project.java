@@ -83,10 +83,12 @@ public class Project {
 	public void addActivity(Activity activity) throws Exception {
 		if (activityNameAlreadyExistsInProject(activity)) {
 			throw new Exception("Activity name already used in this project");
-			
 		}
 		if (activity.endWeekIsBeforeStartWeek()) {
 			throw new Exception("The activity cannot end before it starts");
+		}
+		if (activity.getStartWeek().before(startDate)) {
+			throw new Exception("The activity cannot start before the project starts");
 		}
 		activities.add(activity);
 		

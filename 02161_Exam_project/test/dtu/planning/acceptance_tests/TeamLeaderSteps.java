@@ -79,8 +79,8 @@ public class TeamLeaderSteps {
 		}
 	}
 	
-	@When("^teamleader worngly adds activity named \"([^\"]*)\", estimatedhours (\\d+), startweek \"([^\"]*)\" and endweek \"([^\"]*)\" to the project$")
-	public void teamleaderWornglyAddsActivityNamedEstimatedhoursStartweekAndEndweekToTheProject(String name, int estHours, String startWeek, String endWeek) throws Exception {
+	@When("^teamleader wrongly adds activity named \"([^\"]*)\", estimatedhours (\\d+), startweek \"([^\"]*)\" and endweek \"([^\"]*)\" to the project$")
+	public void teamleaderWronglyAddsActivityNamedEstimatedhoursStartweekAndEndweekToTheProject(String name, int estHours, String startWeek, String endWeek) throws Exception {
 		newActivity = new Activity(existingProject.getActivityIdCounter(), name, estHours, planningApp.yearWeekParser(startWeek), planningApp.yearWeekParser(endWeek));
 	    assertThat(newActivity.getActivityName(),is(equalTo(name)));
 		assertThat(newActivity.getEstimatedHours(),is(equalTo(estHours)));
@@ -94,15 +94,26 @@ public class TeamLeaderSteps {
 		}
 	}
   
-  	@Given("^the employee is not team leader on that project$")
-  	public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
+//  	@Given("^the employee is not team leader on that project$")
+//  	public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
+//		planningApp.adminLogin("admin1234");
+//		Employee employee2 = new Employee("Heha", "Henning Hansen");
+//		planningApp.registerEmployee(employee2);
+//		existingProject.assignTeamleader(employee2);
+//		planningApp.adminLogOut();
+//		
+//	}
+  	
+  	@Given("^that there is a project with the name \"([^\"]*)\" that starts \"([^\"]*)\"$")
+  	public void thatThereIsAProjectWithTheNameThatStarts(String activityName, String startDate) throws Exception {
+  		existingProject = new Project(activityName, planningApp.yearWeekParser(startDate));
+
 		planningApp.adminLogin("admin1234");
-		Employee employee2 = new Employee("Heha", "Henning Hansen");
-		planningApp.registerEmployee(employee2);
-		existingProject.assignTeamleader(employee2);
+		planningApp.createProject(existingProject);
 		planningApp.adminLogOut();
-		
-	}
+
+		assertTrue(planningApp.getProjects().contains(existingProject));
+  	}
 	
 
 	
@@ -114,7 +125,7 @@ public class TeamLeaderSteps {
 	
 	@Given("^that there is a project with the name \"([^\"]*)\"$")
 	public void thatThereIsAProjectWithTheName(String name) throws Exception {
-		existingProject = new Project(name,planningApp.yearWeekParser("2018-05"));
+		existingProject = new Project(name,planningApp.yearWeekParser("2018-01"));
 
 		planningApp.adminLogin("admin1234");
 		planningApp.createProject(existingProject);

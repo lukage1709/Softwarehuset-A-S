@@ -47,7 +47,7 @@ public class EmployeeSteps {
 	@Given("^the activity \"([^\"]*)\" exists within the project with ID \"([^\"]*)\"$")
 	public void theActivityExistsWithinTheProjectWithID(String activityName, String projectID) throws Exception {
 		planningApp.adminLogin("admin1234");
-		project = new Project(projectID, planningApp.yearWeekParser("2018-5"));;
+		project = new Project(projectID, planningApp.yearWeekParser("2018-1"));;
 		planningApp.createProject(project);
 		activity = new Activity(project.getActivityIdCounter(), activityName, 0, planningApp.yearWeekParser("2018-1"), planningApp.yearWeekParser("2018-3"));
 		project.addActivity(activity);
