@@ -93,16 +93,6 @@ public class TeamLeaderSteps {
 			errorMessage.setErrorMessage(e.getMessage());
 		}
 	}
-  
-//  	@Given("^the employee is not team leader on that project$")
-//  	public void theEmployeeIsNotTeamLeaderOnThatProject() throws Exception {
-//		planningApp.adminLogin("admin1234");
-//		Employee employee2 = new Employee("Heha", "Henning Hansen");
-//		planningApp.registerEmployee(employee2);
-//		existingProject.assignTeamleader(employee2);
-//		planningApp.adminLogOut();
-//		
-//	}
   	
   	@Given("^that there is a project with the name \"([^\"]*)\" that starts \"([^\"]*)\"$")
   	public void thatThereIsAProjectWithTheNameThatStarts(String activityName, String startDate) throws Exception {
