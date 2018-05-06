@@ -15,6 +15,7 @@ import java.util.List;
 
 import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
+import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 
@@ -22,7 +23,7 @@ import dtu.planning.app.Project;
 public class TeamLeaderSteps {
 	private PlanningApp planningApp;
 	private Project existingProject;
-	private Employee employee, employee2, availableEmployee, assignedEmployee, teamleader;
+	private Employee employee, employee2, availableEmployee, teamleader;
 	private ErrorMessageHolder errorMessage;
 	public EmployeeHelper helper;
 	private Activity newActivity, existingActivity;
@@ -138,6 +139,13 @@ public class TeamLeaderSteps {
 		assertTrue(existingProject.getTeamleader().equals(teamleader));
 	}
 
+	@Given("^there is an employee with ID \"([^\"]*)\" who no longer assigned to the activity in the project$")
+	public void thereIsAnEmployeeWithIDWhoNoLongerAssignedToTheActivityInTheProject(String employeeId) throws Exception {
+	    employee = new Employee(employeeId, "Carsten Nelson");
+	    
+	    assertFalse(employee.getAssignedActivities().contains(activity));
+	    assertFalse(activity.getAssignedEmployees().contains(employee))
+;	}
 	
 	@Given("^the teamleader is logged in$")
 	public void theTeamleaderIsLoggedIn() throws Exception {
@@ -153,7 +161,7 @@ public class TeamLeaderSteps {
 	
 	@Then("^the activity is no longer written on the employees list of activities$")
 	public void theActivityIsNoLongerWrittenOnTheEmployeesListOfActivities() throws Exception {
-		assertFalse(assignedEmployee.getAssignedActivities().contains(activity));
+		assertFalse(employee.getAssignedActivities().contains(activity));
 	}
 	
 	// Christina 
@@ -200,28 +208,39 @@ public class TeamLeaderSteps {
 	// 2
 	@Given("^there is an employee with ID \"([^\"]*)\" assigned to the activity in the project$")
 	public void thereIsAnEmployeeWithIDAssignedToTheActivityInTheProject(String employeeId) throws Exception {
-		assignedEmployee = new Employee(employeeId, "Carsten Nelson");
+		employee = new Employee(employeeId, "Carsten Nelson");
 		
 		planningApp.adminLogin("admin1234");
-		planningApp.registerEmployee(assignedEmployee);
-		assertTrue(planningApp.getEmployees().contains(assignedEmployee));
+		planningApp.registerEmployee(employee);
+		assertTrue(planningApp.getEmployees().contains(employee));
 		planningApp.adminLogOut();
 		
-		activity.assignEmployee(assignedEmployee);
-		assertThat(activity.getAssignedEmployees().contains(assignedEmployee), is(true));
+		activity.assignEmployee(employee);
+		assertThat(activity.getAssignedEmployees().contains(employee), is(true));
 		
 	}
 
-	@When("^teamleader unassigns employee with ID \"([^\"]*)\" from the activity in the project$")
-	public void teamleaderUnassignsEmployeeWithIDFromTheActivityInTheProject(String employeeId) throws Exception {
-	    assertEquals(assignedEmployee.getID(), employeeId);
-	    activity.unassignEmployee(assignedEmployee);
+	@When("^teamleader unassigns employee with ID \"([^\"]*)\" from the activity in the project(?: again|)$")
+	public void teamleaderUnassignsEmployeeWithIDFromTheActivityInTheProject(String employeeId) {
+	    assertEquals(employee.getID(), employeeId);
+	   
+	    	try {
+				activity.unassignEmployee(employee);
+			} catch (OperationNotAllowedException e) {
+				errorMessage.setErrorMessage(e.getMessage());
+			}
+	    
     
 	}
 
 	@Then("^the employee is unassigned from activity \"([^\"]*)\" in the project$")
 	public void theEmployeeIsUnassignedFromActivityInTheProject(String arg1) throws Exception {
-    assertThat(activity.getAssignedEmployees().contains(assignedEmployee), is(false));
+    assertThat(activity.getAssignedEmployees().contains(employee), is(false));
+	}
+	
+	@Then("^this results in the errormessage \"([^\"]*)\"$")
+	public void thisResultsInTheErrormessage(String message) throws Exception {
+	    assertEquals(errorMessage.getErrorMessage(),message);
 	}
 	
 	// teamleader requests list of available employees
