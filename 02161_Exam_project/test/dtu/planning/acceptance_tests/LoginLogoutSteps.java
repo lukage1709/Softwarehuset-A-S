@@ -1,11 +1,13 @@
 package dtu.planning.acceptance_tests;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import dtu.planning.app.Employee;
+import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 
 public class LoginLogoutSteps {
@@ -14,6 +16,7 @@ public class LoginLogoutSteps {
 	private String password;
 	private EmployeeHelper helper;
 	private Employee employee;
+	private ErrorMessageHolder errorMessage;
 	
 	public LoginLogoutSteps(PlanningApp planningApp, EmployeeHelper helper) {
 		this.planningApp = planningApp;
@@ -78,39 +81,38 @@ public class LoginLogoutSteps {
 	     assertTrue(planningApp.getcurrentUser() == null);
 
 	}
-
-	@Given("^the user logins with userID \"([^\"]*)\"$")
-	public void theUserLoginsWithUserID(String arg1) throws Exception {	
+	
+	@Given("^\"([^\"]*)\" is a registered user$")
+	public void isARegisteredUser(String id) throws Exception {
 	    employee = helper.getEmployee();
 	    planningApp.adminLogin("admin1234");
 	    planningApp.registerEmployee(employee);
-	    planningApp.userLogin(arg1);
-	}
-
-	@Given("^\"([^\"]*)\" is a registered user$")
-	public void isARegisteredUser(String arg1) throws Exception {
-	    assertTrue(planningApp.searchEmployeeID(arg1) != null);
 	    
+	    assertTrue(planningApp.searchEmployeeID(id) != null);
+	    
+	}
+	
+	@When("^the user logs in with id \"([^\"]*)\"$")
+	public void theUserLogsInWithId(String id) {
+		planningApp.userLogin(id);
 	}
 
 	@Then("^the user with id \"([^\"]*)\" logs in successfully$")
-	public void theUserWithIdLogsInSuccessfully(String arg1) throws Exception {
-	   assertTrue(planningApp.getcurrentUser() == planningApp.searchEmployeeID(arg1));
+	public void theUserWithIdLogsInSuccessfully(String id) throws Exception {
+	   assertTrue(planningApp.getcurrentUser() == planningApp.searchEmployeeID(id));
 	   
 	}
 
 	// failed login-attempt due to uknown userID (lukas)
 
-	@When("^the user logs in with username \"([^\"]*)\"$")
-	public void theUserLogsInWithUsername(String arg1) throws Exception {
-	    planningApp.userLogin(arg1);
-	}
 
-	@When("^\"([^\"]*)\" is not a registered user\\.$")
-	public void isNotARegisteredUser(String arg1) throws Exception {
-	       assertFalse(planningApp.searchEmployeeID(arg1) != null);
+	@Given("^\"([^\"]*)\" is not a registered user\\.$")
+	public void isNotARegisteredUser(String id) throws Exception {
+	       assertNull(planningApp.searchEmployeeID(id));
 	  
 	}
+	
+	
 
 	@Then("^the user is not logged in$")
 	public void theUserIsNotLoggedIn() throws Exception {
