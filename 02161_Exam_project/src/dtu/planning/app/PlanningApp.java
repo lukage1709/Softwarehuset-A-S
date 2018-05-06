@@ -160,7 +160,7 @@ public class PlanningApp {
 	}
 
 
-	public void removeEmployee(Employee employee) throws Exception {
+	public void removeEmployee(Employee employee) throws OperationNotAllowedException {
 		checkAdministratorLoggedIn();
 
 		if (searchEmployeeID(employee.getID()) == null) {
