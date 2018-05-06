@@ -110,10 +110,19 @@ public class Project {
 		}
 		return null;
 	}
+	
+	public Activity getActivityById(String activityId) {
+		for (Activity act : activities) {
+			if (act.getActivityId().equals(activityId)) {
+				return act;
+			}
+		}
+		return null;
+	}
 
 	public String getActivityIdCounter() {
 		String idNumber = String.format("%04d", activityIdCounter); 
-		idCounter++;
+		activityIdCounter++;
 		
 		return idNumber;
 	}

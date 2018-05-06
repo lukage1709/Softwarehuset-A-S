@@ -10,6 +10,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
 import dtu.planning.app.PlanningApp;
@@ -25,6 +28,7 @@ public class TeamLeaderSteps {
 	private Activity newActivity, existingActivity;
 	private Employee employeeLoggedIn;
 	private Activity activity;
+	private List<Employee> availableEmployees = new ArrayList();
 
 	public TeamLeaderSteps(PlanningApp planningApp, ErrorMessageHolder errorMessage, EmployeeHelper helper) {
 		this.planningApp = planningApp;
@@ -242,34 +246,34 @@ public class TeamLeaderSteps {
 	
 	@When("^Teamleader requests available employees in the same time as the activity$")
 	public void teamleaderRequestsAvailableEmployeesInTheSameTimeAsTheActivity() throws Exception {
-		planningApp.getAvailableEmployeesInWeek(newActivity.getStartWeek(), newActivity.getEndWeek());
+		availableEmployees = planningApp.getAvailableEmployeesInWeek(newActivity.getStartWeek(), newActivity.getEndWeek());
 	
 	}
 
 	@Then("^Teamleader receives list of availability employees not working in week two, tree and four$")
 	public void teamleaderReceivesListOfAvailabilityEmployeesNotWorkingInWeekTwoTreeAndFour() throws Exception {
-		assertThat(planningApp.getAvailableEmployees().contains(employee), is(false));
-		assertThat(planningApp.getAvailableEmployees().contains(employee2), is(true));
+		assertThat(availableEmployees.contains(employee), is(false));
+		assertThat(availableEmployees.contains(employee2), is(true));
 
 	}
 	// 2
 	@Then("^Teamleader receives list of availability employees not working in week one, and two$")
 	public void teamleaderReceivesListOfAvailabilityEmployeesNotWorkingInWeekOneAndTwo() throws Exception {
-		assertThat(planningApp.getAvailableEmployees().contains(employee), is(false));
-		assertThat(planningApp.getAvailableEmployees().contains(employee2), is(true));
+		assertThat(availableEmployees.contains(employee), is(false));
+		assertThat(availableEmployees.contains(employee2), is(true));
 		
 	}
 	// 3
 	@Then("^Teamleader receives list of availability employees not working in week four and five$")
 	public void teamleaderReceivesListOfAvailabilityEmployeesNotWorkingInWeekFourAndFive() throws Exception {
-		assertThat(planningApp.getAvailableEmployees().contains(employee), is(false));
-		assertThat(planningApp.getAvailableEmployees().contains(employee2), is(true));
+		assertThat(availableEmployees.contains(employee), is(false));
+		assertThat(availableEmployees.contains(employee2), is(true));
 	}
 	// 4
 	@Then("^Teamleader receives list of availability employees not working in week six$")
 	public void teamleaderReceivesListOfAvailabilityEmployeesNotWorkingInWeekSix() throws Exception {
-		assertThat(planningApp.getAvailableEmployees().contains(employee), is(true));
-		assertThat(planningApp.getAvailableEmployees().contains(employee2), is(true));
+		assertThat(availableEmployees.contains(employee), is(true));
+		assertThat(availableEmployees.contains(employee2), is(true));
 
 	}
 	
