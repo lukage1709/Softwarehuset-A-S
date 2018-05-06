@@ -150,8 +150,9 @@ class AdminAddProjectScreen extends Screen {
 			planningUI.setScreen(new AdminScreen());
 		} else {
 			String projectName = input;
+			Scanner console = new Scanner(System.in);
 			out.println("Enter project start date (YYYY-WW):");
-			String projectDate = promptForProjectDate(out);
+			String projectDate = promptForDate(out, console);
 
 			Project project;
 			try {
@@ -168,19 +169,7 @@ class AdminAddProjectScreen extends Screen {
 				out.println("\n" + e1.getMessage());
 				planningUI.setScreen(new AdminAddProjectScreen());
 			}
-			
 		}
-	}
-
-	public String promptForProjectDate(PrintWriter out) {
-		Scanner console = new Scanner(System.in);
-		String projectDate = console.next();
-		while (!projectDate.matches("\\d{4}-\\d{1,2}")) {
-			out.println("\nWrong date format. Use YYYY-WW:");
-			projectDate = console.next();
-		}
-		
-		return projectDate;
 	}
 }
 
@@ -256,19 +245,6 @@ class AdminAssignTeamleaderScreen extends Screen {
 			out.println("\nEmployee \"" + employeeID + " is now team leader on project \"" + input + "\"");
 			planningUI.setScreen(new AdminScreen());
 		}
-	}
-
-	public String promptForEmployeeID(PrintWriter out) {
-		String employeeID = "";
-		Scanner console = new Scanner(System.in);
-		do {
-			out.println("\nEnter employee ID (leave blank to cancel):");
-			employeeID = console.nextLine();
-			if (employeeID.isEmpty()) {
-				break;
-			}
-		} while (employeeDoesNotExist(employeeID));
-		return employeeID;
 	}
 
 	public void printProjectListWithTeamLeader(PrintWriter out, List<Project> projects) {

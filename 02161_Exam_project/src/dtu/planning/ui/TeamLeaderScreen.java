@@ -23,7 +23,6 @@ public class TeamLeaderScreen extends Screen {
 		out.println("2: Assign employee to activity");
 		out.println("3: Unassign employee from activity");
 		out.println("\nSelect option: ");
-
 	}
 
 	@Override
@@ -39,9 +38,7 @@ public class TeamLeaderScreen extends Screen {
 		} else {
 			planningUI.setScreen(new TeamLeaderScreen());
 		}
-
 	}
-
 }
 
 class TeamLeaderChooseProjectScreen extends Screen {
@@ -51,24 +48,18 @@ class TeamLeaderChooseProjectScreen extends Screen {
 		out.println("Choose project that you want to manage");
 
 		List<Project> projects = planningUI.getPlanningApp().getProjects();
-
-		for (Project project : projects) {
-			if (project.getTeamleader() != null && project.getTeamleader().equals(planningUI.getPlanningApp().getcurrentUser())) {
-				out.println(project.getProjectNumber() + "\t" + project.getName());
-			}
-		}
+		printProjectListWithCurrentUserAsTeamLeader(out, projects);
 		out.println("\nEnter project ID (leave blank to cancel):");
-
 	}
 
 	@Override
 	public void processInput(String input, PrintWriter out) throws IOException {
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new EmployeeScreen());
-		} else if (planningUI.getPlanningApp().getExistingProjectByProjectNumber(input) == null) {
+		} else if (projectDoesNotExist(input)) {
 			out.println("\nProject with ID \"" + input + "\" does not exists");
 			planningUI.setScreen(new TeamLeaderChooseProjectScreen());
-		} else if (planningUI.getPlanningApp().getExistingProjectByProjectNumber(input).getTeamleader() != planningUI.getPlanningApp().getcurrentUser()) {
+		} else if (currentUserIsNotTeamLeaderOnProject(input)) {
 			out.println("\nYou are not team leader on project \"" + input + "\"");
 			planningUI.setScreen(new TeamLeaderChooseProjectScreen());
 		} else {
@@ -76,7 +67,18 @@ class TeamLeaderChooseProjectScreen extends Screen {
 			out.println("\nYou have chosen project \"" + input + "\"");
 			planningUI.setScreen(new TeamLeaderScreen());
 		}
+	}
 
+	public boolean currentUserIsNotTeamLeaderOnProject(String input) {
+		return planningUI.getPlanningApp().getExistingProjectByProjectNumber(input).getTeamleader() != planningUI.getPlanningApp().getcurrentUser();
+	}
+	
+	public void printProjectListWithCurrentUserAsTeamLeader(PrintWriter out, List<Project> projects) {
+		for (Project project : projects) {
+			if (project.getTeamleader() != null && project.getTeamleader().equals(planningUI.getPlanningApp().getcurrentUser())) {
+				out.println(project.getProjectNumber() + "\t" + project.getName());
+			}
+		}
 	}
 }
 
@@ -94,38 +96,20 @@ class TeamLeaderAddActivityScreen extends Screen {
 			planningUI.setScreen(new TeamLeaderScreen());
 		} else {
 			String activityName = input;
-			int estimatedHours = 0;
-			String startWeek;
-			String endWeek;
-
 			Scanner console = new Scanner(System.in);
 			// get estimated hours
-			out.println("Enter estimated hours (integer larger than 0):");
-			while (!console.hasNextInt()) {
-				out.println("\nWrong input. Enter estimated hours (integer larger than 0):");
-				console.next();
-			}
-			estimatedHours = console.nextInt();
+			int estimatedHours = promptForEstimatedHours(out, console);
 			if (estimatedHours <= 0) {
 				out.println("\nEstimated hours must be larger than 0");
 				planningUI.setScreen(new TeamLeaderAddActivityScreen());
 			} else {
 				// get start date/week
 				out.println("Enter activity start date (YYYY-WW):");
-				startWeek = console.next();
-				while (!startWeek.matches("\\d{4}-\\d{1,2}")) {
-					out.println("\nWrong date format. Use YYYY-WW:");
-					startWeek = console.next();
-				}
+				String startWeek = promptForDate(out, console);
 
 				// get end date/week
 				out.println("Enter activity end date (YYYY-WW):");
-				endWeek = console.next();
-				while (!endWeek.matches("\\d{4}-\\d{1,2}")) {
-					out.println("\nWrong date format. Use YYYY-WW:");
-					endWeek = console.next();
-				}
-
+				String endWeek = promptForDate(out, console);
 				try {
 					Activity activity = new Activity(planningUI.getProjectToManage().getActivityIdCounter(), activityName, estimatedHours, planningUI.getPlanningApp().yearWeekParser(startWeek), planningUI.getPlanningApp().yearWeekParser(endWeek));
 					planningUI.getProjectToManage().addActivity(activity);
@@ -139,10 +123,18 @@ class TeamLeaderAddActivityScreen extends Screen {
 					planningUI.setScreen(new TeamLeaderAddActivityScreen());
 				}
 			}
-
-
 		}
+	}
 
+	public int promptForEstimatedHours(PrintWriter out, Scanner console) {
+		int estimatedHours = 0;
+		out.println("Enter estimated hours (integer larger than 0):");
+		while (!console.hasNextInt()) {
+			out.println("\nWrong input. Enter estimated hours (integer larger than 0):");
+			console.next();
+		}
+		estimatedHours = console.nextInt();
+		return estimatedHours;
 	}
 }
 
@@ -151,12 +143,8 @@ class TeamLeaderAssignEmployeeScreen extends Screen {
 	public void printMenu(PrintWriter out) throws IOException {
 		out.println("-- Assign employee to activity --");
 		out.println("Choose activity");
-
 		List<Activity> activities = planningUI.getProjectToManage().getActivities();
-
-		for (Activity activity : activities) {
-			out.println(activity.getActivityId() + "\t" + activity.getActivityName());
-		}
+		printActivityList(out, activities);
 		out.println("\nEnter activity ID (leave blank to cancel):");
 
 	}
@@ -165,7 +153,7 @@ class TeamLeaderAssignEmployeeScreen extends Screen {
 	public void processInput(String input, PrintWriter out) throws IOException {	
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new TeamLeaderScreen());
-		} else if (planningUI.getProjectToManage().getActivityById(input) == null) {
+		} else if (activityDoesNotExist(input)) {
 			out.println("\nActivity with ID \"" + input + "\" does not exists");
 			planningUI.setScreen(new TeamLeaderAssignEmployeeScreen());
 		} else {
@@ -178,24 +166,12 @@ class TeamLeaderAssignEmployeeScreen extends Screen {
 					out.println("\nThere are no available employees");
 					planningUI.setScreen(new TeamLeaderScreen());
 				} else {
-					for (Employee employee : availableEmployees) {
-						out.println(employee.getID() + "\t" + employee.getName());
-					}
-
-					Scanner console = new Scanner(System.in);
-					String employeeID = "";
-					do {
-						out.println("\nEnter employee ID (leave blank to cancel):");
-						employeeID = console.nextLine();
-						if (employeeID.isEmpty()) {
-							break;
-						}
-					} while (planningUI.getPlanningApp().searchEmployeeID(employeeID) == null);
-
-					if (employeeID.isEmpty()) {
+					printEmployeeList(out, availableEmployees);
+					String employeeID = promptForEmployeeID(out);
+					if (inputIsEmpty(employeeID)) {
 						planningUI.setScreen(new TeamLeaderScreen());
 					} else {
-						if (!availableEmployees.contains(planningUI.getPlanningApp().searchEmployeeID(employeeID))) {
+						if (employeeIsNotAvailable(availableEmployees, employeeID)) {
 							out.println("\nEmployee with ID \"" + employeeID + "\" is not available");
 							planningUI.setScreen(new TeamLeaderAssignEmployeeScreen());
 						} else {
@@ -205,15 +181,15 @@ class TeamLeaderAssignEmployeeScreen extends Screen {
 						}
 					}
 				}
-
 			} catch (Exception e) {
 				out.println("\n" + e.getMessage());
 				planningUI.setScreen(new TeamLeaderAssignEmployeeScreen());
 			}
-
-
 		}
+	}
 
+	public boolean employeeIsNotAvailable(List<Employee> availableEmployees, String employeeID) {
+		return !availableEmployees.contains(planningUI.getPlanningApp().searchEmployeeID(employeeID));
 	}
 }
 
@@ -222,21 +198,16 @@ class TeamLeaderUnassignEmployeeScreen extends Screen {
 	public void printMenu(PrintWriter out) throws IOException {
 		out.println("-- Unassign employee from activity --");
 		out.println("Choose activity");
-
 		List<Activity> activities = planningUI.getProjectToManage().getActivities();
-
-		for (Activity activity : activities) {
-			out.println(activity.getActivityId() + "\t" + activity.getActivityName());
-		}
+		printActivityList(out, activities);
 		out.println("\nEnter activity ID (leave blank to cancel):");
-
 	}
 
 	@Override
 	public void processInput(String input, PrintWriter out) throws IOException {	
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new TeamLeaderScreen());
-		} else if (planningUI.getProjectToManage().getActivityById(input) == null) {
+		} else if (activityDoesNotExist(input)) {
 			out.println("\nActivity with ID \"" + input + "\" does not exists");
 			planningUI.setScreen(new TeamLeaderUnassignEmployeeScreen());
 		} else {
@@ -248,24 +219,12 @@ class TeamLeaderUnassignEmployeeScreen extends Screen {
 					out.println("\nThere are no assigned employees");
 					planningUI.setScreen(new TeamLeaderScreen());
 				} else {
-					for (Employee employee : assignedEmployees) {
-						out.println(employee.getID() + "\t" + employee.getName());
-					}
-
-					Scanner console = new Scanner(System.in);
-					String employeeID = "";
-					do {
-						out.println("\nEnter employee ID (leave blank to cancel):");
-						employeeID = console.nextLine();
-						if (employeeID.isEmpty()) {
-							break;
-						}
-					} while (planningUI.getPlanningApp().searchEmployeeID(employeeID) == null);
-
-					if (employeeID.isEmpty()) {
+					printEmployeeList(out, assignedEmployees);
+					String employeeID = promptForEmployeeID(out);
+					if (inputIsEmpty(employeeID)) {
 						planningUI.setScreen(new TeamLeaderScreen());
 					} else {
-						if (!assignedEmployees.contains(planningUI.getPlanningApp().searchEmployeeID(employeeID))) {
+						if (employeeIsNotAssignedToActivity(assignedEmployees, employeeID)) {
 							out.println("\nEmployee with ID \"" + employeeID + "\" is not assigned to this activity");
 							planningUI.setScreen(new TeamLeaderUnassignEmployeeScreen());
 						} else {
@@ -279,9 +238,10 @@ class TeamLeaderUnassignEmployeeScreen extends Screen {
 				out.println("\n" + e.getMessage());
 				planningUI.setScreen(new TeamLeaderUnassignEmployeeScreen());
 			}
-
-
 		}
+	}
 
+	public boolean employeeIsNotAssignedToActivity(List<Employee> assignedEmployees, String employeeID) {
+		return !assignedEmployees.contains(planningUI.getPlanningApp().searchEmployeeID(employeeID));
 	}
 }
