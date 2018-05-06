@@ -170,6 +170,8 @@ public class PlanningApp {
 
 	public void removeEmployee(Employee employee) throws OperationNotAllowedException {
 		checkAdministratorLoggedIn();
+	
+		assert employee != null;
 
 		if (searchEmployeeID(employee.getID()) == null) {
 			throw new OperationNotAllowedException("Employee does not exists in list of employees");
