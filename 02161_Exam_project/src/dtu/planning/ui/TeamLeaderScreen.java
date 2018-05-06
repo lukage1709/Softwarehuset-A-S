@@ -57,7 +57,7 @@ class TeamLeaderChooseProjectScreen extends Screen {
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new EmployeeScreen());
 		} else if (projectDoesNotExist(input)) {
-			out.println("\nProject with ID \"" + input + "\" does not exists");
+			out.println("\nProject with ID \"" + input + "\" does not exist");
 			planningUI.setScreen(new TeamLeaderChooseProjectScreen());
 		} else if (currentUserIsNotTeamLeaderOnProject(input)) {
 			out.println("\nYou are not team leader on project \"" + input + "\"");
@@ -154,7 +154,7 @@ class TeamLeaderAssignEmployeeScreen extends Screen {
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new TeamLeaderScreen());
 		} else if (activityDoesNotExist(input)) {
-			out.println("\nActivity with ID \"" + input + "\" does not exists");
+			out.println("\nActivity with ID \"" + input + "\" does not exist");
 			planningUI.setScreen(new TeamLeaderAssignEmployeeScreen());
 		} else {
 			Activity activity = planningUI.getProjectToManage().getActivityById(input);
@@ -208,7 +208,7 @@ class TeamLeaderUnassignEmployeeScreen extends Screen {
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new TeamLeaderScreen());
 		} else if (activityDoesNotExist(input)) {
-			out.println("\nActivity with ID \"" + input + "\" does not exists");
+			out.println("\nActivity with ID \"" + input + "\" does not exist");
 			planningUI.setScreen(new TeamLeaderUnassignEmployeeScreen());
 		} else {
 			Activity activity = planningUI.getProjectToManage().getActivityById(input);
