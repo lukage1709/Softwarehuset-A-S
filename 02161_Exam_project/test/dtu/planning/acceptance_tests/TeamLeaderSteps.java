@@ -226,7 +226,7 @@ public class TeamLeaderSteps {
 	   
 	    	try {
 				activity.unassignEmployee(employee);
-			} catch (OperationNotAllowedException e) {
+			} catch (Exception e) {
 				errorMessage.setErrorMessage(e.getMessage());
 			}
 	    
