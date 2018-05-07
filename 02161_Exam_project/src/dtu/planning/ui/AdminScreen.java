@@ -69,7 +69,6 @@ class AdminRegisterEmployeeScreen extends Screen {
 		} else {
 			employeeID = input;
 			employeeName = promptForEmployeeName(out);
-
 			Employee employee = new Employee(employeeID, employeeName);
 			try {
 				planningUI.getPlanningApp().registerEmployee(employee);

@@ -61,7 +61,7 @@ class EmployeeRegisterTimeScreen extends Screen {
 			planningUI.setScreen(new EmployeeRegisterTimeScreen());
 		} else {
 			Project selectedProject = planningUI.getPlanningApp().getExistingProjectByProjectNumber(input);
-			out.println("Choose activity");
+			out.println("\nChoose activity");
 			printAssginedActivities(out, selectedProject);
 			
 			String activityId = prompForActivityID(out, selectedProject);
