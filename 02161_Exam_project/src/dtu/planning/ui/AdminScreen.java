@@ -64,16 +64,15 @@ class AdminRegisterEmployeeScreen extends Screen {
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new AdminScreen());
 		} else if (idIsTooLong(input)) {
-			out.println("\nID to long. Use max. 4 characters. Try again.");
+			out.println("\nID to long. Use max. 4 characters.");
 			planningUI.setScreen(new AdminRegisterEmployeeScreen());
 		} else {
 			employeeID = input;
 			employeeName = promptForEmployeeName(out);
-
 			Employee employee = new Employee(employeeID, employeeName);
 			try {
 				planningUI.getPlanningApp().registerEmployee(employee);
-				out.println("\nEmployee \"" + employeeName + "\" (ID " + employeeID + ") added");
+				out.println("\nEmployee \"" + employeeName + "\" (ID \"" + employeeID + "\") added");
 				planningUI.setScreen(new AdminScreen());
 			}  catch (Exception e) {
 				out.println("\n" + e.getMessage());
@@ -117,7 +116,7 @@ class AdminRemoveEmployeeScreen extends Screen {
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new AdminScreen());
 		} else if (employeeDoesNotExist(input)) {
-			System.out.println("\nEmployee with ID \"" + input + "\" does not exists");
+			System.out.println("\nEmployee with ID \"" + input + "\" does not exist");
 			planningUI.setScreen(new AdminRemoveEmployeeScreen());
 		} else {
 			if (userAcceptsOperation(out)) {
@@ -150,8 +149,9 @@ class AdminAddProjectScreen extends Screen {
 			planningUI.setScreen(new AdminScreen());
 		} else {
 			String projectName = input;
+			Scanner console = new Scanner(System.in);
 			out.println("Enter project start date (YYYY-WW):");
-			String projectDate = promptForProjectDate(out);
+			String projectDate = promptForDate(out, console);
 
 			Project project;
 			try {
@@ -168,19 +168,7 @@ class AdminAddProjectScreen extends Screen {
 				out.println("\n" + e1.getMessage());
 				planningUI.setScreen(new AdminAddProjectScreen());
 			}
-			
 		}
-	}
-
-	public String promptForProjectDate(PrintWriter out) {
-		Scanner console = new Scanner(System.in);
-		String projectDate = console.next();
-		while (!projectDate.matches("\\d{4}-\\d{1,2}")) {
-			out.println("\nWrong date format. Use YYYY-WW:");
-			projectDate = console.next();
-		}
-		
-		return projectDate;
 	}
 }
 
@@ -200,7 +188,7 @@ class AdminRemoveProjectScreen extends Screen {
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new AdminScreen());
 		} else if (projectDoesNotExist(input)) {
-			out.println("\nProject with ID \"" + input + "\" does not exists");
+			out.println("\nProject with ID \"" + input + "\" does not exist");
 			planningUI.setScreen(new AdminRemoveProjectScreen());
 		} else {
 			if (userAcceptsOperation(out)) {
@@ -242,7 +230,7 @@ class AdminAssignTeamleaderScreen extends Screen {
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new AdminScreen());
 		} else if (projectDoesNotExist(input)) {
-			out.println("\nProject with ID \"" + input + "\" does not exists");
+			out.println("\nProject with ID \"" + input + "\" does not exist");
 			planningUI.setScreen(new AdminAssignTeamleaderScreen());
 		} else {
 			out.println("\nChoose employee:");
@@ -256,19 +244,6 @@ class AdminAssignTeamleaderScreen extends Screen {
 			out.println("\nEmployee \"" + employeeID + " is now team leader on project \"" + input + "\"");
 			planningUI.setScreen(new AdminScreen());
 		}
-	}
-
-	public String promptForEmployeeID(PrintWriter out) {
-		String employeeID = "";
-		Scanner console = new Scanner(System.in);
-		do {
-			out.println("\nEnter employee ID (leave blank to cancel):");
-			employeeID = console.nextLine();
-			if (employeeID.isEmpty()) {
-				break;
-			}
-		} while (employeeDoesNotExist(employeeID));
-		return employeeID;
 	}
 
 	public void printProjectListWithTeamLeader(PrintWriter out, List<Project> projects) {
@@ -300,7 +275,7 @@ class AdminUnassignTeamleaderScreen extends Screen {
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new AdminScreen());
 		} else if (projectDoesNotExist(input)) {
-			out.println("\nProject with ID \"" + input + "\" does not exists");
+			out.println("\nProject with ID \"" + input + "\" does not exist");
 			planningUI.setScreen(new AdminUnassignTeamleaderScreen());
 		} else if (projectDoesNotHaveATeamLeader(input)) {
 			out.println("\nProject with ID \"" + input + "\" does not have a team leader");

@@ -24,7 +24,7 @@ public class EmployeeScreen extends Screen {
 	public void processInput(String input, PrintWriter out) throws IOException {
 		if (input.equals("0")) {
 			planningUI.getPlanningApp().logOut();
-			out.println("Logged out");
+			out.println("\nLogged out");
 			planningUI.setScreen(new WelcomeScreen());
 		} else if (input.equals("1")) {
 			planningUI.setScreen(new EmployeeRegisterTimeScreen());
@@ -57,11 +57,11 @@ class EmployeeRegisterTimeScreen extends Screen {
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new EmployeeScreen());
 		} else if (projectDoesNotExist(input)) {
-			out.println("\nProject with ID \"" + input + "\" does not exists");
+			out.println("\nProject with ID \"" + input + "\" does not exist");
 			planningUI.setScreen(new EmployeeRegisterTimeScreen());
 		} else {
 			Project selectedProject = planningUI.getPlanningApp().getExistingProjectByProjectNumber(input);
-			out.println("Choose activity");
+			out.println("\nChoose activity");
 			printAssginedActivities(out, selectedProject);
 			
 			String activityId = prompForActivityID(out, selectedProject);

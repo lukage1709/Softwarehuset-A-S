@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Scanner;
 
+import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
 
 public abstract class Screen {
@@ -51,5 +52,38 @@ public abstract class Screen {
 
 	public boolean employeeDoesNotExist(String input) {
 		return planningUI.getPlanningApp().searchEmployeeID(input) == null;
+	}
+
+	public String promptForDate(PrintWriter out, Scanner console) {
+		String yearWeek;
+		yearWeek = console.next();
+		while (!yearWeek.matches("\\d{4}-\\d{1,2}")) {
+			out.println("\nWrong date format. Use YYYY-WW:");
+			yearWeek = console.next();
+		}
+		return yearWeek;
+	}
+
+	public String promptForEmployeeID(PrintWriter out) {
+		String employeeID = "";
+		Scanner console = new Scanner(System.in);
+		do {
+			out.println("\nEnter employee ID (leave blank to cancel):");
+			employeeID = console.nextLine();
+			if (employeeID.isEmpty()) {
+				break;
+			}
+		} while (employeeDoesNotExist(employeeID));
+		return employeeID;
+	}
+
+	public void printActivityList(PrintWriter out, List<Activity> activities) {
+		for (Activity activity : activities) {
+			out.println(activity.getActivityId() + "\t" + activity.getActivityName());
+		}
+	}
+
+	public boolean activityDoesNotExist(String input) {
+		return planningUI.getProjectToManage().getActivityById(input) == null;
 	}
 }

@@ -16,7 +16,7 @@ public class EmployeeLoginScreen extends Screen {
 		if (inputIsEmpty(input)) {
 			planningUI.setScreen(new WelcomeScreen());
 		} else if (employeeDoesNotExist(input)) {
-			out.println("\nEmployee does not exists");
+			out.println("\nEmployee does not exist");
 			planningUI.setScreen(new EmployeeLoginScreen());
 		} else {
 			planningUI.getPlanningApp().userLogin(input);
