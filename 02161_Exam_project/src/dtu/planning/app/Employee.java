@@ -36,7 +36,7 @@ public class Employee {
 		return Collections.unmodifiableList(assignedActivities);
 	}
 	
-	public void addToAssignedActivities(Activity activity) throws Exception {
+	protected void addToAssignedActivities(Activity activity) throws Exception {
 		if (!activity.getAssignedEmployees().contains(this)) { // Because of the bidirectional relationship between employee and activity
 			throw new Exception("This method should be called through Activity-class");
 		}
@@ -44,7 +44,7 @@ public class Employee {
 		assignedActivities.add(activity);
 	}
 
-	public void removeFromAssignedActivities(Activity activity) throws Exception {
+	protected void removeFromAssignedActivities(Activity activity) throws Exception {
 		if (activity.getAssignedEmployees().contains(this)) { // Because of the bidirectional relationship between employee and activity
 			throw new Exception("This method should be called through Activity-class");
 		}
